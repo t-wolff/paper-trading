@@ -1,0 +1,41 @@
+.loading {
+  font-size: 3rem;
+  margin: 2rem;
+  text-align: center;
+  font-weight: 500;
+}
+.home-container {
+  /* background-color: var(--secondary-background-color); */
+  padding-left: 8vw;
+  padding-right: 8vw;
+}
+.home-container {
+  width: 80vw;
+  height: 83vh;
+  font-size: 1.8rem;
+  color: var(--primary-text-color);
+  padding: 3rem;
+  padding-left: 8vw;
+  padding-right: 8vw;
+  display: flex;
+  justify-content: center;
+}
+
+.home-container header {
+  display: flex;
+}
+.home-container img {
+  height: 40rem;
+}
+.home-container div {
+  margin-top: 10rem;
+  margin-left: 4rem;
+}
+.home-container h2 {
+  font-size: 4rem;
+  margin-bottom: 4rem;
+}
+.home-container button {
+  font-size: 2rem;
+  margin: 1rem;
+}

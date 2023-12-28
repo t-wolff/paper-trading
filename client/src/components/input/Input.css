@@ -1,0 +1,17 @@
+.input-group label {
+  display: block;
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  color: var(--secondary-color);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.input-group input {
+  display: block;
+  padding: 0.5rem;
+  width: 50rem;
+}
+.error-message {
+  color: var(--primary-red);
+  font-size: 1.2rem;
+}

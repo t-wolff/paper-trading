@@ -1,0 +1,19 @@
+.styled-button {
+    padding: 1.6rem;
+    width: auto;
+    border: none;
+    font-weight: 600;
+}
+.styled-button.orange {
+    background-color: #FF893D !important;
+}
+.styled-button.white {
+    background-color: #ffffff !important;
+}
+.styled-button.purple {
+    background-color: #3746e8 !important;
+}
+.styled-button:hover {
+    transform: scale(1.1);
+}
+
