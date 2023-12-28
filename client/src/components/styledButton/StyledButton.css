@@ -1,19 +1,28 @@
 .styled-button {
-    padding: 1.6rem;
-    width: auto;
+    padding: 1.4rem;
+    width: 20rem;
     border: none;
     font-weight: 600;
 }
-.styled-button.orange {
-    background-color: #FF893D !important;
+.styled-button.dark {
+    background-color: var(--primary-opaque);
+    color: var(--primary-purple);
+    border: 0.2rem solid var(--primary-purple);
 }
-.styled-button.white {
-    background-color: #ffffff !important;
+.styled-button.light {
+    background-color: var(--primary-purple);
+    border: 0.2rem solid var(--primary-purple);
+    color: black;
 }
-.styled-button.purple {
+/* .styled-button.light {
+    background-color: #479aff;
+    border: 0.2rem solid #479aff;
+    color: black;
+} */
+.styled-button.colored {
     background-color: #3746e8 !important;
 }
-.styled-button:hover {
-    transform: scale(1.1);
-}
 
+.styled-button:hover {
+    transform: translateY(-0.4rem);
+}

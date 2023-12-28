@@ -1,17 +1,17 @@
 import { NavLink } from "react-router-dom";
+import './navbar.css';
 
 const NavListItem = ({ to, text, className }) => {
   return (
-    <li>
+    // <li className="navbar-link" >
       <NavLink
         to={to}
-        className={`${(isActive) => (isActive ? "active" : undefined)} ${
-          className || ""
-        }`}
+        className={`${(isActive) => (isActive ? "active" : "")} 
+        ${className || ""} navbar-link`}
       >
         {text}
       </NavLink>
-    </li>
+    // </li>
   );
 };
 export default NavListItem;

@@ -5,11 +5,11 @@ import "./SharedLayout.css";
 const SharedLayout = () => {
   return (
     <>
-      <div className="container">
+      <div>
         <Navbar />
-        <main>
+        <div className="outlet-container">
           <Outlet />
-        </main>
+        </div>
         <footer className="footer">
           <p>All Rights Reserved 2023</p>
         </footer>

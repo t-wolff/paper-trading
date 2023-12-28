@@ -26,16 +26,30 @@
 }
 .home-container img {
   height: 40rem;
+  margin-top: 1rem;
 }
 .home-container div {
   margin-top: 10rem;
   margin-left: 4rem;
 }
 .home-container h2 {
+  font-size: 8rem;
+  margin-bottom: 2rem;
+  color: white;
+}
+.home-container h4 {
   font-size: 4rem;
-  margin-bottom: 4rem;
+  /* margin-bottom: 4rem; */
+  color: white;
+  margin: 1rem;
 }
 .home-container button {
   font-size: 2rem;
-  margin: 1rem;
+  margin: 2rem;
+  margin-left: 0.1rem;
+  width: 25rem;
+}
+.home-container img {
+  height: 60rem;
+  width: 60rem;
 }

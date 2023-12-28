@@ -1,26 +1,26 @@
 import { Link } from "react-router-dom";
 import { useGlobalAuthContext } from "../../hooks";
-import "./Navbar.css";
 import NavListItem from "./NavListItem";
+import Logo from '../../assets/logo-4.png';
+import "./Navbar.css";
 
 const Navbar = () => {
-  const { currentUser } = useGlobalAuthContext();
+  const { user } = useGlobalAuthContext();
 
   const navListItems = [
-
     {
-      to: "/stories",
-      text: "Stories",
+      to: "/trade",
+      text: "Trade",
       className: null,
     },
     {
-      to: "/newStory",
-      text: "Create a Story",
+      to: "/dashboard",
+      text: "Dashboard",
       className: null,
     },
     {
-      to: currentUser ? "admin/manageArticles" : "admin",
-      text: "Administration",
+      to: "/leaderboard",
+      text: "Leaderboard",
       className: null,
     },
   ];
@@ -29,14 +29,15 @@ const Navbar = () => {
     <nav className="navbar">
       <Link to="/">
         <div className="navbar-logo-container">
-          <h2 className="navbar-logo">StorySphere</h2>
+          <img className="navbar-logo" src={Logo} alt="logo" />
         </div>
       </Link>
-      <ul className="nav-links">
+      {user && <div className="nav-links">
         {navListItems.map((link) => (
           <NavListItem key={link.text} {...link} />
         ))}
-      </ul>
+      </div>}
+      
     </nav>
   );
 };
