@@ -4,9 +4,9 @@
   background-color: rgba(255, 255, 255, 0.4);
   margin-bottom: 2rem;
 }
-.single-story-container:hover {
+/* .single-story-container:hover {
   transform: translateY(-4px);
-}
+} */
 .single-story-container h2 {
   font-size: 3rem;
 }
@@ -16,19 +16,6 @@ p {
 }
 .single-story-text {
   padding: 3rem;
-}
-.single-story-container button {
-  padding: 0.8rem;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 1.6rem;
-  font-weight: 600;
-  border: none;
-  color: var(--secondary-text-color);
-}
-.single-story-container button:hover {
-  opacity: 0.8;
 }
 .single-story-container .red-background {
   background-color: var(--primary-red);

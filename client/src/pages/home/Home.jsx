@@ -1,34 +1,50 @@
-import { useEffect } from 'react';
-import StyledButton from '../../components/styledButton/StyledButton';
-import TradingPic from '../../assets/trading-graphic.png';
-import './Home.css';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import StyledButton from "../../components/styledButton/StyledButton";
+import TradingPic from "../../assets/trading-graphic.png";
+import "./Home.css";
 
 const Home = () => {
-	useEffect(() => {
-		window.scrollTo(0, 0);
-	}, []);
+  const navigate = useNavigate();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
-	const points = ["Sharpen your skills.",
-					"Explore strategies. ",
-					"Gain confidence risk-free."]
+  const points = [
+    "Sharpen your skills.",
+    "Explore strategies. ",
+    "Gain confidence risk-free.",
+  ];
 
-	const handleSignUp = () => {
-		
-	}
-
-	return (
-		<section className="home-container">
-			<header>
-				<div>
-					<h2>Start Trading Now. </h2>
-					{points.map(point => <h4>{point}</h4>)}
-					<StyledButton color={'dark'} onClick={handleSignUp}>Sign Up</StyledButton>
-					<StyledButton color={'light'}>Log in</StyledButton>
-				</div>
-				<img src={TradingPic} alt="" />
-			</header>
-		</section>
-	);
+  return (
+    <section className="home-container">
+        <div>
+          <h2>
+            Start Trading <br /> Now.{" "}
+          </h2>
+          {points.map((point) => (
+            <h4 key={point}>{point}</h4>
+          ))}
+          <StyledButton
+            color={"dark"}
+            onclick={() => {
+              navigate("/signUp");
+            }}
+          >
+            Sign Up
+          </StyledButton>
+          <StyledButton
+            color={"light"}
+            onclick={() => {
+              navigate("/login");
+            }}
+          >
+            Log in
+          </StyledButton>
+        </div>
+        <img src={TradingPic} alt="" />
+    </section>
+  );
 };
 
 export default Home;

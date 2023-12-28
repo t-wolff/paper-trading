@@ -5,6 +5,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import {
   Home,
   SignUp,
+  Login,
   NotFound,
   Stories,
   NewStory
@@ -29,6 +30,10 @@ const routes = [
 			{
 				path: 'signUp',
 				element: <SignUp/>,
+			},
+			{
+				path: 'login',
+				element: <Login/>,
 			},
 			{
 				path: 'stories',

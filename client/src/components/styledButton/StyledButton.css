@@ -3,6 +3,7 @@
     width: 20rem;
     border: none;
     font-weight: 600;
+    font-size: 2rem;
 }
 .styled-button.dark {
     background-color: var(--primary-opaque);
@@ -14,15 +15,11 @@
     border: 0.2rem solid var(--primary-purple);
     color: black;
 }
-/* .styled-button.light {
-    background-color: #479aff;
-    border: 0.2rem solid #479aff;
-    color: black;
-} */
-.styled-button.colored {
-    background-color: #3746e8 !important;
+.styled-button.blue {
+    background-color: var(--opaque-blue);
+    border: 0.2rem solid var(--primary-blue);
+    color: var(--primary-blue);
 }
-
 .styled-button:hover {
     transform: translateY(-0.4rem);
 }

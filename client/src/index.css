@@ -8,14 +8,13 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   --primary-black: #000000;
   --primary-white: #ffffff;
-  /* --primary-lilac: #BDBDFD; */
   --primary-purple: #BC75F9;
-  --primary-blue: #00218A;
-  --secondary-blue: #535EEB;
+  --primary-blue: #7079fd;
   --primary-red: #ff002b;
   --primary-green: #00d724;
   --primary-box-shadow: 0.6rem 0.5rem 5rem var(--primary-white);
-  --primary-opaque:  rgba(140, 31, 208, 0.2);
+  --opaque-purple:  rgba(140, 31, 208, 0.3);
+  --opaque-blue:  rgba(49, 31, 208, 0.3);
   --primary-gradient: linear-gradient(180deg, rgba(140, 31, 208, 0.2), rgba(142, 78, 199, 0.6));
   /* --primary-gradient: linear-gradient(180deg,  rgba(142, 78, 199, 0.6), rgba(140, 31, 208, 0.2)); */
   /* background: linear-gradient(80deg, #00218A, white, #BC75F9); */

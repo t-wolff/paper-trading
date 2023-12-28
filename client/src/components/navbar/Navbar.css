@@ -41,11 +41,10 @@
   transform: translateY(-0.4rem);
 }
 .navbar-link.active{
-  background: var(--primary-opaque);
+  background: var(--opaque-purple);
   transform: translateY(-0.4rem);
-
-}
-/* .nav-links .login-btn {
+} 
+ /* .nav-links .login-btn {
   font-size: 2rem;
   width: 20rem;
   height: 4rem;

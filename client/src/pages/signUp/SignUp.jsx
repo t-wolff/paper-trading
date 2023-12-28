@@ -8,19 +8,14 @@ const SignUp = () => {
 		window.scrollTo(0, 0);
 	}, []);
 
-	const points = ["Sharpen your skills.",
-					"Explore strategies. ",
-					"Gain confidence risk-free."]
-
 	return (
-		<section className="home-container">
+		<section className="sign-up-container">
 			<header>
 				<div>
-					<h2>Start Trading Now. </h2>
-					{points.map(point => <h4>{point}</h4>)}
+					<h2>Create Personal Account</h2>
+
 					<StyledButton color={'dark'}>Start Trading Now</StyledButton>
 				</div>
-				<img src={TradingPic} alt="" />
 			</header>
 		</section>
 	);
