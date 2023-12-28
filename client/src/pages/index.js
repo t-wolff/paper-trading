@@ -1,11 +1,15 @@
+import Home from "./home/Home";
+import SignUp from "./signUp/SignUp";
+
 import NewStory from "./newStory/NewStory";
 import Stories from './stories/Stories';
-import Home from "./home/Home";
 import NotFound from "./notFound/NotFound";
 
 export {
+  Home,
+  SignUp,
+  
   NewStory,
   Stories,
-  Home,
   NotFound,
 };

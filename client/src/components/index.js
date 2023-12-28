@@ -4,7 +4,7 @@ import SharedLayout from "./sharedLayout/SharedLayout";
 import Navbar from "./navbar/Navbar";
 import NavListItem from "./navbar/NavListItem";
 // import Login from "./login/Login";
-import FullPageStory from "./fullPageStory/FullPageStory";
+import SingleTrade from "./singleTrade/SingleTrade";
 import Story from "./story/Story";
 
 export {
@@ -14,6 +14,6 @@ export {
   ProtectedRoute,
   SharedLayout,
   // Login,
-  FullPageStory,
+  SingleTrade,
   Story,
 };

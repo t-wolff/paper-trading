@@ -4,6 +4,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import {
   Home,
+  SignUp,
   NotFound,
   Stories,
   NewStory
@@ -12,7 +13,7 @@ import {
 import {
   ProtectedRoute,
   SharedLayout,
-  FullPageStory,
+  SingleTrade,
   // NewArticle,
 } from "./components";
 
@@ -26,6 +27,10 @@ const routes = [
 				element: <Home />,
 			},
 			{
+				path: 'signUp',
+				element: <SignUp/>,
+			},
+			{
 				path: 'stories',
 				children: [
 					{
@@ -34,7 +39,7 @@ const routes = [
 					},
 					{
 						path: ':storyId',
-						element: <FullPageStory />,
+						element: <SingleTrade />,
 					},
 				],
 			},
