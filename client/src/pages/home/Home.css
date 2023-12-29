@@ -1,0 +1,27 @@
+.home-container {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+  color: var(--primary-text-color);
+}
+.home-container img {
+  height: 60rem;
+  width: 60rem;
+  margin-top: 1rem;
+}
+.home-container h2 {
+  font-size: 8rem;
+  color: var(--primary-white);
+}
+.home-container h4 {
+  font-size: 4rem;
+  color: var(--primary-white);
+  margin-bottom: 1rem;
+}
+.home-container button {
+  margin: 2rem;
+  margin-left: 0.1rem;
+  width: 25rem;
+}
