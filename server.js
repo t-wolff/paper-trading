@@ -26,9 +26,6 @@ const stories = require("./routes/stories");
 const auth = require("./routes/auth");
 const reviews = require("./routes/reviews");
 
-// Connect to the database
-connectDB();
-
 const app = express();
 
 app.use(mongoSanitize())
