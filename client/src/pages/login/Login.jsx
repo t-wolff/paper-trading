@@ -48,11 +48,6 @@ const Login = () => {
             error="please input valid email"
             value={email}
           />
-          <input
-            type="email"
-            placeholder="jhonnyappleseeds@gmail.com"
-            onChange={(e) => setEmail(e.target.value)}
-          />
           <label htmlFor="password">Password:</label>
           <input
             type="password"
