@@ -3,6 +3,8 @@ const asyncHandler = require('../middleware/async');
 const { pool } = require('../config/db');
 const uuid = require('uuid');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 
 //@desc       Register user
 //@route      POST /api/v1/auth/register
@@ -17,12 +19,12 @@ exports.register = asyncHandler(async (req, res, next) => {
 		);
 	}
 
-  const query1 = 'SELECT * FROM users WHERE email= ?';
-	const [rows] = await pool.promise().query(query1, [email], (queryError) => {
-    if (queryError) {
-      return console.error('Error executing check email query:', queryError.message)
-    };
-  })
+  const emailQuery = 'SELECT * FROM users WHERE email= ?';
+	const [rows] = await pool.promise().query(emailQuery, [email], (queryError) => {
+		if (queryError) {
+			return console.error('Error executing check email query:', queryError.message);
+		}
+	});
 
 	if (rows.length > 0) {
     isEmailInUse = true;
@@ -31,13 +33,13 @@ exports.register = asyncHandler(async (req, res, next) => {
 
 
   if (!isEmailInUse) {
-    const query = 'INSERT INTO users (userID, userName, userLastName, email, password) VALUES (?,?,?,?,?)';
+    const registerQuery = 'INSERT INTO users (userID, userName, userLastName, email, password) VALUES (?,?,?,?,?)';
 		const id = uuid.v4();
     const salt = await bcrypt.genSalt(10);
     const encryptPassword = await bcrypt.hash(password, salt);
 		const values = [id, name, lastName, email, encryptPassword];
 
-		pool.execute(query, values, (queryError, results) => {
+		pool.execute(registerQuery, values, (queryError, results) => {
 			if (queryError) {
 				return console.error('Error executing register user query:', queryError.message);
 			}
@@ -49,30 +51,35 @@ exports.register = asyncHandler(async (req, res, next) => {
   }
 });
 
-// // //@desc       Login user
-// // //@route      POST /api/v1/auth/login
-// // //@access     Public
-// exports.login = asyncHandler(async (req, res, next) => {
-// 	const { email, password } = req.body;
+// //@desc       Login user
+// //@route      POST /api/v1/auth/login
+// //@access     Public
+exports.login = asyncHandler(async (req, res, next) => {
+	const { email, password } = req.body;
 
-// 	if (!email || !password) {
-// 		return next(new ErrorResponse('Please provide an email and a password', 400));
-// 	}
+	if (!email || !password) {
+		return next(new ErrorResponse('Please provide an email and a password', 400));
+	}
 
-// 	// Check for user
-// 	const user = await User.findOne({ email }).select('+password');
-// 	if (!user) {
-// 		return next(new ErrorResponse('Invalid credentials', 401));
-// 	}
+  const emailQuery = 'SELECT * FROM users WHERE email= ?';
+	const [users] = await pool.promise().query(emailQuery, [email], (queryError) => {
+		if (queryError) {
+			return console.error('Error executing check email query:', queryError.message);
+		}
+	});
 
-// 	//Check if password matches
-// 	const isMatch = await user.matchPassword(password);
+  const user = users[0];
+	if (!user) {
+		return next(new ErrorResponse('Invalid credentials', 401));
+	} 	
 
-// 	if (!isMatch) {
-// 		return next(new ErrorResponse('Invalid credentials', 401));
-// 	}
-// 	sendTokenResponse(user, 200, res);
-// });
+  const isMatch = await bcrypt.compare(password, user.password);
+	if (!isMatch) {
+		return next(new ErrorResponse('Invalid credentials', 401));
+	}
+
+	sendTokenResponse(user, 200, res);
+});
 
 // //@desc       Get current logged in user
 // //@route      POST /api/vi/auth/me
@@ -107,23 +114,26 @@ exports.register = asyncHandler(async (req, res, next) => {
 // //   });
 // // });
 
-// //Get token from model,create cookie and send response
-// const sendTokenResponse = (user, statusCode, res) => {
-//   //Create token
-//   const token = user.getSignedJwtToken();
-//   const options = {
-//     expires: new Date(
-//       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-//     ),
-//     httpOnly: true,
-//   };
+//Get token from model,create cookie and send response
+const sendTokenResponse = async (user, statusCode, res) => {
 
-//   if (process.env.NODE_ENV === "production") {
-//     options.secure = true;
-//   }
+  const token = jwt.sign({ id: user.userID }, process.env.JWT_SECRET, {
+			expiresIn: process.env.JWT_EXPIRE,
+		});
 
-//   res
-//     .status(statusCode)
-//     .cookie("token", token, options)
-//     .json({ success: true, token });
-// };
+  const options = {
+    Expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+
+  if (process.env.NODE_ENV === "production") {
+    options.secure = true;
+  }
+
+  res
+    .status(statusCode)
+    .cookie("token", token, options)
+    .json({ success: true, token });
+};
