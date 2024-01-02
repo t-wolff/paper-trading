@@ -4,18 +4,26 @@ const { pool } = require('../config/db');
 const uuid = require('uuid');
 
 //@desc       Register user
-//@route      POST /api/vi/auth/register
+//@route      POST /api/v1/auth/register
 //@access     Public
 exports.register = asyncHandler((req, res, next) => {
-  const { name, lastName, email, password } = req.body;
-  const query = 'INSERT INTO users (userID, userName, userLastName, email, password) VALUES (?,?,?,?,?)';
-  const id = uuid.v4();
-  const values = [id, name, lastName, email, password ];
+	const { name, lastName, email, password } = req.body;
+  
+	if (!name || !lastName || !email || !password) {
+		return next(new ErrorResponse('Missing request field/s (name, lastName, email, password)', 400));
+	}
+
+	const query =
+		'INSERT INTO users (userID, userName, userLastName, email, password) VALUES (?,?,?,?,?)';
+	const id = uuid.v4();
+	const values = [id, name, lastName, email, password];
+
 	pool.execute(query, values, (queryError, results) => {
 		if (queryError) {
 			console.error('Error executing query:', queryError.message);
 			return;
 		}
+
 		res.status(200).json({
 			success: true,
 			data: results,
@@ -24,13 +32,11 @@ exports.register = asyncHandler((req, res, next) => {
 });
 
 // // //@desc       Login user
-// // //@route      POST /api/vi/auth/login
+// // //@route      POST /api/v1/auth/login
 // // //@access     Public
 // exports.login = asyncHandler(async (req, res, next) => {
 //   const { email, password } = req.body;
-//   console.log(req.body);
 
-//   //Validate email and password
 //   if (!email || !password) {
 //     return next(new ErrorResponse("Please provide an email and password", 400));
 //   }
