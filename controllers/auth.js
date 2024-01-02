@@ -2,58 +2,76 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const { pool } = require('../config/db');
 const uuid = require('uuid');
+const bcrypt = require('bcrypt');
 
 //@desc       Register user
 //@route      POST /api/v1/auth/register
 //@access     Public
-exports.register = asyncHandler((req, res, next) => {
+exports.register = asyncHandler(async (req, res, next) => {
 	const { name, lastName, email, password } = req.body;
-  
+  let isEmailInUse = false;
+
 	if (!name || !lastName || !email || !password) {
-		return next(new ErrorResponse('Missing request field/s (name, lastName, email, password)', 400));
+		return next(
+			new ErrorResponse('Missing request field/s (name, lastName, email, password)', 400)
+		);
 	}
 
-	const query =
-		'INSERT INTO users (userID, userName, userLastName, email, password) VALUES (?,?,?,?,?)';
-	const id = uuid.v4();
-	const values = [id, name, lastName, email, password];
+  const query1 = 'SELECT * FROM users WHERE email= ?';
+	const [rows] = await pool.promise().query(query1, [email], (queryError) => {
+    if (queryError) {
+      return console.error('Error executing check email query:', queryError.message)
+    };
+  })
 
-	pool.execute(query, values, (queryError, results) => {
-		if (queryError) {
-			console.error('Error executing query:', queryError.message);
-			return;
-		}
+	if (rows.length > 0) {
+    isEmailInUse = true;
+		return next(new ErrorResponse('Input email is in use', 400));
+	} 
 
-		res.status(200).json({
-			success: true,
-			data: results,
+
+  if (!isEmailInUse) {
+    const query = 'INSERT INTO users (userID, userName, userLastName, email, password) VALUES (?,?,?,?,?)';
+		const id = uuid.v4();
+    const salt = await bcrypt.genSalt(10);
+    const encryptPassword = await bcrypt.hash(password, salt);
+		const values = [id, name, lastName, email, encryptPassword];
+
+		pool.execute(query, values, (queryError, results) => {
+			if (queryError) {
+				return console.error('Error executing register user query:', queryError.message);
+			}
+			res.status(200).json({
+				success: true,
+				data: results,
+			});
 		});
-	});
+  }
 });
 
 // // //@desc       Login user
 // // //@route      POST /api/v1/auth/login
 // // //@access     Public
 // exports.login = asyncHandler(async (req, res, next) => {
-//   const { email, password } = req.body;
+// 	const { email, password } = req.body;
 
-//   if (!email || !password) {
-//     return next(new ErrorResponse("Please provide an email and password", 400));
-//   }
+// 	if (!email || !password) {
+// 		return next(new ErrorResponse('Please provide an email and a password', 400));
+// 	}
 
-//   // Check for user
-//   const user = await User.findOne({ email }).select("+password");
-//   if (!user) {
-//     return next(new ErrorResponse("Invalid credentials", 401));
-//   }
+// 	// Check for user
+// 	const user = await User.findOne({ email }).select('+password');
+// 	if (!user) {
+// 		return next(new ErrorResponse('Invalid credentials', 401));
+// 	}
 
-//   //Check if password matches
-//   const isMatch = await user.matchPassword(password);
+// 	//Check if password matches
+// 	const isMatch = await user.matchPassword(password);
 
-//   if (!isMatch) {
-//     return next(new ErrorResponse("Invalid credentials", 401));
-//   }
-//   sendTokenResponse(user, 200, res);
+// 	if (!isMatch) {
+// 		return next(new ErrorResponse('Invalid credentials', 401));
+// 	}
+// 	sendTokenResponse(user, 200, res);
 // });
 
 // //@desc       Get current logged in user
