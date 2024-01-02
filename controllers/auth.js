@@ -1,28 +1,28 @@
-// const ErrorResponse = require("../utils/errorResponse");
-// const asyncHandler = require("../middleware/async");
-// const User = require("../models/User");
+const ErrorResponse = require('../utils/errorResponse');
+const asyncHandler = require('../middleware/async');
+const { pool } = require('../config/db');
 
-// //@desc       Register user
-// //@route      POST /api/vi/auth/register
-// //@access     Public
-// exports.register = asyncHandler(async (req, res, next) => {
-//   const { name, email, password } = req.body;
-//   console.log(req.body);
+//@desc       Register user
+//@route      POST /api/vi/auth/register
+//@access     Public
+exports.register = asyncHandler((req, res, next) => {
+  const { name, lastName, email, password } = req.body;
+  const query = 'INSERT INTO table_name VALUES'
+	pool.query('SELECT * FROM users', (queryError, results) => {
+		if (queryError) {
+			console.error('Error executing query:', queryError.message);
+			return;
+		}
+    res.status(200).json({
+			success: true,
+			data: results,
+		});
+	});
+});
 
-//   //Create user
-//   const user = await User.create({
-//     name,
-//     email,
-//     password,
-//     role,
-//   });
-
-//   sendTokenResponse(user, 200, res);
-// });
-
-// //@desc       Login user
-// //@route      POST /api/vi/auth/login
-// //@access     Public
+// // //@desc       Login user
+// // //@route      POST /api/vi/auth/login
+// // //@access     Public
 // exports.login = asyncHandler(async (req, res, next) => {
 //   const { email, password } = req.body;
 //   console.log(req.body);
