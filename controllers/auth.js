@@ -1,19 +1,22 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const { pool } = require('../config/db');
+const uuid = require('uuid');
 
 //@desc       Register user
 //@route      POST /api/vi/auth/register
 //@access     Public
 exports.register = asyncHandler((req, res, next) => {
   const { name, lastName, email, password } = req.body;
-  const query = 'INSERT INTO table_name VALUES'
-	pool.query('SELECT * FROM users', (queryError, results) => {
+  const query = 'INSERT INTO users (userID, userName, userLastName, email, password) VALUES (?,?,?,?,?)';
+  const id = uuid.v4();
+  const values = [id, name, lastName, email, password ];
+	pool.execute(query, values, (queryError, results) => {
 		if (queryError) {
 			console.error('Error executing query:', queryError.message);
 			return;
 		}
-    res.status(200).json({
+		res.status(200).json({
 			success: true,
 			data: results,
 		});
