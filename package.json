@@ -5,11 +5,12 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=production node ."
+    "start": "nodemon node ."
   },
   "author": "Tehilla Wolff",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -28,6 +29,7 @@
     "nodemailer": "^6.9.7",
     "slugify": "^1.6.6",
     "sudo": "^1.0.3",
+    "uuid": "^9.0.1",
     "ws": "^8.16.0",
     "xss-clean": "^0.1.4"
   },

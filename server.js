@@ -5,22 +5,19 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const fileupload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
-
-const errorHandler = require('./middleware/error');
-const connectDB = require('./config/db');
-
 const cors = require('cors');
 const hpp = require('hpp');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
+const errorHandler = require('./middleware/error');
 
 dotenv.config({ path: './config/config.env' });
 
 // Route files
 // const stories = require("./routes/stories");
-// const auth = require("./routes/auth");
+const auth = require("./routes/auth");
 // const reviews = require("./routes/reviews");
 
 const app = express();
@@ -46,7 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routers
 // app.use("/api/v1/stories", stories);
-// app.use("/api/v1/auth", auth);
+app.use("/api/v1/auth", auth);
 // app.use("/api/v1/reviews", reviews);
 
 app.use(errorHandler);
@@ -87,4 +84,4 @@ wss.on('connection', (ws) => {
 	});
 });
 
-connectDB();
+
