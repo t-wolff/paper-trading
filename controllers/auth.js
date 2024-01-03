@@ -128,5 +128,5 @@ const sendTokenResponse = async (user, statusCode, res) => {
 		options.secure = true;
 	}
 
-	res.status(statusCode).cookie('token', token, options).json({ success: true, token });
+	res.status(statusCode).cookie('token', token, options).json({ success: true, token, user: {"userID": user.userID, "firstName": user.firstName, "lastName": user.lastName, "email": user.email}});
 };

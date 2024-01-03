@@ -52,6 +52,7 @@ export const login =
 				const headers = { 'Content-Type': 'application/json' };
 				const res = await axios({
 					method: 'POST',
+					credentials: 'include',
 					url: `${import.meta.env.VITE_BASE_URL}/auth/login`,
 					data: { email, password },
 					headers: headers,
