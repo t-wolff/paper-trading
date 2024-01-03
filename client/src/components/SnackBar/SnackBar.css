@@ -1,0 +1,28 @@
+.snackbar-container {
+    position: absolute;
+    right: 2rem;
+    top: 14rem;
+    z-index: 3;
+    width: 30rem;
+    transition: height 400ms;
+    display: flex;
+	justify-content: space-between;
+	background-color: var(--primary-black);
+    border: 0.1rem solid var(--primary-green);
+	color: var(--primary-green);
+	padding: 1rem;
+    padding-left: 2rem;
+    border-radius: 0.8rem;
+    font-size: 1.8rem;
+}
+.snackbar-container button {
+	cursor: pointer;
+	color: var(--primary-white);
+    background-color: var(--primary-black);	
+    border: none;
+    padding: 0.2rem;
+}
+.snackbar-error {
+    border: 0.1rem solid var(--primary-red);
+	color: var(--primary-red);
+}

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
-import { useGlobalArticleContext } from '../../hooks';
+// import { useNavigate } from 'react-router';
+// import { useGlobalArticleContext } from '../../hooks';
 
 const useNewStory = () => {
-	const navigate = useNavigate();
-	const { addNewStory, error } = useGlobalArticleContext();
+	// const navigate = useNavigate();
+	// const { addNewStory, error } = useGlobalArticleContext();
 
 	const [story, setStory] = useState({
 		prompt: '',
@@ -28,7 +28,7 @@ const useNewStory = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		let isValid = true;
+		// let isValid = true;
 		const newErrors = {};
 
 		const validationRules = [
@@ -48,18 +48,18 @@ const useNewStory = () => {
 		validationRules.forEach(({ field, test, errorMessage }) => {
 			if (!test(story[field])) {
 				newErrors[field] = errorMessage;
-				isValid = false;
+				// isValid = false;
 			}
 		});
 
 		setErrors(newErrors);
 
-		if (isValid) {
-			addNewStory(story);
-			if (error) {
-				return error;
-			}
-					}
+		// if (isValid) {
+			// addNewStory(story);
+			// if (error) {
+			// 	return error;
+			// }
+			// 		}
 	};
 
 	return {handleChange, handleSubmit, story, errors };

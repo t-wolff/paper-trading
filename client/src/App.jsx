@@ -1,11 +1,13 @@
 // import { useEffect, useRef } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import SnackBar from './components/SnackBar/SnackBar';
 // import { useGlobalArticleContext } from "./hooks";
 
 import {
   Home,
   SignUp,
   Login,
+  Dashboard,
   NotFound,
   Stories,
   NewStory
@@ -29,11 +31,19 @@ const routes = [
 			},
 			{
 				path: 'signUp',
-				element: <SignUp/>,
+				element: <SignUp />,
 			},
 			{
 				path: 'login',
-				element: <Login/>,
+				element: <Login />,
+			},
+			{
+				path: 'dashboard',
+				element: (
+					<ProtectedRoute>
+						<Dashboard />
+					</ProtectedRoute>
+				),
 			},
 			{
 				path: 'stories',
@@ -50,7 +60,12 @@ const routes = [
 			},
 			{
 				path: 'newStory',
-					element: <NewStory />,
+				element: (
+					<ProtectedRoute>
+						{' '}
+						<NewStory />
+					</ProtectedRoute>
+				),
 			},
 			{
 				path: '*',
@@ -70,10 +85,11 @@ function App() {
   // }, [error, clearError]);
 
   return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+		<>
+			<SnackBar />
+			<RouterProvider router={router} />
+		</>
+	);
 }
 
 export default App;

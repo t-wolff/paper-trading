@@ -1,21 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
-// import { Provider } from 'react-redux'
-// import store from './redux/store'
-import "./index.css";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+import { Provider } from 'react-redux';
+import configureAppStore from './redux/store';
+import './index.css';
 
-import { AuthContextProvider } from "./context/AuthContext.jsx";
-import { ArticleProvider } from "./context/ArticleContext.jsx";
+const store = configureAppStore();
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <ArticleProvider>
-      <AuthContextProvider>
-        {/* <Provider store={store}> */}
-          <App />
-        {/* </Provider> */}
-      </AuthContextProvider>
-    </ArticleProvider>
-  </React.StrictMode>
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+	<React.StrictMode>
+				<Provider store={store}>
+					<App />
+				</Provider>
+	</React.StrictMode>
 );

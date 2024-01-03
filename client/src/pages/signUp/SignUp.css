@@ -1,50 +1,17 @@
-.loading {
-    font-size: 3rem;
-    margin: 2rem;
-    text-align: center;
-    font-weight: 500;
-  }
-  .sign-up-container {
-    height: 83vh;
-    font-size: 1.8rem;
-    color: var(--primary-text-color);
-    padding: 3rem;
-    padding-left: 8vw;
-    padding-right: 8vw;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .sign-up-container header {
-    display: flex;
-  }
-  .sign-up-container img {
-    height: 40rem;
-    margin-top: 1rem;
-  }
-  .sign-up-container div {
-    margin-top: 10rem;
-    margin-left: 4rem;
-  }
-  .sign-up-container h2 {
-    font-size: 8rem;
-    margin-bottom: 2rem;
-    color: white;
-  }
-  .sign-up-container h4 {
-    font-size: 4rem;
-    /* margin-bottom: 4rem; */
-    color: white;
-    margin: 1rem;
-  }
-  /* .sign-up-container button {
-    font-size: 2rem;
-    margin: 2rem;
-    margin-left: 0.1rem;
-    width: 25rem;
-  } */
-  .sign-up-container img {
-    height: 60rem;
-    width: 60rem;
-  }
-  
+.signup-form-container {
+	padding: 5rem;
+	border: 0.2rem solid var(--primary-blue);
+	border-radius: 1rem;
+	width: 40rem;
+}
+.signup-form-container h2 {
+	font-size: 4rem;
+	text-align: center;
+	padding-bottom: 4rem;
+	color: var(--primary-white);
+}
+.signup-form-container button {
+	margin-top: 1rem;
+	width: 30rem;
+}
+
