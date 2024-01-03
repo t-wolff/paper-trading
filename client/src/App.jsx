@@ -1,5 +1,6 @@
 // import { useEffect, useRef } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import SnackBar from './components/SnackBar/SnackBar';
 // import { useGlobalArticleContext } from "./hooks";
 
 import {
@@ -12,7 +13,7 @@ import {
 } from "./pages";
 
 import {
-  ProtectedRoute,
+//   ProtectedRoute,
   SharedLayout,
   SingleTrade,
   // NewArticle,
@@ -70,10 +71,11 @@ function App() {
   // }, [error, clearError]);
 
   return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+		<>
+			<SnackBar />
+			<RouterProvider router={router} />
+		</>
+	);
 }
 
 export default App;

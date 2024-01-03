@@ -1,67 +1,84 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGlobalAuthContext } from "../../hooks";
-import "./Login.css";
+import { useDispatch, useSelector } from 'react-redux';
+import * as actionAuth from '../../redux/Auth/authSlice';
 import StyledButton from "../../components/styledButton/StyledButton";
 import Input from "../../components/input/Input";
+import "./Login.css";
 
 const Login = () => {
-  const [error, setError] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  const { dispatch, currentUser } = useGlobalAuthContext();
+  // const userContent = useSelector((state) => state.auth.userContent);
+  const wrongCredentialsError = useSelector((state) => state.auth.wrongCredentialsError);
+
+  const [form, setForm] = useState({
+		email: '',
+		password: '',
+	});
+
+  const [errs, setErrs] = useState({
+		email: false,
+		password: false,
+	});
+
+
+
+  const handleChangeInputs = (e) => {
+    setErrs({...errs, [e.target.name]: false})
+		dispatch(actionAuth.setWrongCredentialsError(''));
+		setForm({ ...form, [e.target.name]: e.target.value });
+	};
 
   const handleLogin = (e) => {
     e.preventDefault();
+		if (form.email.length < 8 || form.password.length < 6) {
+			if (form.email === '' || form.email.length < 8) {
+				setErrs((prevErrs) => ({ ...prevErrs, email: true }));
+			}
+			if (form.password === '' || form.password.length < 6) {
+				setErrs((prevErrs) => ({ ...prevErrs, password: true }));
+			}
+		} else {
+			dispatch(actionAuth.login(form.email, form.password));
+		}
+	};
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        dispatch({ type: "LOGIN", payload: user });
-        navigate("/admin/manageArticles");
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
-  };
-
-  const handleLogout = (e) => {
-    e.preventDefault();
-    dispatch({ type: "LOGOUT" });
-    navigate("/");
-  };
+  if (isAuthenticated) {
+		navigate('/dashboard;');
+	}
 
   return (
-    <div className="login-container">
-      <div className="login-form-container">
-        <h2>WELCOME.</h2>
-        <form onSubmit={handleLogin}>
-          <label htmlFor="email">Email Address:</label>
-          <Input
-            name="email"
-            label="Input Your Email here"
-            type="email"
-            handleChange={(e) => setEmail(e.target.value)}
-            error="please input valid email"
-            value={email}
-          />
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            placeholder="Appleseeds123456"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <StyledButton color="blue" onclick={handleLogin}>
-            Login
-          </StyledButton>
-          {error && <span>{error}</span>}
-        </form>
-      </div>
-    </div>
-  );
+		<div className="login-container">
+			<div className="login-form-container">
+				<h2>WELCOME</h2>
+				<form>
+					<Input
+						name="email"
+						label="Email"
+						type="email"
+						handleChange={(e) => handleChangeInputs(e)}
+						error={errs.email && 'Please input valid email'}
+						value={form.email}
+					/>
+					<Input
+						name="password"
+						label="Password"
+						type="password"
+						handleChange={(e) => handleChangeInputs(e)}
+						error={errs.password && 'Please input valid password'}
+						value={form.password}
+					/>
+					<StyledButton color="blue" onclick={handleLogin}>
+						Login
+					</StyledButton>
+					<h6 className="credentials-err">{wrongCredentialsError}</h6>
+				</form>
+			</div>
+		</div>
+	);
 };
 
 export default Login;

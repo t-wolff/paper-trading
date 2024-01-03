@@ -1,36 +1,29 @@
 .login-form-container {
-  width: 80rem;
-  /* border: 0.2rem solid var(--primary-blue); */
+  padding: 5rem;
+  border: 0.2rem solid var(--primary-blue);
   border-radius: 1rem;
-
 }
 .login-form-container h2 {
+  font-size: 4rem;
   text-align: center;
-  margin-top: 4rem;
-  font-size: 3rem;
-}
-.login-form-container form {
-  display: flex;
-  flex-direction: column;
-  width: 30rem;
-  height: 40rem;
-  padding: 1rem;
-}
-.login-form-container label {
-  font-size: 1.6rem;
-  font-weight: 700;
-}
-.login-form-container input {
-  height: 3rem;
-  border: 0.2rem solid var(--primary-text-color);
-  font-size: 1.6rem;
-  padding-left: 0.6rem;
-  margin-bottom: 1rem;
+  padding-bottom: 4rem;
+  color: var(--primary-white);
 }
 .login-form-container button {
+  margin-top: 1rem;
   width: 30rem;
 }
-.login-form-container span {
+.credentials-err{
+  color: red;
   font-size: 1.2rem;
-  color: var(--primary-red);
+  padding-top: 1rem;
+  padding-bottom: -2rem;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px black inset !important;
+    -webkit-text-fill-color: white !important;
+
 }
