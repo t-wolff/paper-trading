@@ -33,7 +33,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 
 
   if (!isEmailInUse) {
-    const registerQuery = 'INSERT INTO users (userID, userName, userLastName, email, password) VALUES (?,?,?,?,?)';
+    const registerQuery = 'INSERT INTO users (userID, firstName, lastName, email, password) VALUES (?,?,?,?,?)';
 		const id = uuid.v4();
     const salt = await bcrypt.genSalt(10);
     const encryptPassword = await bcrypt.hash(password, salt);
