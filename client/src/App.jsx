@@ -7,13 +7,14 @@ import {
   Home,
   SignUp,
   Login,
+  Dashboard,
   NotFound,
   Stories,
   NewStory
 } from "./pages";
 
 import {
-//   ProtectedRoute,
+  ProtectedRoute,
   SharedLayout,
   SingleTrade,
   // NewArticle,
@@ -30,11 +31,19 @@ const routes = [
 			},
 			{
 				path: 'signUp',
-				element: <SignUp/>,
+				element: <SignUp />,
 			},
 			{
 				path: 'login',
-				element: <Login/>,
+				element: <Login />,
+			},
+			{
+				path: 'dashboard',
+				element: (
+					<ProtectedRoute>
+						<Dashboard />
+					</ProtectedRoute>
+				),
 			},
 			{
 				path: 'stories',
@@ -51,7 +60,12 @@ const routes = [
 			},
 			{
 				path: 'newStory',
-					element: <NewStory />,
+				element: (
+					<ProtectedRoute>
+						{' '}
+						<NewStory />
+					</ProtectedRoute>
+				),
 			},
 			{
 				path: '*',

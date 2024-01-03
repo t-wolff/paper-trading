@@ -35,4 +35,5 @@ Input.propTypes = {
 	handleChange: PropTypes.func.isRequired,
 	error: PropTypes.bool,
 };
+
 export default Input;

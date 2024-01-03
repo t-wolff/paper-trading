@@ -2,6 +2,7 @@
   padding: 5rem;
   border: 0.2rem solid var(--primary-blue);
   border-radius: 1rem;
+  width: 40rem;
 }
 .login-form-container h2 {
   font-size: 4rem;
