@@ -19,19 +19,30 @@
 .input-group input:focus {
   outline: none;
 }
-.input-group button {
+.input-container {
   position: relative;
+}
+.input-group .input-container .show-password-btn {
+  position: absolute;
   font-size: 1.2rem;
   background-color: transparent;
   border: none;
   width: 2rem;
   color: var(--primary-blue);
-  left: 12rem; 
-  bottom: 3.8rem;
+  right: 2rem; 
+  top: 0.2rem;
 }
 .error-message {
   margin-top: 0.4rem;
   margin-bottom: -0.8rem;
   color: var(--primary-red);
   font-size: 1.4rem;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px var(--primary-black) inset !important;
+    -webkit-text-fill-color: var(--primary-white) !important;
+
 }

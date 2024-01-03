@@ -5,21 +5,20 @@ const uuid = require('uuid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-
 //@desc       Register user
 //@route      POST /api/v1/auth/register
 //@access     Public
 exports.register = asyncHandler(async (req, res, next) => {
-	const { name, lastName, email, password } = req.body;
-  let isEmailInUse = false;
+	const { firstName, lastName, email, password } = req.body;
+	let isEmailInUse = false;
 
-	if (!name || !lastName || !email || !password) {
+	if (!firstName || !lastName || !email || !password) {
 		return next(
 			new ErrorResponse('Missing request field/s (name, lastName, email, password)', 400)
 		);
 	}
 
-  const emailQuery = 'SELECT * FROM users WHERE email= ?';
+	const emailQuery = 'SELECT * FROM users WHERE email= ?';
 	const [rows] = await pool.promise().query(emailQuery, [email], (queryError) => {
 		if (queryError) {
 			return console.error('Error executing check email query:', queryError.message);
@@ -27,17 +26,17 @@ exports.register = asyncHandler(async (req, res, next) => {
 	});
 
 	if (rows.length > 0) {
-    isEmailInUse = true;
+		isEmailInUse = true;
 		return next(new ErrorResponse('Input email is in use', 400));
-	} 
+	}
 
-
-  if (!isEmailInUse) {
-    const registerQuery = 'INSERT INTO users (userID, firstName, lastName, email, password) VALUES (?,?,?,?,?)';
+	if (!isEmailInUse) {
+		const registerQuery =
+			'INSERT INTO users (userID, firstName, lastName, email, password) VALUES (?,?,?,?,?)';
 		const id = uuid.v4();
-    const salt = await bcrypt.genSalt(10);
-    const encryptPassword = await bcrypt.hash(password, salt);
-		const values = [id, name, lastName, email, encryptPassword];
+		const salt = await bcrypt.genSalt(10);
+		const encryptPassword = await bcrypt.hash(password.toString(), salt);
+		const values = [id, firstName, lastName, email, encryptPassword];
 
 		pool.execute(registerQuery, values, (queryError, results) => {
 			if (queryError) {
@@ -48,7 +47,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 				data: results,
 			});
 		});
-  }
+	}
 });
 
 // //@desc       Login user
@@ -61,19 +60,19 @@ exports.login = asyncHandler(async (req, res, next) => {
 		return next(new ErrorResponse('Please provide an email and a password', 400));
 	}
 
-  const emailQuery = 'SELECT * FROM users WHERE email= ?';
+	const emailQuery = 'SELECT * FROM users WHERE email= ?';
 	const [users] = await pool.promise().query(emailQuery, [email], (queryError) => {
 		if (queryError) {
 			return console.error('Error executing check email query:', queryError.message);
 		}
 	});
 
-  const user = users[0];
+	const user = users[0];
 	if (!user) {
 		return next(new ErrorResponse('Invalid credentials', 401));
-	} 	
+	}
 
-  const isMatch = await bcrypt.compare(password, user.password);
+	const isMatch = await bcrypt.compare(password.toString(), user.password);
 	if (!isMatch) {
 		return next(new ErrorResponse('Invalid credentials', 401));
 	}
@@ -116,24 +115,18 @@ exports.login = asyncHandler(async (req, res, next) => {
 
 //Get token from model,create cookie and send response
 const sendTokenResponse = async (user, statusCode, res) => {
+	const token = jwt.sign({ id: user.userID }, process.env.JWT_SECRET, {
+		expiresIn: process.env.JWT_EXPIRE,
+	});
 
-  const token = jwt.sign({ id: user.userID }, process.env.JWT_SECRET, {
-			expiresIn: process.env.JWT_EXPIRE,
-		});
+	const options = {
+		Expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+		httpOnly: true,
+	};
 
-  const options = {
-    Expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-    ),
-    httpOnly: true,
-  };
+	if (process.env.NODE_ENV === 'production') {
+		options.secure = true;
+	}
 
-  if (process.env.NODE_ENV === "production") {
-    options.secure = true;
-  }
-
-  res
-    .status(statusCode)
-    .cookie("token", token, options)
-    .json({ success: true, token });
+	res.status(statusCode).cookie('token', token, options).json({ success: true, token });
 };

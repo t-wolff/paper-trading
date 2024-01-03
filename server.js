@@ -25,10 +25,16 @@ const app = express();
 app.use(mongoSanitize());
 app.use(xss());
 app.use(hpp());
-app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+	cors({
+		origin: ['http://localhost:5173'],
+		methods: ["POST", "GET"],
+		credentials: true
+	})
+);
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
@@ -42,8 +48,8 @@ app.use(fileupload());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routers
-// app.use("/api/v1/stories", stories);
 app.use("/api/v1/auth", auth);
+// app.use("/api/v1/stories", stories);
 // app.use("/api/v1/reviews", reviews);
 
 app.use(errorHandler);

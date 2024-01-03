@@ -23,5 +23,6 @@
     padding: 0.2rem;
 }
 .snackbar-error {
-    background-color: var(--primary-red);
+    border: 0.1rem solid var(--primary-red);
+	color: var(--primary-red);
 }

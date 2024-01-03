@@ -13,15 +13,19 @@ const Input = ({ name, label, value, type, handleChange, error }) => {
 	return (
 		<div className="input-group">
 			<label htmlFor={name}>{label}</label>
-			<input
-				type={showPassword ? 'text' : type}
-				name={name}
-				value={value}
-				onChange={handleChange}
-			/>
-			{type === 'password' && (
-				<button onClick={(e) => handleShowPassword(e)}>{showPassword ? 'hide' : 'show'}</button>
-			)}
+			<div className="input-container">
+				<input
+					type={showPassword ? 'text' : type}
+					name={name}
+					value={value}
+					onChange={handleChange}
+				/>
+				{type === 'password' && (
+					<button onClick={(e) => handleShowPassword(e)} className="show-password-btn">
+						{showPassword ? 'hide' : 'show'}
+					</button>
+				)}
+			</div>
 			<div className="error-message">{error}</div>
 		</div>
 	);

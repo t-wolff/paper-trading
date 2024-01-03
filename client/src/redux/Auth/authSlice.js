@@ -8,6 +8,7 @@ export const authSlice = createSlice({
 	initialState: {
 		token: '',
 		isAuthenticated: false,
+		isRegistered: false,
 		loadingIndicator: false,
 		userContent: {},
 		isWsConnection: false,
@@ -20,6 +21,9 @@ export const authSlice = createSlice({
 			// state.loadingIndicatorFullScreen = false;
 			state.token = action.payload.token;
 			state.userContent = action.payload.userContent;
+		},
+		setIsRegistered: (state, action) => {
+			state.isRegistered = action.payload;
 		},
 		setUserContent: (state, action) => {
 			state.userContent = action.payload;
@@ -46,7 +50,6 @@ export const login =
 			dispatch(setLoadingIndicator(true));
 			try {
 				const headers = { 'Content-Type': 'application/json' };
-
 				const res = await axios({
 					method: 'POST',
 					url: `${import.meta.env.VITE_BASE_URL}/auth/login`,
@@ -75,18 +78,37 @@ export const login =
 			}
 		};
 
+
+export const register = (firstName, lastName, email, password) => async (dispatch) => {
+	dispatch(setLoadingIndicator(true));
+	try {
+		const headers = { 'Content-Type': 'application/json' };
+		const res = await axios({
+			method: 'POST',
+			url: `${import.meta.env.VITE_BASE_URL}/auth/register`,
+			data: { firstName, lastName, email, password },
+			headers: headers,
+		});
+
+		if (res.status === 200) {
+			dispatch(setIsRegistered(true));
+			dispatch(actionSnackBar.setSnackBar('success', 'Register Successful', 2000));
+		}
+	} catch (error) {
+			if (error.response && error.response.data !== undefined) {
+			dispatch(actionSnackBar.setSnackBar('error', 'Register failed', 2000));
+			dispatch(setLoadingIndicator(false));
+		} else {
+			dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
+			dispatch(setLoadingIndicator(false));
+		}
+	}
+};
+
 const setInitialSettings = (data) => (dispatch) => {
-	const userContent = {
-		...data.user,
-		// ...data.payload.user,
-		// config: data.payload.config ? data.payload.config : data.config,
-		// system: data.system,
-		// profile: data.payload.profile,
-		// theme: data.payload.user.config ? data.payload.user.config : {},
-	};
+	const userContent = {...data.user};
 
 	saveToSessionStorage('TOKEN', data.token);
-
 	setAuthToken(data.token);
 
 	dispatch(
@@ -96,7 +118,6 @@ const setInitialSettings = (data) => (dispatch) => {
 			socket: null,
 		})
 	);
-
 	dispatch(actionSnackBar.setSnackBar('success', 'Successfully connected', 2000));
 };
 
@@ -104,15 +125,12 @@ export const logout = (actionType) => (dispatch) => {
 	sessionStorage.clear();
 
 	dispatch(setLogout());
-	// dispatch(utilsActions.setLockScreenModalOpen(false)); need to add this only if LockScreenModalOpen is true
 	if (actionType !== 'session_termination' && actionType !== 'anotherUser') {
 		dispatch(actionSnackBar.setSnackBar('success', 'Successfully disconnected', 2000));
 	}
 	if (actionType !== 'session_termination' && actionType !== 'anotherUser') {
 		axios
 			.delete(`${import.meta.env.VITE_BASE_URL}/auth/login`)
-			// .then((res) => {})
-			// .catch((error) => {});
 	}
 
 };
@@ -122,6 +140,7 @@ export const {
 	setLogin,
 	setUserContent,
 	setToken,
+	setIsRegistered,
 	setLogout,
 	setLoadingIndicator,
 	setWrongCredentialsError,

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionAuth from '../../redux/Auth/authSlice';
@@ -24,8 +24,6 @@ const Login = () => {
 		password: false,
 	});
 
-
-
   const handleChangeInputs = (e) => {
     setErrs({...errs, [e.target.name]: false})
 		dispatch(actionAuth.setWrongCredentialsError(''));
@@ -46,9 +44,11 @@ const Login = () => {
 		}
 	};
 
-  if (isAuthenticated) {
-		navigate('/dashboard');
-	}
+	useEffect(() => {
+		if (isAuthenticated) {
+			navigate('/dashboard');
+		}
+	}, [isAuthenticated, navigate]);
 
   return (
 		<div className="login-container">
