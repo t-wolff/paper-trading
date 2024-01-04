@@ -72,22 +72,32 @@ const limiter = rateLimit({
 
 const wss = new Websocket.Server({ server });
 
-// WebSocket connections
-wss.on('connection', (ws) => {
-	console.log('WebSocket connection established');
 
-	// Handle incoming WebSocket messages
-	ws.on('message', (message) => {
-		console.log(`Received WebSocket message: ${message}`);
+wss.on('connection', (ws, req) => {
+	console.log('WebSocket connection attempted');
 
-		// Handle the WebSocket message as needed
-		ws.send(`Server received: ${message}`);
-	});
+	// Extract token from the URL parameters
+	const urlParams = new URLSearchParams(req.url.split('?')[1]);
+	const token = urlParams.get('token');
 
-	// Handle WebSocket closure
-	ws.on('close', () => {
-		console.log('WebSocket connection closed');
-	});
+	if (token && isValidToken(token)) {
+		console.log('Valid token received. WebSocket connection established');
+
+		ws.on('message', (message) => {
+			console.log(`Received WebSocket message: ${message}`);
+			ws.send(`Server received: ${message}`);
+		});
+
+		ws.on('close', () => {
+			console.log('WebSocket connection closed');
+		});
+	} else {
+		console.log(`token : ${token}`);
+		console.log('Invalid or missing token. Closing WebSocket connection.');
+		ws.close();
+	}
 });
 
-
+function isValidToken(token) {
+	return token;
+}
