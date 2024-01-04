@@ -99,7 +99,7 @@ const SignUp = () => {
 						value={form.password}
 					/>
 					<StyledButton color="blue" onclick={handleRegister}>
-						Login
+						Start Trading Now !
 					</StyledButton>
 				</form>
 			</div>
