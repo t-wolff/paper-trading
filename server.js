@@ -18,6 +18,11 @@ dotenv.config({ path: './config/config.env' });
 // Route files
 // const stories = require("./routes/stories");
 const auth = require("./routes/auth");
+const {
+	openWebSocket,
+	sendWebSocketMessage,
+	setMessageHandler,
+} = require('./controllers/tradeData');
 // const reviews = require("./routes/reviews");
 
 const app = express();
@@ -90,4 +95,12 @@ wss.on('connection', (ws) => {
 	});
 });
 
+// connection to binance api
 
+openWebSocket('btcusdt');
+sendWebSocketMessage({
+	method: 'SUBSCRIBE',
+	params: ['btcusdt@kline_1m'],
+	id: 1,
+});
+setMessageHandler(console.log);
