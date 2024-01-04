@@ -5,7 +5,7 @@ import Logo from '../../assets/logo-4.png';
 import "./Navbar.css";
 
 const Navbar = () => {
-	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+	const [isAuthenticated, userContent] = useSelector((state) => state.auth);
 
   const navListItems = [
     {
@@ -33,11 +33,19 @@ const Navbar = () => {
 				</div>
 			</Link>
 			{isAuthenticated && (
-				<div className="nav-links">
-					{navListItems.map((link) => (
-						<NavListItem key={link.text} {...link} />
-					))}
-				</div>
+				<>
+					<div className="nav-links">
+						{navListItems.map((link) => (
+							<NavListItem key={link.text} {...link} />
+						))}
+						{/* <img
+							src={encodeURI(
+              encodeURI(`${NEW_UPLOADS_URL}uploads/${authUser?.avatar}`))}
+							alt=""
+						/>
+						<button className="profile-btn">hello</button> */}
+					</div>
+				</>
 			)}
 		</nav>
 	);

@@ -13,18 +13,11 @@
 .login-form-container button {
   margin-top: 2rem;
   width: 30rem;
-  padding: 1rem
+  padding: 1rem;
 }
 .credentials-err{
   color: var(--primary-red);
   font-size: 1.2rem;
   padding-top: 1rem;
   padding-bottom: -2rem;
-}
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px var(--primary-black) inset !important;
-    -webkit-text-fill-color: var(--primary-white) !important;
 }
