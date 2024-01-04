@@ -5,7 +5,7 @@ import Logo from '../../assets/logo-4.png';
 import "./Navbar.css";
 
 const Navbar = () => {
-	const [isAuthenticated, userContent] = useSelector((state) => state.auth);
+	const isAuthenticated = useSelector((state) => state.auth);
 
   const navListItems = [
     {

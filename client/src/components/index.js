@@ -5,7 +5,7 @@ import Navbar from "./navbar/Navbar";
 import NavListItem from "./navbar/NavListItem";
 // import Login from "./login/Login";
 import SingleTrade from "./singleTrade/SingleTrade";
-import Story from "./story/Story";
+// import Post from "./post/Post";
 
 export {
   Navbar,
@@ -15,5 +15,5 @@ export {
   SharedLayout,
   // Login,
   SingleTrade,
-  Story,
+  // Post,
 };

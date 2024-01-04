@@ -12,9 +12,9 @@ export const getAllStories = async () => {
 	}
 };
 
-export const getStory = async (storyId) => {
+export const getPost = async (postId) => {
 	try {
-		const response = await axios.get(`${BASE_URL}/${storyId}`);
+		const response = await axios.get(`${BASE_URL}/${postId}`);
 		return response.data;
 	} catch (error) {
 		console.error(`Error during getArticle: ${error}`);
@@ -22,12 +22,12 @@ export const getStory = async (storyId) => {
 	}
 };
 
-export const addStory = async (data) => {
+export const addPost = async (data) => {
   console.log(data);
 	try {
 		const response = await axios.post(BASE_URL, data);
 		return response.data;
 	} catch (error) {
-		console.error(`Error during addStory: ${error}`);
+		console.error(`Error during addPost: ${error}`);
 	}
 };

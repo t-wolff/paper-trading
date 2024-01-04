@@ -9,14 +9,14 @@ import {
   Login,
   Dashboard,
   NotFound,
-  Stories,
-  NewStory
+//   Posts,
+//   NewPost
 } from "./pages";
 
 import {
   ProtectedRoute,
   SharedLayout,
-  SingleTrade,
+//   SingleTrade,
   // NewArticle,
 } from "./components";
 
@@ -45,28 +45,27 @@ const routes = [
 					</ProtectedRoute>
 				),
 			},
-			{
-				path: 'stories',
-				children: [
-					{
-						index: true,
-						element: <Stories />,
-					},
-					{
-						path: ':storyId',
-						element: <SingleTrade />,
-					},
-				],
-			},
-			{
-				path: 'newStory',
-				element: (
-					<ProtectedRoute>
-						{' '}
-						<NewStory />
-					</ProtectedRoute>
-				),
-			},
+			// {
+			// 	path: 'posts',
+			// 	children: [
+			// 		{
+			// 			index: true,
+			// 			element: <Posts />,
+			// 		},
+			// 		{
+			// 			path: ':postId',
+			// 			element: <SingleTrade />,
+			// 		},
+			// 	],
+			// },
+			// {
+			// 	path: 'newPost',
+			// 	element: (
+			// 		<ProtectedRoute>
+			// 			<NewPost />
+			// 		</ProtectedRoute>
+			// 	),
+			// },
 			{
 				path: '*',
 				element: <NotFound />,
