@@ -3,8 +3,8 @@ import SignUp from "./signUp/SignUp";
 import Login from "./login/Login";
 import Dashboard from "./dashboard/Dashboard";
 
-import NewStory from "./newStory/NewStory";
-import Stories from './stories/Stories';
+// import NewPost from "./newPost/NewPost";
+// import Posts from './posts/Posts';
 import NotFound from "./notFound/NotFound";
 
 export {
@@ -13,7 +13,7 @@ export {
   Login,
   Dashboard,
 
-  NewStory,
-  Stories,
+  // NewPost,
+  // Posts,
   NotFound,
 };

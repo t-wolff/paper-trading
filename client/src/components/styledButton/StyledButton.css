@@ -4,6 +4,7 @@
     border: none;
     font-weight: 600;
     font-size: 2rem;
+    margin: 0.4rem;
 }
 .styled-button.dark {
     background-color: var(--primary-opaque);
@@ -22,4 +23,14 @@
 }
 .styled-button:hover {
     transform: translateY(-0.4rem);
+}
+.styled-button.green {
+    background-color: var(--opaque-green);
+    border: 0.2rem solid var(--primary-green);
+    color: var(--primary-green);
+}
+.styled-button.red {
+    background-color: var(--opaque-red);
+    border: 0.2rem solid var(--primary-red);
+    color: var(--primary-red);
 }

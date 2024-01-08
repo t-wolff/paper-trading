@@ -3,19 +3,19 @@
   text-align: center;
   margin: 2rem auto;
 }
-.new-story-container {
+.new-post-container {
   margin-left: 10vw;
   height: 74vh;
   width: 80vw;
   justify-content: space-between;
   padding-bottom: 3.2rem;
 }
-.new-story-header {
+.new-post-header {
   display: flex;
   justify-content: space-between;
   padding-bottom: 3.2rem;
 }
-.new-story-header h2 {
+.new-post-header h2 {
   font-size: 3.6rem;
 }
 .inputs-container {
@@ -38,7 +38,7 @@
   opacity: 0.9;
 } */
 
-.new-story-input {
+.new-post-input {
   overflow: visible;
   display: flex;
   justify-content: center;
@@ -47,11 +47,11 @@
   justify-content: space-between;
   width: 60vw;
 }
-.new-story-input {
+.new-post-input {
   display: flex;
   flex-direction: column;
 }
-.new-story-input textarea {
+.new-post-input textarea {
   width: 84rem;
   height: 10rem;
   margin-bottom: 1rem;
@@ -62,16 +62,16 @@
   resize: none;
 }
 
-.header-story {
+.header-post {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.new-story-input label {
+.new-post-input label {
   font-size: 2.2rem;
   font-weight: 600;
 }
-.story-body textarea {
+.post-body textarea {
   height: 44rem;
   white-space: pre-wrap;
   text-align: undefined;

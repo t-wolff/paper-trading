@@ -1,6 +1,5 @@
 const path = require('path');
 const express = require('express');
-const Websocket = require('ws');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const fileupload = require('express-fileupload');
@@ -18,11 +17,8 @@ dotenv.config({ path: './config/config.env' });
 // Route files
 // const stories = require("./routes/stories");
 const auth = require("./routes/auth");
-const {
-	openWebSocket,
-	sendWebSocketMessage,
-	setMessageHandler,
-} = require('./controllers/tradeData');
+const { newWebsocketServer } = require('./ws/websocketServer');
+const {newBinanceConnection} = require('./ws/binanceWs');
 // const reviews = require("./routes/reviews");
 
 const app = express();
@@ -75,32 +71,11 @@ const limiter = rateLimit({
 	max: 100,
 });
 
-const wss = new Websocket.Server({ server });
-
-// WebSocket connections
-wss.on('connection', (ws) => {
-	console.log('WebSocket connection established');
-
-	// Handle incoming WebSocket messages
-	ws.on('message', (message) => {
-		console.log(`Received WebSocket message: ${message}`);
-
-		// Handle the WebSocket message as needed
-		ws.send(`Server received: ${message}`);
-	});
-
-	// Handle WebSocket closure
-	ws.on('close', () => {
-		console.log('WebSocket connection closed');
-	});
-});
-
-// connection to binance api
-
-openWebSocket('btcusdt');
-sendWebSocketMessage({
-	method: 'SUBSCRIBE',
-	params: ['btcusdt@kline_1m'],
-	id: 1,
-});
-setMessageHandler(console.log);
+(async () => {
+	try {
+		const wss = await newWebsocketServer(server);
+		newBinanceConnection(wss);
+	} catch (error) {
+		console.error('Error creating WebSocket server:', error.message);
+	}
+})();

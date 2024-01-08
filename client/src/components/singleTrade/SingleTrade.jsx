@@ -18,8 +18,8 @@ const SingleTrade = () => {
   // }
 
   return (
-    <section className='full-story-container'>
-      <Link to='/stories' className="full-story-back-link">Back To All Stories</Link>
+    <section className='full-post-container'>
+      <Link to='/stories' className="full-post-back-link">Back To All Stories</Link>
       {/* {story && (
         <div className="story-container">
           <h2 className="story-name">{story.prompt}</h2>
