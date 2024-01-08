@@ -31,12 +31,25 @@ exports.register = asyncHandler(async (req, res, next) => {
 	}
 
 	if (!isEmailInUse) {
+		const userId = uuid.v4();
+
+		const balanceQuery =
+			'INSERT INTO balances (balanceID, userID, balanceAmount, balanceType) VALUES (?,?,?,?), (?,?,?,?)';
+		const balanceId1 = uuid.v4();
+		const balanceId2 = uuid.v4();
+		const balanceValues = [balanceId1, userId, 1000, 'usdt', balanceId2, userId, 0, 'btc'];
+
+		pool.query(balanceQuery, balanceValues, (queryError) => {
+			if (queryError) {
+				return console.error('Error executing fill new balances query:', queryError.message);
+			}
+		});
+
 		const registerQuery =
 			'INSERT INTO users (userID, firstName, lastName, email, password) VALUES (?,?,?,?,?)';
-		const id = uuid.v4();
 		const salt = await bcrypt.genSalt(10);
 		const encryptPassword = await bcrypt.hash(password.toString(), salt);
-		const values = [id, firstName, lastName, email, encryptPassword];
+		const values = [userId, firstName, lastName, email, encryptPassword];
 
 		pool.execute(registerQuery, values, (queryError, results) => {
 			if (queryError) {
