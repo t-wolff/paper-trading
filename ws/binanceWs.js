@@ -1,7 +1,7 @@
 const Websocket = require('ws');
 let ws = null;
 
-async function openWebSocket(product) {
+async function openBinanceWebSocket(product) {
 	return new Promise((resolve, reject) => {
 		if (!ws) {
 			ws = new Websocket(`${process.env.BINANCE_URL_TEST}${product}`);
@@ -27,7 +27,7 @@ async function openWebSocket(product) {
 	});
 }
 
-async function setMessageHandler(onMessage, isSubscription) {
+async function setBinanceMessageHandler(onMessage) {
 	return new Promise(async (resolve, reject) => {
 		const messageListener = (event) => {
 			const data = JSON.parse(event.data.toString('utf8'));
@@ -35,7 +35,7 @@ async function setMessageHandler(onMessage, isSubscription) {
 			// if (messageHandled && !isSubscription) {
 			// 	ws.removeEventListener('message', messageListener);
 			// }
-			resolve(messageHandled);
+			// resolve(messageHandled);
 		};
 
 		if (ws) {
@@ -44,21 +44,13 @@ async function setMessageHandler(onMessage, isSubscription) {
 	});
 }
 
-function closeWebSocket() {
+function closeBinanceWebSocket() {
 	if (ws) {
 		ws.close();
 	}
 }
 
-// function sendWebSocketMessage(message) {
-//     console.log(88888);
-// 	if (ws && ws.readyState === Websocket.OPEN) {
-// 		ws.send(JSON.stringify(message));
-//         console.log(4444);
-// 	}
-// }
-
-async function sendWebSocketMessage(message, maxRetries = 5, retryInterval = 2000) {
+async function sendBinanceWebSocketMessage(message, maxRetries = 5, retryInterval = 2000) {
 	const send = async (attempt) => {
 		if (ws && ws.readyState === Websocket.OPEN) {
 			ws.send(JSON.stringify(message));
@@ -78,4 +70,27 @@ async function sendWebSocketMessage(message, maxRetries = 5, retryInterval = 200
 	send(0);
 }
 
-module.exports = { openWebSocket, setMessageHandler, closeWebSocket, sendWebSocketMessage };
+function newBinanceConnection(wss) {
+	openBinanceWebSocket('btcusdt');
+	sendBinanceWebSocketMessage({
+		method: 'SUBSCRIBE',
+		params: ['btcusdt@kline_1m'],
+		id: 1,
+	});
+	setBinanceMessageHandler((data) => {
+		wss.clients.forEach((client) => {
+			if (client.readyState === Websocket.OPEN) {
+				client.send(JSON.stringify(data));
+			}
+		});
+		return true;
+	});
+}
+
+module.exports = {
+	openBinanceWebSocket,
+	setBinanceMessageHandler,
+	closeBinanceWebSocket,
+	sendBinanceWebSocketMessage,
+	newBinanceConnection,
+};

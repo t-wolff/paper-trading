@@ -16,6 +16,7 @@
   --opaque-purple:  rgba(140, 31, 208, 0.3);
   --opaque-blue:  rgba(49, 31, 208, 0.3);
   --opaque-green: rgba(31, 208, 52, 0.3);
+  --opaque-red: rgba(191, 27, 27, 0.3);
   --primary-gradient: linear-gradient(180deg, rgba(140, 31, 208, 0.2), rgba(142, 78, 199, 0.6));
   /* --primary-gradient: linear-gradient(180deg,  rgba(142, 78, 199, 0.6), rgba(140, 31, 208, 0.2)); */
   /* background: linear-gradient(80deg, #00218A, white, #BC75F9); */

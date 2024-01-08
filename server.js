@@ -1,6 +1,5 @@
 const path = require('path');
 const express = require('express');
-const Websocket = require('ws');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const fileupload = require('express-fileupload');
@@ -18,11 +17,8 @@ dotenv.config({ path: './config/config.env' });
 // Route files
 // const stories = require("./routes/stories");
 const auth = require("./routes/auth");
-const {
-	openWebSocket,
-	sendWebSocketMessage,
-	setMessageHandler,
-} = require('./controllers/tradeData');
+const { newWebsocketServer } = require('./ws/websocketServer');
+const {newBinanceConnection} = require('./ws/binanceWs');
 // const reviews = require("./routes/reviews");
 
 const app = express();
@@ -75,42 +71,11 @@ const limiter = rateLimit({
 	max: 100,
 });
 
-const wss = new Websocket.Server({ server });
-
-
-wss.on('connection', (ws, req) => {
-	console.log('WebSocket connection attempted');
-
-	// Extract token from the URL parameters
-	const urlParams = new URLSearchParams(req.url.split('?')[1]);
-	const token = urlParams.get('token');
-
-	if (token && isValidToken(token)) {
-		console.log('Valid token received. WebSocket connection established');
-
-		ws.on('message', (message) => {
-			console.log(`Received WebSocket message: ${message}`);
-			ws.send(`Server received: ${message}`);
-		});
-
-		ws.on('close', () => {
-			console.log('WebSocket connection closed');
-		});
-	} else {
-		console.log(`token : ${token}`);
-		console.log('Invalid or missing token. Closing WebSocket connection.');
-		ws.close();
+(async () => {
+	try {
+		const wss = await newWebsocketServer(server);
+		newBinanceConnection(wss);
+	} catch (error) {
+		console.error('Error creating WebSocket server:', error.message);
 	}
-});
-
-function isValidToken(token) {
-	return token;
-}// connection to binance api
-
-openWebSocket('btcusdt');
-sendWebSocketMessage({
-	method: 'SUBSCRIBE',
-	params: ['btcusdt@kline_1m'],
-	id: 1,
-});
-setMessageHandler(console.log);
+})();

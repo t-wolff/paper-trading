@@ -9,6 +9,8 @@ async function openWebSocket(TOKEN) {
 			ws = new WebSocket(tokenizedUrl);
 			ws.addEventListener('open', (event) => {
 				console.log('WebSocket connection opened:', event);
+				sendWebSocketMessage('lolA');
+				setMessageHandler(console.log);
 				setTimeout(() => {
 					// if (ws.readyState === 1) {
 					// console.log('WebSocket connection established.');
@@ -30,21 +32,15 @@ async function openWebSocket(TOKEN) {
 	});
 }
 
-async function setMessageHandler(onMessage, requestType, isSubscription) {
-	return new Promise((resolve, reject) => {
+async function setMessageHandler(onMessage) {
+	return new Promise((resolve) => {
 		const messageListener = (event) => {
 			const data = JSON.parse(event.data.toString('utf8'));
-			const responseType = data.type;
-			if (responseType === requestType) {
 				const messageHandled = onMessage(data);
-				if (messageHandled && !isSubscription) {
-					ws.removeEventListener('message', messageListener);
-				}
-				resolve(messageHandled);
-			} else {
-                reject(event.error)
-				// console.log(`this is type sent: ${requestType} and this is type received: ${responseType}`);
-			}
+				// if (messageHandled && !isSubscription) {
+					// ws.removeEventListener('message', messageListener);
+				// }
+				resolve(messageHandled)
 		};
 
 		if (ws) {
@@ -61,7 +57,8 @@ function closeWebSocket() {
 
 function sendWebSocketMessage(message) {
 	if (ws && ws.readyState === WebSocket.OPEN) {
-		ws.send(message);
+		console.log('sending msg');
+		ws.send(JSON.stringify(message));
 	}
 }
 
