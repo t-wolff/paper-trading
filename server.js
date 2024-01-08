@@ -16,10 +16,12 @@ dotenv.config({ path: './config/config.env' });
 
 // Route files
 // const stories = require("./routes/stories");
+// const reviews = require("./routes/reviews");
 const auth = require("./routes/auth");
+const trade = require("./routes/trade");
+
 const { newWebsocketServer } = require('./ws/websocketServer');
 const {newBinanceConnection} = require('./ws/binanceWs');
-// const reviews = require("./routes/reviews");
 
 const app = express();
 
@@ -50,6 +52,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routers
 app.use("/api/v1/auth", auth);
+app.use("/api/v1/trade", trade);
 // app.use("/api/v1/stories", stories);
 // app.use("/api/v1/reviews", reviews);
 
