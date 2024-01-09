@@ -1,10 +1,16 @@
 .outlet-container {
+  padding-left: 10vw;
+  padding-right: 10vw;
+  height: 88.6vh;
+}
+.outlet-container > * {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  height: 76vh;
-  margin-left: 10vw;
-  margin-right: 10vw;
+}
+.purple-outlet {
+  background: var(--primary-gradient-2);
+  border-radius: 0rem;
 }
 .footer {
   position: absolute;
@@ -18,4 +24,10 @@
   background-color: var(--opaque-purple);
   border-top: 0.2rem solid var(--primary-purple);
   color: var(--primary-purple);
+  border-radius: 0rem;
+}
+
+.purple-footer {
+ background-color: transparent;
+ border: none;
 }

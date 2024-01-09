@@ -1,4 +1,4 @@
-import Home from "./home/Home";
+import LandingPage from "./landingPage/LandingPage";
 import SignUp from "./signUp/SignUp";
 import Login from "./login/Login";
 import Dashboard from "./dashboard/Dashboard";
@@ -8,7 +8,7 @@ import Dashboard from "./dashboard/Dashboard";
 import NotFound from "./notFound/NotFound";
 
 export {
-  Home,
+  LandingPage,
   SignUp,
   Login,
   Dashboard,

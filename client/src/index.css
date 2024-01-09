@@ -2,7 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  border-radius: 0.4rem;
+  border-radius: 0.8rem;
 }
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -17,8 +17,12 @@
   --opaque-blue:  rgba(49, 31, 208, 0.3);
   --opaque-green: rgba(31, 208, 52, 0.3);
   --opaque-red: rgba(191, 27, 27, 0.3);
+  --opaque-white-1:  rgba(255, 255, 255, 0.08);
+  --opaque-white-2:  rgba(255, 255, 255, 0.2);
+  --opaque-white-3:  rgba(255, 255, 255, 0.4);
   --primary-gradient: linear-gradient(180deg, rgba(140, 31, 208, 0.2), rgba(142, 78, 199, 0.6));
-  /* --primary-gradient: linear-gradient(180deg,  rgba(142, 78, 199, 0.6), rgba(140, 31, 208, 0.2)); */
+  --primary-gradient-2: linear-gradient(180deg, rgba(32, 7, 47, 0.2), rgba(142, 78, 199, 0.6));
+  /* --primary-gradient-2: linear-gradient(180deg,  rgba(142, 78, 199, 0.6), rgba(140, 31, 208, 0.2)); */
   /* background: linear-gradient(80deg, #00218A, white, #BC75F9); */
   background: black;
   box-sizing: border-box;

@@ -8,9 +8,9 @@
   color: var(--primary-white);
 }
 .input-group input {
-  background-color: var(--opaque-blue);
-  background-color: var(--primary-black);
-  border: 0.2rem solid var(--primary-blue);
+  background-color: var(--opaque-white-1);
+  border: 0.1rem solid var(--opaque-white-2);
+  border: none;
   color: var(--primary-white);
   padding: 1rem;
   width: 30rem;
@@ -28,9 +28,9 @@
   background-color: transparent;
   border: none;
   width: 2rem;
-  color: var(--primary-blue);
+  color: var(--opaque-white-3);
   right: 2.6rem; 
-  top: -1.6rem;
+  top: -1.8rem;
 }
 .error-message {
   margin-top: 0.4rem;

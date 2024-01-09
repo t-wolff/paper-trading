@@ -10,8 +10,9 @@ const StyledButton = ({ color, onclick, children }) => {
 };
 
 StyledButton.propTypes = {
-  color: PropTypes.string,
-  children: PropTypes.string,
+	color: PropTypes.string,
+	children: PropTypes.string,
+	onclick: PropTypes.func,
 };
 
 export default StyledButton;
