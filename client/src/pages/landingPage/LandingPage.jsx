@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import StyledButton from "../../components/styledButton/StyledButton";
 import TradingPic from "../../assets/trading-graphic.png";
-import "./Home.css";
+import "./LandingPage.css";
 
-const Home = () => {
+const LandingPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -25,14 +25,14 @@ const Home = () => {
           {points.map((point) => (
             <h4 key={point}>{point}</h4>
           ))}
-          <StyledButton
+          {/* <StyledButton
             color={"dark"}
             onclick={() => {
               navigate("/signUp");
             }}
           >
             Sign Up
-          </StyledButton>
+          </StyledButton> */}
           <StyledButton
             color={"light"}
             onclick={() => {
@@ -47,4 +47,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default LandingPage;

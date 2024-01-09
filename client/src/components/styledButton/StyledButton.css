@@ -4,7 +4,6 @@
     border: none;
     font-weight: 600;
     font-size: 2rem;
-    margin: 0.4rem;
 }
 .styled-button.dark {
     background-color: var(--primary-opaque);

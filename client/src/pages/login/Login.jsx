@@ -1,37 +1,37 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionAuth from '../../redux/Auth/authSlice';
-import StyledButton from "../../components/styledButton/StyledButton";
-import Input from "../../components/input/Input";
-import "./Login.css";
+import StyledButton from '../../components/styledButton/StyledButton';
+import Input from '../../components/input/Input';
+import './Login.css';
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  // const userContent = useSelector((state) => state.auth.userContent);
-  const wrongCredentialsError = useSelector((state) => state.auth.wrongCredentialsError);
+	// const userContent = useSelector((state) => state.auth.userContent);
+	const wrongCredentialsError = useSelector((state) => state.auth.wrongCredentialsError);
 
-  const [form, setForm] = useState({
+	const [form, setForm] = useState({
 		email: '',
 		password: '',
 	});
 
-  const [errs, setErrs] = useState({
+	const [errs, setErrs] = useState({
 		email: false,
 		password: false,
 	});
 
-  const handleChangeInputs = (e) => {
-    setErrs({...errs, [e.target.name]: false})
+	const handleChangeInputs = (e) => {
+		setErrs({ ...errs, [e.target.name]: false });
 		dispatch(actionAuth.setWrongCredentialsError(''));
 		setForm({ ...form, [e.target.name]: e.target.value });
 	};
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+	const handleLogin = (e) => {
+		e.preventDefault();
 		if (form.email.length < 8 || form.password.length < 6) {
 			if (form.email === '' || form.email.length < 8) {
 				setErrs((prevErrs) => ({ ...prevErrs, email: true }));
@@ -46,11 +46,11 @@ const Login = () => {
 
 	useEffect(() => {
 		if (isAuthenticated) {
-			navigate('/dashboard');
+			navigate('/trade');
 		}
 	}, [isAuthenticated, navigate]);
 
-  return (
+	return (
 		<div className="login-container">
 			<div className="login-form-container">
 				<h2>WELCOME</h2>
@@ -71,10 +71,16 @@ const Login = () => {
 						error={errs.password && 'Please input valid password'}
 						value={form.password}
 					/>
-					<StyledButton color="blue" onclick={handleLogin}>
+					<StyledButton color="light" onclick={handleLogin}>
 						Login
 					</StyledButton>
 					<h6 className="credentials-err">{wrongCredentialsError}</h6>
+					<div className="signup-link-container">
+						<h6>Don&#39;t have an account yet?</h6>
+						<Link to="/signUp">
+							<h6 className="signup-link">Sign Up</h6>
+						</Link>
+					</div>
 				</form>
 			</div>
 		</div>

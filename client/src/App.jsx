@@ -4,7 +4,7 @@ import SnackBar from './components/SnackBar/SnackBar';
 // import { useGlobalArticleContext } from "./hooks";
 
 import {
-  Home,
+  LandingPage,
   SignUp,
   Login,
   Dashboard,
@@ -27,7 +27,7 @@ const routes = [
 		children: [
 			{
 				index: true,
-				element: <Home />,
+				element: <LandingPage />,
 			},
 			{
 				path: 'signUp',

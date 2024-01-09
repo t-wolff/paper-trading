@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionAuth from '../../redux/Auth/authSlice';
 import StyledButton from '../../components/styledButton/StyledButton';
 import Input from '../../components/input/Input';
+
 import './SignUp.css';
 
 const SignUp = () => {
@@ -98,9 +99,15 @@ const SignUp = () => {
 						error={errs.password && 'Please input a valid password'}
 						value={form.password}
 					/>
-					<StyledButton color="blue" onclick={handleRegister}>
+					<StyledButton color="light" onclick={handleRegister}>
 						Start Trading Now !
 					</StyledButton>
+					<div className="login-link-container">
+						<h6>Already have an account?</h6>
+						<Link to="/login">
+							<h6 className="login-link">Log In</h6>
+						</Link>
+					</div>
 				</form>
 			</div>
 		</div>
