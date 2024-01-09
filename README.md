@@ -22,4 +22,4 @@ Current market value = (1 BTC x $2,400) = $2,400
 
 PnL = $2,400 - $1,750 = $650 (profit)
 
-![Alt text](image.png)
+![Alt text](./public/image.png)
