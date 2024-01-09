@@ -14,6 +14,7 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 	const nominal = side === 'BUY' ? quantity * price : -(quantity * price);
 
 	if (!userID || !product || !side || !quantity) {
+		console.log(userID, product, side, quantity);
 		return next(
 			new ErrorResponse('Missing request field/s (userID, product, side, quantity)', 400)
 		);
@@ -88,6 +89,9 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 			});
 		});
 	} else {
-		return next(new ErrorResponse('Balance too low', 401));
+		return next(new ErrorResponse('Balance too low', 403));
 	}
 });
+
+
+// need to add check quantity is valid + price bigger than zero, userid matches token 

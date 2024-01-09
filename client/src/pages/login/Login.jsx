@@ -10,7 +10,6 @@ const Login = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-
 	// const userContent = useSelector((state) => state.auth.userContent);
 	const wrongCredentialsError = useSelector((state) => state.auth.wrongCredentialsError);
 

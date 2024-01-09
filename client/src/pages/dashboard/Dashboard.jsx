@@ -1,47 +1,32 @@
 import { useEffect, useState } from 'react';
-import {
-	openWebSocket,
-	// sendWebSocketMessage,
-	setMessageHandler,
-	// closeWebSocket,
-} from '../../ws/websocket';
 import './Dashboard.css';
-import StyledButton from '../../components/styledButton/StyledButton';
 
 const Dashboard = () => {
-	const [price, setPrice] = useState()
+	const [trades, setTrades] = useState([]);
 
 	useEffect(() => {
-		const connectToWebSocket = async () => {
-			try {
-				openWebSocket(
-					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI2YWNiYThmLTkxYjMtNDZlNC04MDZlLWRiOGU1OWRmZGM5MSIsImlhdCI6MTcwNDQwNzMyOCwiZXhwIjoxNzA2OTk5MzI4fQ.60AqIKyEXTSfckpOT8pToWyAC9MJRN0LfBW7fvwniMM'
-				);
-			} catch (error) {
-				console.error('Error connecting to WebSocket:', error);
-			}
-		};
-
-		const showClosePrice = (msg) => {
-			const integerValue = parseFloat(msg.k.c, 10);
-			setPrice(integerValue);
-		}; 
-
-		connectToWebSocket();
-		setMessageHandler(showClosePrice);
-
-		// Cleanup on component unmount
-		return () => {
-			// closeWebSocket();
-		};
+		getTrades()
 	}, []);
+
+	const getTrades = () => {
+		console.log('trades')
+		const res = ['lol', 'pop'];
+		setTrades(res);
+	}
 
 	return (
 		<div>
 			<h2>You have reached the dashboard</h2>
-			<h2>{price}</h2>
-			<StyledButton color={"green"} onclick={console.log('clicked')}>buy</StyledButton>
-			<StyledButton color={"red"}>sell</StyledButton>
+			<ul>
+				{trades.map((trade) => {
+					<li>{trade}</li>;
+				})}
+			</ul>
+			<h2>daily pnl</h2>
+			<h2>weekly pnl</h2>
+			<h2>monthly pnl</h2>
+			<h2>balance</h2>
+			<h2>leader-board place</h2>
 		</div>
 	);
 };

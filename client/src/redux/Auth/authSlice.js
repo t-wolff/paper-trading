@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createSlice } from '@reduxjs/toolkit';
 import * as actionSnackBar from '../SnackBar/snackBarSlice';
-import { setAuthToken, saveToSessionStorage } from '../../utils/constans';
+import { setAuthToken, saveToSessionStorage } from '../../utils/constants';
 
 export const authSlice = createSlice({
 	name: 'auth',
@@ -9,7 +9,6 @@ export const authSlice = createSlice({
 		token: '',
 		isAuthenticated: false,
 		isRegistered: false,
-		loadingIndicator: false,
 		userContent: {},
 		isWsConnection: false,
 		wrongCredentialsError: null,
@@ -17,8 +16,6 @@ export const authSlice = createSlice({
 	reducers: {
 		setLogin: (state, action) => {
 			state.isAuthenticated = true;
-			state.loadingIndicator = false;
-			// state.loadingIndicatorFullScreen = false;
 			state.token = action.payload.token;
 			state.userContent = action.payload.userContent;
 		},
@@ -32,9 +29,6 @@ export const authSlice = createSlice({
 			state.token = action.payload;
 		},
 		setLogout: () => authSlice.initialState,
-		setLoadingIndicator: (state, action) => {
-			state.loadingIndicator = action.payload;
-		},
 		setWrongCredentialsError: (state, action) => {
 			state.wrongCredentialsError = action.payload;
 		},
@@ -47,7 +41,6 @@ export const authSlice = createSlice({
 export const login =
 	(email, password) =>
 		async (dispatch) => {
-			dispatch(setLoadingIndicator(true));
 			try {
 				const headers = { 'Content-Type': 'application/json' };
 				const res = await axios({
@@ -68,20 +61,16 @@ export const login =
 				if (error?.response?.status === 401) {
 					dispatch(setWrongCredentialsError('Wrong Username/Password'));
 					dispatch(actionSnackBar.setSnackBar('error', 'Login failed', 2000));
-					dispatch(setLoadingIndicator(false));
 				} else if (error.response && error.response.data !== undefined) {
 					dispatch(actionSnackBar.setSnackBar('error', 'Login failed', 2000));
-					dispatch(setLoadingIndicator(false));
 				} else {
 					dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
-					dispatch(setLoadingIndicator(false));
 				}
 			}
 		};
 
 
 export const register = (firstName, lastName, email, password) => async (dispatch) => {
-	dispatch(setLoadingIndicator(true));
 	try {
 		const headers = { 'Content-Type': 'application/json' };
 		const res = await axios({
@@ -98,10 +87,8 @@ export const register = (firstName, lastName, email, password) => async (dispatc
 	} catch (error) {
 			if (error.response && error.response.data !== undefined) {
 			dispatch(actionSnackBar.setSnackBar('error', 'Register failed', 2000));
-			dispatch(setLoadingIndicator(false));
 		} else {
 			dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
-			dispatch(setLoadingIndicator(false));
 		}
 	}
 };
@@ -122,18 +109,13 @@ const setInitialSettings = (data) => (dispatch) => {
 	dispatch(actionSnackBar.setSnackBar('success', 'Successfully connected', 2000));
 };
 
-export const logout = (actionType) => (dispatch) => {
+export const logout = () => (dispatch) => {
 	sessionStorage.clear();
 
 	dispatch(setLogout());
-	if (actionType !== 'session_termination' && actionType !== 'anotherUser') {
-		dispatch(actionSnackBar.setSnackBar('success', 'Successfully disconnected', 2000));
-	}
-	if (actionType !== 'session_termination' && actionType !== 'anotherUser') {
-		axios
-			.delete(`${import.meta.env.VITE_BASE_URL}/auth/login`)
-	}
-
+	dispatch(actionSnackBar.setSnackBar('success', 'Successfully disconnected', 2000));
+	
+	axios.delete(`${import.meta.env.VITE_BASE_URL}/auth/login`)
 };
 
 
@@ -143,7 +125,6 @@ export const {
 	setToken,
 	setIsRegistered,
 	setLogout,
-	setLoadingIndicator,
 	setWrongCredentialsError,
 	setWSToConnected,
 } = authSlice.actions;
