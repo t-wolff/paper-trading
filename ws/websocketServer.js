@@ -1,4 +1,5 @@
 const WebSocket = require('ws');
+const jwt = require('jsonwebtoken');
 
 const newWebsocketServer = (server) => {
 	return new Promise((resolve, reject) => {
@@ -33,7 +34,8 @@ const newWebsocketServer = (server) => {
 };
 
 function isValidToken(token) {
-	return token;
+	const decoded = jwt.verify(token, process.env.JWT_SECRET);
+	return decoded;
 }
 
 module.exports = { newWebsocketServer };

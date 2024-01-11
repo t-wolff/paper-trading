@@ -1,10 +1,10 @@
 const express = require('express');
-const { createTrade} = require('../controllers/trade');
+const { createTrade, getAllTrades } = require('../controllers/trade');
 const router = express.Router();
 
 const { protect } = require('../middleware/auth');
 
-// router.get('/', protect, getTrades);
+router.get('/', protect, getAllTrades);
 router.post('/', protect, createTrade);
 // router.get("/:id", protect, getTrade);
 
