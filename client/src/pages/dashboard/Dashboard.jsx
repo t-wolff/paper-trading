@@ -21,7 +21,7 @@ const Dashboard = () => {
 	// }
 
 	return (
-		<div>
+		<div className="dashboard-container">
 			<table className="trades-table">
 				<tr className="trades-table-header">
 					<th>Side</th>
@@ -34,7 +34,7 @@ const Dashboard = () => {
 				{tradeArr.map((trade) => {
 					return (
 						<tr key={trade.tradeID} className="trades-table-row">
-							<td>{trade.side}</td>
+							<td className={trade.side === 'BUY' ? 'green-side' : 'red-side'}>{trade.side}</td>
 							<td>{trade.productName}</td>
 							<td>{trade.quantity}</td>
 							<td>{trade.price}</td>
@@ -44,12 +44,12 @@ const Dashboard = () => {
 					);
 				})}
 			</table>
-			<div>
-				<h2>daily pnl</h2>
-				<h2>weekly pnl</h2>
-				<h2>monthly pnl</h2>
-				<h2>balance</h2>
-				<h2>leader-board place</h2>
+			<div className='dashboard-data-container'>
+				<h2 className="dashboard-data">Daily pnl </h2>
+				<h2 className="dashboard-data">Weekly pnl</h2>
+				<h2 className="dashboard-data">Monthly pnl</h2>
+				<h2 className="dashboard-data">Balance</h2>
+				<h2 className="dashboard-data">Leader-board Place</h2>
 			</div>
 		</div>
 	);
