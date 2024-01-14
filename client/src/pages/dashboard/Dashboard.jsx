@@ -8,8 +8,7 @@ const Dashboard = () => {
 	const dispatch = useDispatch();
 	const tradeArr = useSelector((state) => state.trade.trades);
 	const userContent = useSelector((state) => state.auth.userContent);
-	const stats = useSelector((state) => state.stats.pnl);
-	const balance = useSelector((state) => state.stats.balance);
+	const stats = useSelector((state) => state.stats);
 	const userId = userContent.userID;
 
 	useEffect(() => {
@@ -46,10 +45,11 @@ const Dashboard = () => {
 				</tbody>
 			</table>
 			<div className="dashboard-data-container">
-				<h2 className="dashboard-data">Daily PNL : {stats}</h2>
+				<h2 className="dashboard-data">PNL : {stats.pnl}</h2>
 				{/* <h2 className="dashboard-data">Weekly PNL : {stats}</h2> */}
 				{/* <h2 className="dashboard-data">Monthly PNL : {stats}</h2> */}
-				<h2 className="dashboard-data">Balance : {balance}</h2>
+				<h2 className="dashboard-data">USD Balance : {stats.usdtBalance}</h2>
+				<h2 className="dashboard-data">BTC Balance : {stats.productBalance}</h2>
 				<h2 className="dashboard-data">LeaderBoard : </h2>
 			</div>
 		</div>

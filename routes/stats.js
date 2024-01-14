@@ -1,9 +1,7 @@
 const express = require('express');
-const {
-	calcPnl
-} = require('../controllers/stats');
+const { calcStats } = require('../controllers/stats');
 const router = express.Router();
 
-router.get('/:userID', calcPnl);
+router.get('/:userID', calcStats);
 
 module.exports = router;
