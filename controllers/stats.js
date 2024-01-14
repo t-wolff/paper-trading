@@ -36,7 +36,7 @@ exports.calcPnl = asyncHandler(async (req, res, next) => {
         const pnl = (usdtBalance - 1000) + (productBalance * price)  
         res.status(200).json({
 			success: true,
-			PNL: pnl.toFixed(2),
+			pnl: pnl.toFixed(2),
 		});
     } catch {
         console.log('Error calculating pnl')

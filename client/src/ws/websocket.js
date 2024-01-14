@@ -6,8 +6,7 @@ async function openWebSocket(TOKEN) {
 	return new Promise((resolve, reject) => {
 		if (!ws) {
 			ws = new WebSocket(tokenizedUrl);
-			ws.addEventListener('open', (event) => {
-				console.log('WebSocket connection opened:', event);
+			ws.addEventListener('open', () => {
 				sendWebSocketMessage('lolA');
 				setTimeout(() => {
 					// if (ws.readyState === 1) {
@@ -55,7 +54,6 @@ function closeWebSocket() {
 
 function sendWebSocketMessage(message) {
 	if (ws && ws.readyState === WebSocket.OPEN) {
-		console.log('sending msg');
 		ws.send(JSON.stringify(message));
 	}
 }
