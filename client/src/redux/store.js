@@ -25,7 +25,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 // import monitorReducersEnhancer from './enhancers/monitorReducers';
-// import loggerMiddleware from './middleware/logger';
 import rootReducer from './reducers';
 
 export default function configureAppStore(preloadedState) {

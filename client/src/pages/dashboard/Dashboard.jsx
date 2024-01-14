@@ -47,8 +47,8 @@ const Dashboard = () => {
 			</table>
 			<div className="dashboard-data-container">
 				<h2 className="dashboard-data">Daily PNL : {stats}</h2>
-				<h2 className="dashboard-data">Weekly PNL : {stats}</h2>
-				<h2 className="dashboard-data">Monthly PNL : {stats}</h2>
+				{/* <h2 className="dashboard-data">Weekly PNL : {stats}</h2> */}
+				{/* <h2 className="dashboard-data">Monthly PNL : {stats}</h2> */}
 				<h2 className="dashboard-data">Balance : {balance}</h2>
 				<h2 className="dashboard-data">LeaderBoard : </h2>
 			</div>

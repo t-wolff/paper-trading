@@ -14,8 +14,6 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 	const nominal = side === 'BUY' ? quantity * price : -(quantity * price);
 
 	if (!userID || !product || !side || !quantity) {
-		console.log(userID, product, side, quantity);
-		console.log(userID, product, side, quantity);
 		return next(
 			new ErrorResponse('Missing request field/s (userID, product, side, quantity)', 400)
 		);
@@ -41,7 +39,7 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 	const usdtBalance = balances.find((item) => item.balanceType === 'usdt').balanceAmount;
 	const productBalance = balances.find((item) => item.balanceType === product).balanceAmount;
 
-	if ((side === 'BUY' && usdtBalance > nominal) || (side === 'SELL' && productBalance > quantity)) {
+	if ((side === 'BUY' && usdtBalance >= nominal) || (side === 'SELL' && productBalance >= quantity)) {
 		const productQuery = `SELECT productID FROM products WHERE name= ?`;
 		const [productInfo] = await pool
 			.promise()
