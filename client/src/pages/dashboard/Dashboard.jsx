@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as actionTrade from '../../redux/Trade/tradeSlice';
 import * as actionStats from '../../redux/Stats/statsSlice';
 import './Dashboard.css';
-
+import FileUpload from '../../components/fileUpload/Fileupload';
 const Dashboard = () => {
 	const dispatch = useDispatch();
 	const tradeArr = useSelector((state) => state.trade.trades);
@@ -52,6 +52,7 @@ const Dashboard = () => {
 				<h2 className="dashboard-data">Balance : {balance}</h2>
 				<h2 className="dashboard-data">LeaderBoard : </h2>
 			</div>
+			<FileUpload/>
 		</div>
 	);
 };

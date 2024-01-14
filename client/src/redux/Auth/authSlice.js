@@ -38,37 +38,32 @@ export const authSlice = createSlice({
 	},
 });
 
-export const login =
-	(email, password) =>
-		async (dispatch) => {
-			try {
-				const headers = { 'Content-Type': 'application/json' };
-				const res = await axios({
-					method: 'POST',
-					credentials: 'include',
-					url: `${import.meta.env.VITE_BASE_URL}/auth/login`,
-					data: { email, password },
-					headers: headers,
-				});
+export const login = (email, password) => async (dispatch) => {
+	try {
+		const headers = { 'Content-Type': 'application/json' };
+		const res = await axios({
+			method: 'POST',
+			credentials: 'include',
+			url: `${import.meta.env.VITE_BASE_URL}/auth/login`,
+			data: { email, password },
+			headers: headers,
+		});
 
-				if (res.data.token) {
-					dispatch(setInitialSettings(res.data));
-					dispatch(
-						actionSnackBar.setSnackBar('success', 'Login Successful', 2000)
-					);
-				} 
-			} catch (error) {
-				if (error?.response?.status === 401) {
-					dispatch(setWrongCredentialsError('Wrong Username/Password'));
-					dispatch(actionSnackBar.setSnackBar('error', 'Login failed', 2000));
-				} else if (error.response && error.response.data !== undefined) {
-					dispatch(actionSnackBar.setSnackBar('error', 'Login failed', 2000));
-				} else {
-					dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
-				}
-			}
-		};
-
+		if (res.data.token) {
+			dispatch(setInitialSettings(res.data));
+			dispatch(actionSnackBar.setSnackBar('success', 'Login Successful', 2000));
+		}
+	} catch (error) {
+		if (error?.response?.status === 401) {
+			dispatch(setWrongCredentialsError('Wrong Username/Password'));
+			dispatch(actionSnackBar.setSnackBar('error', 'Login failed', 2000));
+		} else if (error.response && error.response.data !== undefined) {
+			dispatch(actionSnackBar.setSnackBar('error', 'Login failed', 2000));
+		} else {
+			dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
+		}
+	}
+};
 
 export const register = (firstName, lastName, email, password) => async (dispatch) => {
 	try {
@@ -85,7 +80,7 @@ export const register = (firstName, lastName, email, password) => async (dispatc
 			dispatch(actionSnackBar.setSnackBar('success', 'Register Successful', 2000));
 		}
 	} catch (error) {
-			if (error.response && error.response.data !== undefined) {
+		if (error.response && error.response.data !== undefined) {
 			dispatch(actionSnackBar.setSnackBar('error', 'Register failed', 2000));
 		} else {
 			dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
@@ -94,7 +89,7 @@ export const register = (firstName, lastName, email, password) => async (dispatc
 };
 
 const setInitialSettings = (data) => (dispatch) => {
-	const userContent = {...data.user};
+	const userContent = { ...data.user };
 
 	saveToSessionStorage('TOKEN', data.token);
 	setAuthToken(data.token);
@@ -109,15 +104,37 @@ const setInitialSettings = (data) => (dispatch) => {
 	dispatch(actionSnackBar.setSnackBar('success', 'Successfully connected', 2000));
 };
 
+export const uploadPic = (form , userID) => async (dispatch) => {
+	try {
+		const headers = { 'Content-Type': 'multipart/form-data' };
+		const res = await axios.put(`${import.meta.env.VITE_BASE_URL}/auth/updateUser`, form, {
+			headers,
+		});
+
+		if (res) {
+			console.log(res);
+			// dispatch(setInitialSettings(res.data));
+			// dispatch(actionSnackBar.setSnackBar('success', 'Login Successful', 2000));
+		}
+	} catch (error) {
+		if (error?.response?.status === 401) {
+			dispatch(actionSnackBar.setSnackBar('error', 'Upload failed', 2000));
+		} else if (error.response && error.response.data !== undefined) {
+			dispatch(actionSnackBar.setSnackBar('error', 'Upload failed', 2000));
+		} else {
+			dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
+		}
+	}
+};
+
 export const logout = () => (dispatch) => {
 	sessionStorage.clear();
 
 	dispatch(setLogout());
 	dispatch(actionSnackBar.setSnackBar('success', 'Successfully disconnected', 2000));
-	
-	axios.delete(`${import.meta.env.VITE_BASE_URL}/auth/login`)
-};
 
+	axios.delete(`${import.meta.env.VITE_BASE_URL}/auth/login`);
+};
 
 export const {
 	setLogin,
