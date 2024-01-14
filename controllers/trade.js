@@ -15,9 +15,12 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 
 	if (!userID || !product || !side || !quantity) {
 		console.log(userID, product, side, quantity);
+		console.log(userID, product, side, quantity);
 		return next(
 			new ErrorResponse('Missing request field/s (userID, product, side, quantity)', 400)
 		);
+	} else if (quantity < 0) {
+		return next(new ErrorResponse('Invalid quantity', 403));
 	} else if (!price) {
 		console.log(`Error while getting price, price : ${price}`);
 		return next(new ErrorResponse('Server Error', 500));
@@ -93,5 +96,43 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 	}
 });
 
+//  need to check userid matches token
+
+// //@desc       Get trades
+// //@route      GET /api/v1/trade
+// //@access     Private
+exports.getAllTrades = asyncHandler(async (req, res, next) => {
+	const { userID } = req.body;
+	const authorizationHeader = req.headers['authorization'];
+	if (!userID) {
+		console.log(userID);
+		return next(new ErrorResponse('Missing userID request field', 400));
+	}
+
+	// console.log(authorizationHeader);
+	const tradesQuery = `SELECT 
+  trades.side,
+  products.name AS productName,
+  trades.quantity,
+  trades.price,
+  trades.nominal,
+  trades.createdAt,
+  trades.tradeID FROM trades LEFT JOIN products ON trades.productID = products.productID WHERE userID= ?`;
+	const [trades] = await pool.promise().execute(tradesQuery, [userID], (queryError) => {
+		if (queryError) {
+			console.error('Error executing get trades:', queryError.message);
+			return next(new ErrorResponse('Server Error', 500));
+		}
+	});
+
+	// if (!trades[0]) {
+	// 	return next(new ErrorResponse(`User with ID ${userID} not found`));
+	// }
+
+	res.status(200).json({
+		success: true,
+		data: trades,
+	});
+});
 
 // need to add check quantity is valid + price bigger than zero, userid matches token 
