@@ -6,7 +6,9 @@ const ErrorResponse = require('../utils/errorResponse');
 // Protect routes
 exports.protect = asyncHandler(async (req, res, next) => {
 	let token;
-	const { userID } = req.params || req.body ;
+	const userIDFromParams = req.params.userID;
+	const userIDFromBody = req.body.userID;
+	const userID = userIDFromParams || userIDFromBody;
 
 	if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
 		// Set token from Bearer token in header

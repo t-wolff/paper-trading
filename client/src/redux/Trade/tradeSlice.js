@@ -27,8 +27,7 @@ export const createTrade = (product, side, quantity, userID) => async (dispatch)
 
 		if (res.status === 200) {
 			dispatch(actionSnackBar.setSnackBar('success', 'Trade Successful', 2000));
-			getTrades()
-			// need to dipatch get trades here
+			// getTrades()
 		}
 	} catch (error) {
 		if (error?.response?.status === 403) {
@@ -52,8 +51,8 @@ export const getTrades = (userID) => async (dispatch) => {
 		});
 
 		if (res.status === 200) {
-			console.log(res)
-			dispatch(setTrades(res));
+			const trades = res.data.trades;
+			dispatch(setTrades(trades));
 		}
 		
 	} catch (error) {
