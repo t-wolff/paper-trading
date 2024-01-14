@@ -6,8 +6,9 @@ const ErrorResponse = require('../utils/errorResponse');
 // Protect routes
 exports.protect = asyncHandler(async (req, res, next) => {
 	let token;
-	const userIDFromParams = req.params.userID;
-	const userIDFromBody = req.body.userID;
+	const userIDFromParams = await req.params.userID;
+	const userIDFromBody = await req.body.userID;
+	console.log(userIDFromParams);
 	const userID = userIDFromParams || userIDFromBody;
 
 	if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -25,6 +26,8 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
 	try {
 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
+		console.log(decoded);
+		// console.log(userID);
 		 if (userID && userID !== decoded.id) {
 				return next(new ErrorResponse('User ID does not match the token', 401));
 			}
