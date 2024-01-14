@@ -15,10 +15,9 @@ const errorHandler = require('./middleware/error');
 dotenv.config({ path: './config/config.env' });
 
 // Route files
-// const stories = require("./routes/stories");
-// const reviews = require("./routes/reviews");
 const auth = require("./routes/auth");
 const trade = require("./routes/trade");
+const stats = require("./routes/stats");
 
 const { newWebsocketServer } = require('./ws/websocketServer');
 const {newBinanceConnection} = require('./ws/binanceWs');
@@ -50,11 +49,10 @@ app.use(fileupload());
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Mount routers
+// routers
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/trade", trade);
-// app.use("/api/v1/stories", stories);
-// app.use("/api/v1/reviews", reviews);
+app.use("/api/v1/stats", stats);
 
 app.use(errorHandler);
 
