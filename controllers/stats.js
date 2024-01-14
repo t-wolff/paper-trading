@@ -37,7 +37,7 @@ exports.calcStats = asyncHandler(async (req, res, next) => {
         res.status(200).json({
 			success: true,
 			pnl: pnl.toFixed(2),
-			usdtBalance,
+			usdtBalance: usdtBalance.toFixed(2),
 			productBalance,
 		});
     } catch {
