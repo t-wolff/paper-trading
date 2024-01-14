@@ -1,7 +1,6 @@
 let ws = null;
 const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost::5000';
 
-
 async function openWebSocket(TOKEN) {
 	const tokenizedUrl = `${WS_URL}/?token=${TOKEN}`;
 	return new Promise((resolve, reject) => {
@@ -10,7 +9,6 @@ async function openWebSocket(TOKEN) {
 			ws.addEventListener('open', (event) => {
 				console.log('WebSocket connection opened:', event);
 				sendWebSocketMessage('lolA');
-				setMessageHandler(console.log);
 				setTimeout(() => {
 					// if (ws.readyState === 1) {
 					// console.log('WebSocket connection established.');
@@ -36,11 +34,11 @@ async function setMessageHandler(onMessage) {
 	return new Promise((resolve) => {
 		const messageListener = (event) => {
 			const data = JSON.parse(event.data.toString('utf8'));
-				const messageHandled = onMessage(data);
-				// if (messageHandled && !isSubscription) {
-					// ws.removeEventListener('message', messageListener);
-				// }
-				resolve(messageHandled)
+			const messageHandled = onMessage(data);
+			// if (messageHandled && !isSubscription) {
+			// ws.removeEventListener('message', messageListener);
+			// }
+			resolve(messageHandled);
 		};
 
 		if (ws) {

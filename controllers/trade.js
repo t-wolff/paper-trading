@@ -15,6 +15,7 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 
 	if (!userID || !product || !side || !quantity) {
 		console.log(userID, product, side, quantity);
+		console.log(userID, product, side, quantity);
 		return next(
 			new ErrorResponse('Missing request field/s (userID, product, side, quantity)', 400)
 		);
@@ -133,3 +134,5 @@ exports.getAllTrades = asyncHandler(async (req, res, next) => {
 		data: trades,
 	});
 });
+
+// need to add check quantity is valid + price bigger than zero, userid matches token 
