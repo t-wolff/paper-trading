@@ -1,3 +1,25 @@
-h2 {
+
+ul{
     color: white;
 }
+.trades-table {
+    width: 90%;
+    margin-top: 4rem;
+    background-color: var(--opaque-purple);
+    color: var(--primary-white);
+    border: 0.2rem solid var(--primary-purple);
+    border-spacing: 0 0.2rem;
+}
+.trades-table .trades-table-row ,
+.trades-table .trades-table-header{
+    font-size: 1.6rem;
+    background-color: var(--opaque-purple);
+    border-radius: 0;
+}
+.trades-table td, .trades-table th {
+    padding: 0.4rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0;
+}
+

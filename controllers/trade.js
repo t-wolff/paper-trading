@@ -103,10 +103,8 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 // //@access     Private
 exports.getAllTrades = asyncHandler(async (req, res, next) => {
 	const { userID } = req.params;
-	console.log(userID);
 
 	if (!userID) {
-		console.log(userID);
 		return next(new ErrorResponse('Missing userID request field', 400));
 	}
 
@@ -125,13 +123,13 @@ exports.getAllTrades = asyncHandler(async (req, res, next) => {
 		}
 	});
 
-	// if (!trades[0]) {
-	// 	return next(new ErrorResponse(`User with ID ${userID} not found`));
-	// }
+	if (!trades[0]) {
+		return next(new ErrorResponse(`User with ID ${userID} not found`));
+	}
 
 	res.status(200).json({
 		success: true,
-		data: trades,
+		trades: trades,
 	});
 });
 

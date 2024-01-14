@@ -1,15 +1,12 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import authReducer from "./Auth/authSlice";
 import snackbarReducer from "./SnackBar/snackBarSlice";
-// import productsReducer from './Products/productsSlice';
-// import userSlice from './User/userSlice';
+import tradeReducer from './Trade/tradeSlice';
 
 const appReducer = combineReducers({
   auth: authReducer,
   snackBar: snackbarReducer,
-  
-//   products: productsReducer,
-//   user: userSlice,
+  trade: tradeReducer,
 });
 
 const RootReducer = (state, action) => {
