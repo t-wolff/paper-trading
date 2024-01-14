@@ -48,6 +48,11 @@ html {
   display: none !important;
 }
 
+/* to get rid of chrome autofill style changes */
+input {
+  transition: 2147483647s; 
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -58,12 +63,4 @@ html {
 
 ::-webkit-scrollbar-thumb {
   background: #212121;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px var(--primary-black) inset !important;
-    -webkit-text-fill-color: var(--primary-white) !important;
 }
