@@ -48,7 +48,7 @@ const Trade = () => {
 			}
 		};
 
-		// hardcoded for now need to change to dynamic rpoduct
+		// hardcoded for now need to change to dynamic product
 		setProduct('btc');
 		//
 
@@ -81,7 +81,7 @@ const Trade = () => {
 			<Input
 				name="quantity"
 				label="QTY"
-				type="string"
+				type="number"
 				handleChange={(e) => handleChangeInputs(e)}
 				value={quantity}
 			/>
