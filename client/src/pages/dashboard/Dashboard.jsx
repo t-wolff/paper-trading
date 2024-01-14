@@ -45,11 +45,11 @@ const Dashboard = () => {
 				</tbody>
 			</table>
 			<div className="dashboard-data-container">
-				<h2 className="dashboard-data">PNL : {stats.pnl}</h2>
+				<h2 className="dashboard-data">PNL : {stats.pnl}$</h2>
 				{/* <h2 className="dashboard-data">Weekly PNL : {stats}</h2> */}
 				{/* <h2 className="dashboard-data">Monthly PNL : {stats}</h2> */}
-				<h2 className="dashboard-data">USD Balance : {stats.usdtBalance}</h2>
-				<h2 className="dashboard-data">BTC Balance : {stats.productBalance}</h2>
+				<h2 className="dashboard-data">USD Balance : {stats.usdtBalance}$</h2>
+				<h2 className="dashboard-data">BTC Balance : {stats.productBalance}&#8383;</h2>
 				<h2 className="dashboard-data">LeaderBoard : </h2>
 			</div>
 		</div>
