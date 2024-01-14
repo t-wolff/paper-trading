@@ -1,7 +1,7 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
+const moment = require('moment');
 const uuid = require('uuid');
-const jwt = require('jsonwebtoken');
 const { pool } = require('../config/db');
 const { getCurrentPrice } = require('../utils/getPrice');
 
@@ -115,7 +115,7 @@ exports.getAllTrades = asyncHandler(async (req, res, next) => {
   				trades.price,
   				trades.nominal,
   				trades.createdAt,
-  				trades.tradeID FROM trades LEFT JOIN products ON trades.productID = products.productID WHERE userID= ?`;
+  				trades.tradeID FROM trades LEFT JOIN products ON trades.productID = products.productID WHERE userID= ? ORDER BY trades.createdAt DESC`;
 	const [trades] = await pool.promise().execute(tradesQuery, [userID], (queryError) => {
 		if (queryError) {
 			console.error('Error executing get trades:', queryError.message);
@@ -127,10 +127,16 @@ exports.getAllTrades = asyncHandler(async (req, res, next) => {
 		return next(new ErrorResponse(`User with ID ${userID} not found`));
 	}
 
+	const formattedTrades = trades.map((trade) => ({
+		...trade,
+		createdAt: moment(trade.createdAt).format('HH:mm:ss YYYY-MM-DD'),
+		nominal: trade.nominal.toFixed(2)
+	}));
+
 	res.status(200).json({
 		success: true,
-		trades: trades,
+		trades: formattedTrades,
 	});
 });
 
-// need to add check quantity is valid + price bigger than zero, userid matches token 
+// need to add check quantity is valid + price bigger than zero, userid matches token
