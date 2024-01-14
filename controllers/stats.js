@@ -6,7 +6,7 @@ const { getCurrentPrice } = require('../utils/getPrice');
 // //@desc       get pnl
 // //@route      GET /api/v1/stats
 // //@access     Private
-exports.calcPnl = asyncHandler(async (req, res, next) => {
+exports.calcStats = asyncHandler(async (req, res, next) => {
 	const { userID } = req.params;
 	const product = 'btc';
 	const price = await getCurrentPrice(product);
@@ -37,9 +37,13 @@ exports.calcPnl = asyncHandler(async (req, res, next) => {
         res.status(200).json({
 			success: true,
 			pnl: pnl.toFixed(2),
+			usdtBalance,
+			productBalance,
 		});
     } catch {
         console.log('Error calculating pnl')
         return next(new ErrorResponse('Server Error', 500));
     }
 });
+
+

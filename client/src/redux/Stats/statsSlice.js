@@ -5,13 +5,15 @@ import { createSlice } from '@reduxjs/toolkit';
 export const statsSlice = createSlice({
 	name: 'stats',
 	initialState: {
-		balance: '0',
-		pnl: '0'
+		productBalance: '0',
+		usdtBalance: '0',
+		pnl: '0',
 	},
 	reducers: {
 		setStats: (state, action) => {
 			state.pnl = action.payload.pnl;
-			// state.balance = action.payload.balance;
+			state.productBalance = action.payload.productBalance;
+			state.usdtBalance = action.payload.usdtBalance;
 		},
 	},
 });
