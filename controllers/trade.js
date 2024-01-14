@@ -101,22 +101,22 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 // //@route      GET /api/v1/trade
 // //@access     Private
 exports.getAllTrades = asyncHandler(async (req, res, next) => {
-	const { userID } = req.body;
-	const authorizationHeader = req.headers['authorization'];
+	const { userID } = req.headers;
+	console.log(userID);
+
 	if (!userID) {
 		console.log(userID);
 		return next(new ErrorResponse('Missing userID request field', 400));
 	}
 
-	// console.log(authorizationHeader);
 	const tradesQuery = `SELECT 
-  trades.side,
-  products.name AS productName,
-  trades.quantity,
-  trades.price,
-  trades.nominal,
-  trades.createdAt,
-  trades.tradeID FROM trades LEFT JOIN products ON trades.productID = products.productID WHERE userID= ?`;
+  				trades.side,
+  				products.name AS productName,
+  				trades.quantity,
+  				trades.price,
+  				trades.nominal,
+  				trades.createdAt,
+  				trades.tradeID FROM trades LEFT JOIN products ON trades.productID = products.productID WHERE userID= ?`;
 	const [trades] = await pool.promise().execute(tradesQuery, [userID], (queryError) => {
 		if (queryError) {
 			console.error('Error executing get trades:', queryError.message);
