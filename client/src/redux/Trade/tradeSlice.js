@@ -14,7 +14,6 @@ export const tradeSlice = createSlice({
 	},
 });
 
-
 export const createTrade = (product, side, quantity, userID) => async (dispatch) => {
 	try {
 		const headers = { 'Content-Type': 'application/json' };
@@ -22,12 +21,13 @@ export const createTrade = (product, side, quantity, userID) => async (dispatch)
 			method: 'POST',
 			credentials: 'include',
 			url: `${import.meta.env.VITE_BASE_URL}/trade`,
-			data: { userID, product, side, quantity},
+			data: { userID, product, side, quantity },
 			headers: headers,
 		});
 
-		if (res.data.token) {
+		if (res.status === 200) {
 			dispatch(actionSnackBar.setSnackBar('success', 'Trade Successful', 2000));
+			getTrades()
 			// need to dipatch get trades here
 		}
 	} catch (error) {
@@ -41,6 +41,32 @@ export const createTrade = (product, side, quantity, userID) => async (dispatch)
 	}
 };
 
-export const { snackBar, setDisableSnackBar } = tradeSlice.actions;
+export const getTrades = (userID) => async (dispatch) => {
+	try {
+		const headers = { 'Content-Type': 'application/json' };
+		const res = await axios({
+			method: 'GET',
+			credentials: 'include',
+			url: `${import.meta.env.VITE_BASE_URL}/trade/${userID}`,
+			headers: headers,
+		});
+
+		if (res.status === 200) {
+			console.log(res)
+			dispatch(setTrades(res));
+		}
+		
+	} catch (error) {
+		if (error?.response?.status === 401) {
+			dispatch(actionSnackBar.setSnackBar('error', 'Unauthorized', 2000));
+		} else if (error.response && error.response.data !== undefined) {
+			dispatch(actionSnackBar.setSnackBar('error', 'Get trades failed', 2000));
+		} else {
+			dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
+		}
+	}
+};
+
+export const { snackBar, setDisableSnackBar, setTrades} = tradeSlice.actions;
 
 export default tradeSlice.reducer;

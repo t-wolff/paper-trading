@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { protect } = require('../middleware/auth');
 
-router.get('/', protect, getAllTrades);
+router.get('/:userID', protect, getAllTrades);
 router.post('/', protect, createTrade);
 // router.get("/:id", protect, getTrade);
 

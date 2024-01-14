@@ -34,7 +34,7 @@ const Input = ({ name, label, value, type, handleChange, error }) => {
 Input.propTypes = {
 	name: PropTypes.string,
 	label: PropTypes.string,
-	value: PropTypes.string,
+	value: PropTypes.any,
 	type: PropTypes.string,
 	handleChange: PropTypes.func.isRequired,
 	error: PropTypes.bool,

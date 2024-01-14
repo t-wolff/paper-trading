@@ -6,7 +6,6 @@ import Logo from '../../assets/logo-4.png';
 import './Navbar.css';
 
 const Navbar = ({color}) => {
-	console.log(color);
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
 	const navListItems = [
