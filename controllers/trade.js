@@ -102,7 +102,7 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 // //@route      GET /api/v1/trade
 // //@access     Private
 exports.getAllTrades = asyncHandler(async (req, res, next) => {
-	const { userID } = req.headers;
+	const { userID } = req.params;
 	console.log(userID);
 
 	if (!userID) {

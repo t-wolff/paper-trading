@@ -47,8 +47,7 @@ export const getTrades = (userID) => async (dispatch) => {
 		const res = await axios({
 			method: 'GET',
 			credentials: 'include',
-			url: `${import.meta.env.VITE_BASE_URL}/trade`,
-			params: { userID },
+			url: `${import.meta.env.VITE_BASE_URL}/trade/${userID}`,
 			headers: headers,
 		});
 
