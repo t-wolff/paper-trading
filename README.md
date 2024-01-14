@@ -23,3 +23,23 @@ Current market value = (1 BTC x $2,400) = $2,400
 PnL = $2,400 - $1,750 = $650 (profit)
 
 ![Alt text](./public/image.png)
+
+
+Top-down
+The overall PL is by comparing the difference of asset (equity and cash) balance.
+
+Balance (t1) – Balance (t0) – Net asset transfer (between t0 and t1) = Trading PL (between t0 and t1)
+
+Let’s explain with an example:
+
+time      t0         t1        delta
+btc       -          0.6        0.6
+usdt      50k        37k       -13k
+
+Suppose at t1, market price for BTC is $30k, ETH is $2k, USDT is $1 
+
+PL (t0-t1) = 0.6 * 30k + 1 * 2k - 13k = 7k USD
+
+The PL is measured by calculating the total asset (equity) balance’s movement, doesn't matter if the original acquiring cost is $30k or $40k.
+
+It’s simple because there are no transaction details in the calculation, and it’s accurate because there’s no way of mistaking it.
