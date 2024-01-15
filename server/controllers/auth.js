@@ -4,6 +4,7 @@ const { pool } = require('../config/db');
 const uuid = require('uuid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
 
 //@desc       Register user
 //@route      POST /api/v1/auth/register
@@ -93,38 +94,44 @@ exports.login = asyncHandler(async (req, res, next) => {
 	sendTokenResponse(user, 200, res);
 });
 
-// //@desc       Get current logged in user
-// //@route      POST /api/vi/auth/me
-// //@access     Private
+//@desc       Update user details
+//@route      PUT /api/vi/auth/updateUser
+//@access     Private
 
-// // exports.getMe = asyncHandler(async (req, res, next) => {
-// //   const user = await User.findById(req.user.id);
-// //   res.status(200).json({
-// //     success: true,
-// //     data: user,
-// //   });
-// // });
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, 'public/profile_pictures');
+	},
+	filename: function (req, file, cb) {
+		cb(null, Date.now() + '_' + file.fieldname + path.extname(file.originalname));
+	},
+});
 
-// //@desc       Update user details
-// //@route      PUT /api/vi/auth/updatedetails
-// //@access     Private
+const upload = multer({ storage: storage }).single('profilePic');
 
-// // exports.updateDetails = asyncHandler(async (req, res, next) => {
-// //   const fieldsToUpdate = {
-// //     name: req.body.name,
-// //     email: req.body.email,
-// //   };
+exports.updateUser = asyncHandler(async (req, res, next) => {
+	const { userID } = req.body;
+	const profilePic = req.files.profilePic;
 
-// //   const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
-// //     new: true,
-// //     runValidators: true,
-// //   });
+	if (!userID || !profilePic) {
+	 return next(new ErrorResponse("Missing request fields", 400))
+	  }
 
-// //   res.status(200).json({
-// //     success: true,
-// //     data: user,
-// //   });
-// // });
+	upload(req, res, async function (uploadError) {
+		// if (uploadError) {
+		// 	return next(new ErrorResponse('Error uploading profile picture', 500));
+		// }
+		const profilePicPath = profilePic.path || null;
+
+		// Now update the database with the profilePicPath
+		const userQuery = 'UPDATE users SET profilePic = ? WHERE userID = ?';
+		const [user] = await pool.promise().query(userQuery, [profilePicPath, userID]);
+		res.status(200).json({
+			success: true,
+			data: user,
+		});
+	});
+});
 
 //Get token from model,create cookie and send response
 const sendTokenResponse = async (user, statusCode, res) => {

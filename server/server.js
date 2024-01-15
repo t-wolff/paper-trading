@@ -32,7 +32,7 @@ app.use(cookieParser());
 app.use(
 	cors({
 		origin: ['http://localhost:5173', 'https://meek-marshmallow-b84019.netlify.app'],
-		methods: ['POST', 'GET'],
+		methods: ['POST', 'GET', 'PUT'],
 		credentials: true,
 	})
 );
