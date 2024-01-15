@@ -3,7 +3,7 @@ const asyncHandler = require('../middleware/async');
 const { pool } = require('../config/db');
 const { getCurrentPrice } = require('../utils/getPrice');
 
-// //@desc       get pnl
+// //@desc       calculate pnl
 // //@route      GET /api/v1/stats/:userID
 // //@access     Private
 exports.calcStats = asyncHandler(async (req, res, next) => {
@@ -51,21 +51,22 @@ exports.calcStats = asyncHandler(async (req, res, next) => {
 		return next(new ErrorResponse('Server Error', 500));
 	}
 });
+
 // //@desc       get pnl
 // //@route      GET /api/v1/stats
 // //@access     Private
 exports.userStats = asyncHandler(async (req, res, next) => {
 	try {
-		const pnlQuery = `SELECT firstName, lastName, profilePic, pnl FROM users ORDER BY pnl DESC LIMIT 10`;
+		const pnlQuery = `SELECT firstName, lastName, profilePic, pnl, RANK() OVER (ORDER BY pnl DESC) AS position FROM users ORDER BY pnl DESC LIMIT 10`;
 		const [users] = await pool.promise().query(pnlQuery);
 
 		console.log(users);
 
-		const formattedUsers = users.map(user => ({ ...user, pnl: JSON.parse(user.pnl).toFixed(2) }));
+		const formattedUsers = users.map((user) => ({ ...user, pnl: JSON.parse(user.pnl).toFixed(2) }));
 
 		res.status(200).json({
 			success: true,
-			formattedUsers
+			formattedUsers,
 		});
 	} catch (error) {
 		console.error('Error executing check user balance query:', error.message);
