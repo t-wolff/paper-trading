@@ -98,25 +98,24 @@ exports.login = asyncHandler(async (req, res, next) => {
 //@route      PUT /api/vi/auth/updateUser
 //@access     Private
 
+ const storage = multer.diskStorage({
+		destination: function (req, file, cb) {
+			cb(null, 'public/profile_pictures');
+		},
+		filename: function (req, file, cb) {
+			cb(null, Date.now() + '_' + file.fieldname + path.extname(file.originalname));
+		},
+ });
+
+ const upload = multer({ storage: storage }).single('profilePic');
+
 exports.updateUser = asyncHandler(async (req, res, next) => {
-  const profilePic = req.file
   const userID = req.body.userID
 
   console.log(req);
 //   if (!userID || !profilePic) {
 // 	return next(new ErrorResponse("Missing request fields", 400))
 //   } 
-
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'public/profile_pictures');
-    },
-    filename: function (req, file, cb) {
-      cb(null, Date.now() + '_' + file.fieldname + path.extname(file.originalname));
-    },
-  });
-
-  const upload = multer({ storage: storage }).single('profilePic');
 
   upload(req, res, async function (uploadError) {
     if (uploadError) {
@@ -125,6 +124,9 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 
     // Assuming the 'profilePic' field is the name attribute in your form for the file input
     const profilePicPath = req.file ? req.file.path : null;
+
+console.log('userID:', userID);
+console.log('profilePicPath:', profilePicPath);
 
     // Now update the database with the profilePicPath
     const userQuery = 'UPDATE users SET profilePic = ? WHERE userID = ?';
