@@ -10,7 +10,6 @@ const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
-const errorHandler = require('./middleware/error');
 
 dotenv.config({ path: './config/config.env' });
 
@@ -54,7 +53,6 @@ app.use('/api/v1/auth', auth);
 app.use('/api/v1/trade', trade);
 app.use('/api/v1/stats', stats);
 
-app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

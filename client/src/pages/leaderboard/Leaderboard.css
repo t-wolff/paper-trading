@@ -1,0 +1,46 @@
+
+.leaderboard-container {
+  width: 100%;
+  height: 100%;
+}
+ul{
+    color: white;
+}
+.trades-table {
+    width: 50%;
+    max-height: 20rem;
+    background-color: var(--opaque-purple);
+    color: var(--primary-white);
+    border: 0.2rem solid var(--primary-purple);
+    border-spacing: 0 0.2rem;
+    overflow: hidden;
+}
+.trades-table .trades-table-row ,
+.trades-table .trades-table-header{
+    font-size: 1.6rem;
+    background-color: var(--opaque-white-1);
+    border-radius: 0;
+    text-align: left;
+}
+.trades-table td, .trades-table th {
+    padding: 0.4rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0;
+}
+.green-side {
+    color: var(--primary-green);
+}
+.red-side {
+    color: var(--primary-red);
+}
+.leaderboard-data-container {
+    height: 100%;
+    margin-top: 5rem;
+}
+.leaderboard-data {
+    padding: 5rem;
+    padding-right: 10rem;
+    border: 0.2rem solid var(--primary-purple) ;
+    background: var(--opaque-purple);
+}
