@@ -109,6 +109,28 @@ const setInitialSettings = (data) => (dispatch) => {
 	dispatch(actionSnackBar.setSnackBar('success', 'Successfully connected', 2000));
 };
 
+export const uploadPic = (form) => async (dispatch) => {
+	try {
+		const headers = { 'Content-Type': 'multipart/form-data' };
+		const res = await axios.put(`${import.meta.env.VITE_BASE_URL}/auth/updateUser`, form, {
+			headers,
+		});
+		if (res) {
+			console.log(res);
+			// dispatch(setInitialSettings(res.data));
+			// dispatch(actionSnackBar.setSnackBar('success', 'Login Successful', 2000));
+		}
+	} catch (error) {
+		if (error?.response?.status === 401) {
+			dispatch(actionSnackBar.setSnackBar('error', 'Upload failed', 2000));
+		} else if (error.response && error.response.data !== undefined) {
+			dispatch(actionSnackBar.setSnackBar('error', 'Upload failed', 2000));
+		} else {
+			dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
+		}
+	}
+};
+
 export const logout = () => (dispatch) => {
 	sessionStorage.clear();
 

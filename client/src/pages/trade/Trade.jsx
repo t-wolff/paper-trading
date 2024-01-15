@@ -9,6 +9,7 @@ import * as actionTrade from '../../redux/Trade/tradeSlice';
 import './Trade.css';
 import StyledButton from '../../components/styledButton/StyledButton';
 import Input from '../../components/input/Input';
+import FileUpload from '../../components/fileUpload/Fileupload';
 
 const Trade = () => {
 	const dispatch = useDispatch();
@@ -91,6 +92,7 @@ const Trade = () => {
 			<StyledButton color={'red'} onclick={handleSell}>
 				SELL
 			</StyledButton>
+			<FileUpload/>
 		</div>
 	);
 };
