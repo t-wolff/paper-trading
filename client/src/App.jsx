@@ -8,8 +8,9 @@ import {
   SignUp,
   Login,
   Dashboard,
+  Trade,
+  Leaderboard,
   NotFound,
-  Trade
 //   Posts,
 //   NewPost
 } from "./pages";
@@ -51,6 +52,14 @@ const routes = [
 				element: (
 					<ProtectedRoute>
 						<Trade />
+					</ProtectedRoute>
+				),
+			},
+			{
+				path: 'leaderboard',
+				element: (
+					<ProtectedRoute>
+						<Leaderboard />
 					</ProtectedRoute>
 				),
 			},

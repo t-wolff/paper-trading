@@ -50,7 +50,7 @@ const Dashboard = () => {
 				{/* <h2 className="dashboard-data">Monthly PNL : {stats}</h2> */}
 				<h2 className="dashboard-data">USD Balance : {stats.usdtBalance}$</h2>
 				<h2 className="dashboard-data">BTC Balance : {stats.productBalance}&#8383;</h2>
-				<h2 className="dashboard-data">LeaderBoard : </h2>
+				<h2 className="dashboard-data">LeaderBoard : {stats.position}</h2>
 			</div>
 		</div>
 	);

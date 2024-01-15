@@ -14,7 +14,7 @@ async function calcAllPnl () {
 		);`;
 
 		const [sqlRes] = await pool.promise().query(pnlQuery);
-        if (sqlRes) {console.log('Calculated PNL for all users')}
+        // if (sqlRes) {console.log('Calculated PNL for all users')}
 	} catch (error) {
 		console.error('Error executing update all pnl query:', error.message);
         throw error;
