@@ -2,6 +2,7 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const { pool } = require('../config/db');
 const { getCurrentPrice } = require('../utils/getPrice');
+const { calcAllPnl } = require('../utils/calcAllPnl');
 
 // //@desc       calculate pnl
 // //@route      GET /api/v1/stats/:userID
@@ -57,10 +58,9 @@ exports.calcStats = asyncHandler(async (req, res, next) => {
 // //@access     Private
 exports.userStats = asyncHandler(async (req, res, next) => {
 	try {
+		await calcAllPnl()
 		const pnlQuery = `SELECT firstName, lastName, profilePic, pnl, RANK() OVER (ORDER BY pnl DESC) AS position FROM users ORDER BY pnl DESC LIMIT 10`;
 		const [users] = await pool.promise().query(pnlQuery);
-
-		console.log(users);
 
 		const formattedUsers = users.map((user) => ({ ...user, pnl: JSON.parse(user.pnl).toFixed(2) }));
 
@@ -73,3 +73,4 @@ exports.userStats = asyncHandler(async (req, res, next) => {
 		return next(new ErrorResponse('Server Error', 500));
 	}
 });
+

@@ -97,13 +97,18 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 	}
 });
 
-//  need to check userid matches token
 
 // //@desc       Get trades
 // //@route      GET /api/v1/trade
 // //@access     Private
 exports.getAllTrades = asyncHandler(async (req, res, next) => {
 	const { userID } = req.params;
+	let { page, limit } = req.query;
+
+	page = parseInt(page, 10) || 1;
+	limit = parseInt(limit, 10) || 10;
+
+	const offset = (page - 1) * limit;
 
 	if (!userID) {
 		return next(new ErrorResponse('Missing userID request field', 400));
@@ -116,8 +121,11 @@ exports.getAllTrades = asyncHandler(async (req, res, next) => {
   				trades.price,
   				trades.nominal,
   				trades.createdAt,
-  				trades.tradeID FROM trades LEFT JOIN products ON trades.productID = products.productID WHERE userID= ? ORDER BY trades.createdAt DESC`;
-	const [trades] = await pool.promise().execute(tradesQuery, [userID], (queryError) => {
+  				trades.tradeID FROM trades LEFT JOIN products ON trades.productID = products.productID 
+				WHERE userID= ? 
+				ORDER BY trades.createdAt DESC
+				LIMIT ? OFFSET ?`;
+	const [trades] = await pool.promise().query(tradesQuery, [userID, limit, offset], (queryError) => {
 		if (queryError) {
 			console.error('Error executing get trades:', queryError.message);
 			return next(new ErrorResponse('Server Error', 500));
@@ -142,4 +150,3 @@ exports.getAllTrades = asyncHandler(async (req, res, next) => {
 	});
 });
 
-// need to add check quantity is valid + price bigger than zero, userid matches token
