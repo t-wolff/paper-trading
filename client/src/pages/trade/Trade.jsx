@@ -9,10 +9,11 @@ import * as actionTrade from '../../redux/Trade/tradeSlice';
 import './Trade.css';
 import StyledButton from '../../components/styledButton/StyledButton';
 import Input from '../../components/input/Input';
+import Graph from '../../components/graph/Graph';
 
 const Trade = () => {
 	const dispatch = useDispatch();
-	const [price, setPrice] = useState();
+	const [price, setPrice] = useState(0);
 	const [product, setProduct] = useState('btc');
 	const [quantity, setQuantity] = useState(0.001);
 	const userContent = useSelector((state) => state.auth.userContent);
@@ -73,24 +74,49 @@ const Trade = () => {
 		setQuantity(e.target.value);
 	};
 
+	const initialData = [
+		{ time: '2018-12-22', value: 32.51 },
+		{ time: '2018-12-23', value: 31.11 },
+		{ time: '2018-12-24', value: 27.02 },
+		{ time: '2018-12-25', value: 27.32 },
+		{ time: '2018-12-26', value: 25.17 },
+		{ time: '2018-12-27', value: 28.89 },
+		{ time: '2018-12-28', value: 25.46 },
+		{ time: '2018-12-29', value: 23.92 },
+		{ time: '2018-12-30', value: 22.68 },
+		{ time: '2018-12-31', value: 22.67 },
+	];
+
+	function numberWithCommas(number) {
+		return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	}
 	return (
-		<div>
-			<h2>Trading Zone</h2>
-			<h2>{product}</h2>
-			<h2>{price}</h2>
-			<Input
-				name="quantity"
-				label="QTY"
-				type="number"
-				handleChange={(e) => handleChangeInputs(e)}
-				value={quantity}
-			/>
-			<StyledButton color={'green'} onclick={(e) => handleBuy(e)}>
-				BUY
-			</StyledButton>
-			<StyledButton color={'red'} onclick={handleSell}>
-				SELL
-			</StyledButton>
+		<div className="trade-container">
+			<div className="click-trade-container">
+				<header>
+					<h2 className="product-name">{product}</h2>
+					<h2 className="product-price">{numberWithCommas(price)}$</h2>
+				</header>
+				<div className="trade-input-container">
+					<h2>QTY</h2>
+					<Input
+						name="quantity"
+						type="number"
+						handleChange={(e) => handleChangeInputs(e)}
+						value={quantity}
+						width={'small'}
+					/>
+				</div>
+				<div className="trade-btn-container">
+					<StyledButton color={'green'} onclick={(e) => handleBuy(e)}>
+						BUY
+					</StyledButton>
+					<StyledButton color={'red'} onclick={handleSell}>
+						SELL
+					</StyledButton>
+				</div>
+			</div>
+			<Graph data={initialData} />
 		</div>
 	);
 };

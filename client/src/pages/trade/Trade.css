@@ -1,3 +1,44 @@
-h2 {
-    color: white;
+.trade-container {
+	padding-top: 20rem;
+}
+.trade-input-container {
+	display: flex;
+}
+.trade-container .trade-input-container input{
+	display: flex;
+	width: 20rem;
+}
+.trade-input-container h2 {
+	padding-top: 1rem;
+	padding-right: 9.2rem;
+}
+.click-trade-container {
+	background-color: var(--opaque-purple);
+	padding: 8rem;
+	width: 48rem;
+	color: var(--primary-white);
+}
+.click-trade-container button {
+	width: 14rem;
+}
+.trade-btn-container {
+	display: flex;
+	justify-content: space-between;
+    padding-top: 2rem;
+}
+.product-price {
+	font-size: 4rem;
+	color: white;
+    background-color: var(--opaque-purple);
+    padding: 1.6rem;
+}
+.product-name {
+	font-size: 2.4rem;
+	text-transform: uppercase;
+}
+.click-trade-container header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	/* padding: 4rem; */
 }
