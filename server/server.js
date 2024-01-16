@@ -1,8 +1,9 @@
+const {getHistoricalData} = require('./utils/binanceHistorical');
+
 const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
-// const fileupload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const hpp = require('hpp');
@@ -86,3 +87,5 @@ const limiter = rateLimit({
 		console.error('Error creating WebSocket server:', error.message);
 	}
 })();
+
+getHistoricalData('BTCUSDT', '1d');
