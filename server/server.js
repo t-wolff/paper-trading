@@ -87,5 +87,3 @@ const limiter = rateLimit({
 		console.error('Error creating WebSocket server:', error.message);
 	}
 })();
-
-getHistoricalData('BTCUSDT', '1d');

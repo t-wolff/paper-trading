@@ -1,14 +1,7 @@
 const axios = require('axios');
 
-const endpoint = 'https://api.binance.com/api/v3/klines';
-
-const symbol = 'BTCUSDT';
-
-const interval = '1d';
-
-function getHistoricalData(symbol, interval) {
-	// Calculate the start timestamp for five years ago
-	const startTime = new Date().setFullYear(new Date().getFullYear() - 5);
+async function getHistoricalData(symbol, interval, time) {
+	const startTime = calculateStartTime(time);
 
 	const params = {
 		symbol: symbol,
@@ -17,15 +10,36 @@ function getHistoricalData(symbol, interval) {
 		endTime: Date.now(),
 	};
 
-	axios
-		.get(endpoint, { params })
-		.then((response) => {
-			const klines = response.data;
-			console.log(klines);
-		})
-		.catch((error) => {
-			console.error('Error fetching Klines:', error.response ? error.response.data : error.message);
-		});
+	const res = await axios({
+		method: 'GET',
+		url: `${process.env.BINANCE_URL_DATA}`,
+		params: params ,
+	});
+
+	if (res.status === 200) {
+		const klines = res.data;
+		return klines;
+		// getTrades()
+	} else {
+		console.log('error getting klines');
+		throw error;
+	}
 }
 
+function calculateStartTime(time) {
+	const currentDate = new Date();
+
+	if (time.endsWith('y')) {
+		const years = parseInt(time);
+		return currentDate.setFullYear(currentDate.getFullYear() - years);
+	} else if (time.endsWith('m')) {
+		const months = parseInt(time);
+		return currentDate.setMonth(currentDate.getMonth() - months);
+	} else if (time.endsWith('w')) {
+		const weeks = parseInt(time);
+		return currentDate - weeks * 7 * 24 * 60 * 60 * 1000;
+	} else {
+		return Date.now();
+	}
+}
 module.exports = { getHistoricalData };
