@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
-const fileupload = require('express-fileupload');
+// const fileupload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const hpp = require('hpp');
@@ -29,21 +29,29 @@ app.use(hpp());
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-	cors({
-		origin: ['http://localhost:5173', 'https://meek-marshmallow-b84019.netlify.app'],
-		methods: ['POST', 'GET', 'PUT'],
-		credentials: true,
-	})
-);
+
+const corsOptions = {
+	origin: [
+		'http://localhost:5173',
+		'https://meek-marshmallow-b84019.netlify.app',
+		'http://localhost:5000',
+	],
+	methods: ['POST', 'GET', 'PUT'],
+	credentials: true,
+};
+
+app.use(cors(corsOptions));
+
+// Add the Cross-Origin-Resource-Policy header to the response
+app.use((req, res, next) => {
+	res.header('Cross-Origin-Resource-Policy', 'cross-origin');
+	next()
+});
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
-}
-
-// File uploading
-app.use(fileupload());
+};
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));

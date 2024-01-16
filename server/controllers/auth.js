@@ -4,7 +4,7 @@ const { pool } = require('../config/db');
 const uuid = require('uuid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const multer = require('multer');
+const path = require('path');
 
 //@desc       Register user
 //@route      POST /api/v1/auth/register
@@ -98,40 +98,26 @@ exports.login = asyncHandler(async (req, res, next) => {
 //@route      PUT /api/vi/auth/updateUser
 //@access     Private
 
-const storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, 'public/profile_pictures');
-	},
-	filename: function (req, file, cb) {
-		cb(null, Date.now() + '_' + file.fieldname + path.extname(file.originalname));
-	},
-});
-
-const upload = multer({ storage: storage }).single('profilePic');
-
 exports.updateUser = asyncHandler(async (req, res, next) => {
 	const { userID } = req.body;
-	const profilePic = req.files.profilePic;
+	const profilePic = req.file;
 
 	if (!userID || !profilePic) {
-	 return next(new ErrorResponse("Missing request fields", 400))
-	  }
+		return next(new ErrorResponse('Missing request fields', 400));
+	}
 
-	upload(req, res, async function (uploadError) {
-		// if (uploadError) {
-		// 	return next(new ErrorResponse('Error uploading profile picture', 500));
-		// }
-		const profilePicPath = profilePic.path || null;
+	const profilePicPath = profilePic.path || null;
+	const filenameWithoutDirectory = path.basename(profilePicPath);
+	const pathWithoutPublic = `profile_pictures/${filenameWithoutDirectory}`;
+	
+	const userQuery = 'UPDATE users SET profilePic = ? WHERE userID = ?';
+	await pool.promise().query(userQuery, [pathWithoutPublic, userID]);
 
-		// Now update the database with the profilePicPath
-		const userQuery = 'UPDATE users SET profilePic = ? WHERE userID = ?';
-		const [user] = await pool.promise().query(userQuery, [profilePicPath, userID]);
-		res.status(200).json({
-			success: true,
-			data: user,
-		});
+	res.status(200).json({
+		success: true,
 	});
 });
+
 
 //Get token from model,create cookie and send response
 const sendTokenResponse = async (user, statusCode, res) => {
@@ -159,6 +145,7 @@ const sendTokenResponse = async (user, statusCode, res) => {
 				firstName: user.firstName,
 				lastName: user.lastName,
 				email: user.email,
+				profilePic: user.profilePic,
 			},
 		});
 };
