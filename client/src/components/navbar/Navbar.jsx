@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import NavListItem from './NavListItem';
 import Logo from '../../assets/logo-4.png';
+import ProfilePic from '../profilePic/ProfilePic';
 import './Navbar.css';
 
 const Navbar = ({color}) => {
@@ -39,12 +40,8 @@ const Navbar = ({color}) => {
 						{navListItems.map((link) => (
 							<NavListItem key={link.text} {...link} />
 						))}
-						{/* <img
-							src={encodeURI(
-              encodeURI(`${NEW_UPLOADS_URL}uploads/${authUser?.avatar}`))}
-							alt=""
-						/>
-						<button className="profile-btn">hello</button> */}
+						<ProfilePic />
+
 					</div>
 				</>
 			)}

@@ -1,0 +1,9 @@
+.file-upload-btn{
+    cursor: pointer;
+    font-size: 1.4rem;
+    padding-top: 0.8rem;
+    padding-left: 0.4rem;
+}
+.profile-pic-input{
+    display: none;
+}

@@ -28,7 +28,14 @@ export const authSlice = createSlice({
 		setToken: (state, action) => {
 			state.token = action.payload;
 		},
-		setLogout: () => authSlice.initialState,
+		setLogout: (state) => {
+			state.token = '',
+			state.isAuthenticated = false;
+			state.isRegistered = false;
+			state.userContent = {};
+			state.isWsConnection = false;
+			state.wrongCredentialsError = null;
+		},
 		setWrongCredentialsError: (state, action) => {
 			state.wrongCredentialsError = action.payload;
 		},
@@ -109,10 +116,10 @@ const setInitialSettings = (data) => (dispatch) => {
 	dispatch(actionSnackBar.setSnackBar('success', 'Successfully connected', 2000));
 };
 
-export const uploadPic = (form) => async (dispatch) => {
+export const uploadPic = (formData) => async (dispatch) => {
 	try {
 		const headers = { 'Content-Type': 'multipart/form-data' };
-		const res = await axios.put(`${import.meta.env.VITE_BASE_URL}/auth/updateUser`, form, {
+		const res = await axios.put(`${import.meta.env.VITE_BASE_URL}/auth/updateUser`, formData, {
 			headers,
 		});
 		if (res) {
@@ -133,7 +140,6 @@ export const uploadPic = (form) => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
 	sessionStorage.clear();
-
 	dispatch(setLogout());
 	dispatch(actionSnackBar.setSnackBar('success', 'Successfully disconnected', 2000));
 	
@@ -149,6 +155,7 @@ export const {
 	setLogout,
 	setWrongCredentialsError,
 	setWSToConnected,
+	isAuthenticated,
 } = authSlice.actions;
 
 export default authSlice.reducer;
