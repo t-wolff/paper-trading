@@ -12,7 +12,7 @@ const Leaderboard = () => {
 
 	useEffect(() => {
 		dispatch(actionStats.getLeaderboard());
-	}, []);
+	}, [dispatch]);
 
 	return (
 		<div className="leaderboard-container">

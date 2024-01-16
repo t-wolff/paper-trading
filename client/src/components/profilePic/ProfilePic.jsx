@@ -14,9 +14,9 @@ const ProfilePic = () => {
 		setOpenProfileModal(!openProfileModal);
 	};
 
-	const handleProfileClose = () => {
-        if (openProfileModal) {setOpenProfileModal(false)}
-	};
+	// const handleProfileClose = () => {
+    //     if (openProfileModal) {setOpenProfileModal(false)}
+	// };
 
 	const handleLogout = () => {
 		dispatch(actionAuth.logout());

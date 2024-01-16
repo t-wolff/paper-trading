@@ -14,7 +14,7 @@ const Dashboard = () => {
 	useEffect(() => {
 		dispatch(actionTrade.getTrades(userId));
 		dispatch(actionStats.getStats(userId));
-	}, [userId]);
+	}, [userId, dispatch]);
 
 	return (
 		<div className="dashboard-container">
