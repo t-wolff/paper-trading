@@ -7,8 +7,4 @@ export default defineConfig({
 		jsxFactory: 'h',
 		jsxFragment: 'Fragment',
 	},
-	server: {
-		host: true,
-		// port: 80,
-	}
 });

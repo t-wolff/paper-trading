@@ -2,7 +2,10 @@ import axios from 'axios';
 import * as actionSnackBar from '../SnackBar/snackBarSlice';
 import { createSlice } from '@reduxjs/toolkit';
 
-const VITE_BASE_URL = 'http://16.171.195.174/api/v1';
+const BASE_URL =
+	import.meta.env.NODE_ENV === 'production'
+		? import.meta.env.VITE_BASE_URL_PROD
+		: import.meta.env.VITE_BASE_URL;
 
 export const tradeSlice = createSlice({
 	name: 'trade',
@@ -26,7 +29,7 @@ export const createTrade = (product, side, quantity, userID) => async (dispatch)
 		const res = await axios({
 			method: 'POST',
 			credentials: 'include',
-			url: `${VITE_BASE_URL}/trade`,
+			url: `${BASE_URL}/trade`,
 			data: { userID, product, side, quantity },
 			headers: headers,
 		});
@@ -51,7 +54,7 @@ export const getTrades = (userID) => async (dispatch) => {
 		const res = await axios({
 			method: 'GET',
 			credentials: 'include',
-			url: `${VITE_BASE_URL}/trade/${userID}`,
+			url: `${BASE_URL}/trade/${userID}`,
 			headers: headers,
 		});
 
@@ -78,7 +81,7 @@ export const getCandles = (params) => async (dispatch) => {
 		const res = await axios({
 			method: 'GET',
 			credentials: 'include',
-			url: `${VITE_BASE_URL}/trade/candles`,
+			url: `${BASE_URL}/trade/candles`,
 			params: params,
 			headers: headers,
 		});

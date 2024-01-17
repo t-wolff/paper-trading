@@ -3,7 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import * as actionSnackBar from '../SnackBar/snackBarSlice';
 import { setAuthToken, saveToSessionStorage } from '../../utils/constants';
 
-const VITE_BASE_URL="http://16.171.195.174/api/v1";
+const BASE_URL =
+	import.meta.env.NODE_ENV === 'production'
+		? import.meta.env.VITE_BASE_URL_PROD
+		: import.meta.env.VITE_BASE_URL;
 
 export const authSlice = createSlice({
 	name: 'auth',
@@ -55,7 +58,7 @@ export const login =
 				const res = await axios({
 					method: 'POST',
 					credentials: 'include',
-					url: `${VITE_BASE_URL}/auth/login`,
+					url: `${BASE_URL}/auth/login`,
 					data: { email, password },
 					headers: headers,
 				});
@@ -84,7 +87,7 @@ export const register = (firstName, lastName, email, password) => async (dispatc
 		const headers = { 'Content-Type': 'application/json' };
 		const res = await axios({
 			method: 'POST',
-			url: `${VITE_BASE_URL}/auth/register`,
+			url: `${BASE_URL}/auth/register`,
 			data: { firstName, lastName, email, password },
 			headers: headers,
 		});
@@ -121,7 +124,7 @@ const setInitialSettings = (data) => (dispatch) => {
 export const uploadPic = (formData) => async (dispatch) => {
 	try {
 		const headers = { 'Content-Type': 'multipart/form-data' };
-		const res = await axios.put(`${VITE_BASE_URL}/auth/updateUser`, formData, {
+		const res = await axios.put(`${BASE_URL}/auth/updateUser`, formData, {
 			headers,
 		});
 		if (res) {
@@ -145,7 +148,7 @@ export const logout = () => (dispatch) => {
 	dispatch(setLogout());
 	dispatch(actionSnackBar.setSnackBar('success', 'Successfully disconnected', 2000));
 	
-	axios.delete(`${VITE_BASE_URL}/auth/login`)
+	axios.delete(`${BASE_URL}/auth/login`);
 };
 
 
