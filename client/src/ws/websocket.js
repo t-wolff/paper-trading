@@ -1,5 +1,5 @@
 let ws = null;
-const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost::5000';
+const WS_URL = "http://16.171.195.174/"
 
 async function openWebSocket(TOKEN, product) {
 	const tokenizedUrl = `${WS_URL}/?token=${TOKEN}`;

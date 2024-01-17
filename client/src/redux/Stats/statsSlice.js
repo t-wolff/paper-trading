@@ -2,6 +2,8 @@ import axios from 'axios';
 import * as actionSnackBar from '../SnackBar/snackBarSlice';
 import { createSlice } from '@reduxjs/toolkit';
 
+const VITE_BASE_URL = 'http://http://16.171.195.174/api/v1';
+
 export const statsSlice = createSlice({
 	name: 'stats',
 	initialState: {
@@ -30,7 +32,7 @@ export const getStats = (userID) => async (dispatch) => {
 		const res = await axios({
 			method: 'GET',
 			credentials: 'include',
-			url: `${import.meta.env.VITE_BASE_URL}/stats/${userID}`,
+			url: `${VITE_BASE_URL}/stats/${userID}`,
 			headers: headers,
 		});
 
@@ -55,7 +57,7 @@ export const getLeaderboard = () => async (dispatch) => {
 		const res = await axios({
 			method: 'GET',
 			credentials: 'include',
-			url: `${import.meta.env.VITE_BASE_URL}/stats`,
+			url: `${VITE_BASE_URL}/stats`,
 			headers: headers,
 		});
 
