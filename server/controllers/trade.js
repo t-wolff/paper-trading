@@ -179,11 +179,11 @@ exports.getCandles = asyncHandler(async (req, res, next) => {
 
 	const processedArray = dataArr.map((data) => {
 		return {
-			open: data[0],
-			high: data[1],
-			low: data[2],
-			close: data[3],
-			time: data[4],
+			open: JSON.parse(data[1]),
+			high: JSON.parse(data[2]),
+			low: JSON.parse(data[3]),
+			close: JSON.parse(data[4]),
+			time: JSON.parse(data[0]),
 		};
 	});
 

@@ -6,20 +6,40 @@ import {
 } from '../../ws/websocket';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTrade from '../../redux/Trade/tradeSlice';
-import './Trade.css';
 import StyledButton from '../../components/styledButton/StyledButton';
 import Input from '../../components/input/Input';
 import Graph from '../../components/graph/Graph';
+import './Trade.css';
 
 const Trade = () => {
 	const dispatch = useDispatch();
 	const [price, setPrice] = useState(0);
 	const [product, setProduct] = useState('btc');
 	const [quantity, setQuantity] = useState(0.001);
+	const [interval, setInterval] = useState('1d');
+	const [timeFrame, setTimeFrame] = useState('1m');
+
+	const candles = useSelector((state) => state.trade.candles);
 	const userContent = useSelector((state) => state.auth.userContent);
 	const userId = userContent.userID;
 
 	useEffect(() => {
+		// hardcoded for now need to change to dynamic product
+		setProduct('btc');
+		setTimeFrame('1m');
+		setInterval('1d')
+		//
+		const candleParams = {
+			interval,
+			timeFrame,
+			userID: userId,
+			symbol: `${product.toUpperCase()}USDT`,
+		};
+
+		console.log(candles);
+
+		dispatch(actionTrade.getCandles(candleParams));
+
 		// Get all cookies as a string
 		const allCookiesString = document.cookie;
 
@@ -49,10 +69,6 @@ const Trade = () => {
 			}
 		};
 
-		// hardcoded for now need to change to dynamic product
-		setProduct('btc');
-		//
-
 		const showClosePrice = (msg) => {
 			const integerValue = parseFloat(msg.k.c, 10);
 			setPrice(integerValue);
@@ -74,22 +90,10 @@ const Trade = () => {
 		setQuantity(e.target.value);
 	};
 
-	const initialData = [
-		{ time: '2018-12-22', value: 32.51 },
-		{ time: '2018-12-23', value: 31.11 },
-		{ time: '2018-12-24', value: 27.02 },
-		{ time: '2018-12-25', value: 27.32 },
-		{ time: '2018-12-26', value: 25.17 },
-		{ time: '2018-12-27', value: 28.89 },
-		{ time: '2018-12-28', value: 25.46 },
-		{ time: '2018-12-29', value: 23.92 },
-		{ time: '2018-12-30', value: 22.68 },
-		{ time: '2018-12-31', value: 22.67 },
-	];
-
 	function numberWithCommas(number) {
 		return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	}
+
 	return (
 		<div className="trade-container">
 			<div className="click-trade-container">
@@ -116,7 +120,7 @@ const Trade = () => {
 					</StyledButton>
 				</div>
 			</div>
-			<Graph data={initialData} />
+			<Graph data={candles} />
 		</div>
 	);
 };

@@ -6,10 +6,14 @@ export const tradeSlice = createSlice({
 	name: 'trade',
 	initialState: {
 		trades: [],
+		candles: [{ open: 10, high: 10.63, low: 9.49, close: 9.55, time: 1642427876 }],
 	},
 	reducers: {
 		setTrades: (state, action) => {
 			state.trades = action.payload;
+		},
+		setCandles: (state, action) => {
+			state.candles = action.payload;
 		},
 	},
 });
@@ -27,7 +31,6 @@ export const createTrade = (product, side, quantity, userID) => async (dispatch)
 
 		if (res.status === 200) {
 			dispatch(actionSnackBar.setSnackBar('success', 'Trade Successful', 2000));
-			// getTrades()
 		}
 	} catch (error) {
 		if (error?.response?.status === 403) {
@@ -66,6 +69,34 @@ export const getTrades = (userID) => async (dispatch) => {
 	}
 };
 
-export const { snackBar, setDisableSnackBar, setTrades} = tradeSlice.actions;
+
+export const getCandles = (params) => async (dispatch) => {
+	try {
+		const headers = { 'Content-Type': 'application/json' };
+		const res = await axios({
+			method: 'GET',
+			credentials: 'include',
+			url: `${import.meta.env.VITE_BASE_URL}/trade/candles`,
+			params: params,
+			headers: headers,
+		});
+
+		if (res.status === 200) {
+			const candles = res.data.candles;
+			dispatch(setCandles(candles));
+		}
+	} catch (error) {
+		if (error?.response?.status === 401) {
+			dispatch(actionSnackBar.setSnackBar('error', 'Unauthorized', 2000));
+		} else if (error.response && error.response.data !== undefined) {
+			dispatch(actionSnackBar.setSnackBar('error', 'Get candles failed', 2000));
+		} else {
+			dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
+		}
+	}
+};
+
+
+export const { snackBar, setDisableSnackBar, setTrades, setCandles} = tradeSlice.actions;
 
 export default tradeSlice.reducer;
