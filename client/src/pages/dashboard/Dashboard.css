@@ -2,6 +2,7 @@
 .dashboard-container {
   width: 100%;
   height: 100%;
+  padding-top: 6rem;
 }
 ul{
     color: white;
@@ -36,11 +37,12 @@ ul{
 }
 .dashboard-data-container {
     height: 100%;
-    margin-top: 5rem;
+    padding-top: 10rem;
 }
 .dashboard-data {
-    padding: 5rem;
+    padding: 3rem;
     padding-right: 10rem;
-    border: 0.2rem solid var(--primary-purple) ;
+    /* border: 0.2rem solid var(--primary-purple) ; */
     background: var(--opaque-purple);
+    color: var(--primary-white);
 }

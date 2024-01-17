@@ -1,13 +1,13 @@
 let ws = null;
 const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost::5000';
 
-async function openWebSocket(TOKEN) {
+async function openWebSocket(TOKEN, product) {
 	const tokenizedUrl = `${WS_URL}/?token=${TOKEN}`;
 	return new Promise((resolve, reject) => {
 		if (!ws) {
 			ws = new WebSocket(tokenizedUrl);
 			ws.addEventListener('open', () => {
-				sendWebSocketMessage('lolA');
+				sendWebSocketMessage(product);
 				setTimeout(() => {
 					// if (ws.readyState === 1) {
 					// console.log('WebSocket connection established.');

@@ -6,19 +6,40 @@ import {
 } from '../../ws/websocket';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTrade from '../../redux/Trade/tradeSlice';
-import './Trade.css';
 import StyledButton from '../../components/styledButton/StyledButton';
 import Input from '../../components/input/Input';
+import Graph from '../../components/graph/Graph';
+import './Trade.css';
 
 const Trade = () => {
 	const dispatch = useDispatch();
-	const [price, setPrice] = useState();
+	const [price, setPrice] = useState(0);
 	const [product, setProduct] = useState('btc');
 	const [quantity, setQuantity] = useState(0.001);
+	const [interval, setInterval] = useState('1d');
+	const [timeFrame, setTimeFrame] = useState('1m');
+
+	const candles = useSelector((state) => state.trade.candles);
 	const userContent = useSelector((state) => state.auth.userContent);
 	const userId = userContent.userID;
 
 	useEffect(() => {
+		// hardcoded for now need to change to dynamic product
+		setProduct('btc');
+		setTimeFrame('1m');
+		setInterval('1d')
+		//
+		const candleParams = {
+			interval,
+			timeFrame,
+			userID: userId,
+			symbol: `${product.toUpperCase()}USDT`,
+		};
+
+		console.log(candles);
+
+		dispatch(actionTrade.getCandles(candleParams));
+
 		// Get all cookies as a string
 		const allCookiesString = document.cookie;
 
@@ -48,10 +69,6 @@ const Trade = () => {
 			}
 		};
 
-		// hardcoded for now need to change to dynamic product
-		setProduct('btc');
-		//
-
 		const showClosePrice = (msg) => {
 			const integerValue = parseFloat(msg.k.c, 10);
 			setPrice(integerValue);
@@ -73,24 +90,37 @@ const Trade = () => {
 		setQuantity(e.target.value);
 	};
 
+	function numberWithCommas(number) {
+		return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	}
+
 	return (
-		<div>
-			<h2>Trading Zone</h2>
-			<h2>{product}</h2>
-			<h2>{price}</h2>
-			<Input
-				name="quantity"
-				label="QTY"
-				type="number"
-				handleChange={(e) => handleChangeInputs(e)}
-				value={quantity}
-			/>
-			<StyledButton color={'green'} onclick={(e) => handleBuy(e)}>
-				BUY
-			</StyledButton>
-			<StyledButton color={'red'} onclick={handleSell}>
-				SELL
-			</StyledButton>
+		<div className="trade-container">
+			<div className="click-trade-container">
+				<header>
+					<h2 className="product-name">{product}</h2>
+					<h2 className="product-price">{numberWithCommas(price)}$</h2>
+				</header>
+				<div className="trade-input-container">
+					<h2>QTY</h2>
+					<Input
+						name="quantity"
+						type="number"
+						handleChange={(e) => handleChangeInputs(e)}
+						value={quantity}
+						width={'small'}
+					/>
+				</div>
+				<div className="trade-btn-container">
+					<StyledButton color={'green'} onclick={(e) => handleBuy(e)}>
+						BUY
+					</StyledButton>
+					<StyledButton color={'red'} onclick={handleSell}>
+						SELL
+					</StyledButton>
+				</div>
+			</div>
+			<Graph data={candles} />
 		</div>
 	);
 };

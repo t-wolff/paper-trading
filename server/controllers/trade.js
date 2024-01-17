@@ -4,6 +4,7 @@ const moment = require('moment');
 const uuid = require('uuid');
 const { pool } = require('../config/db');
 const { getCurrentPrice } = require('../utils/getPrice');
+const { getHistoricalData } = require('../utils/binanceHistorical');
 
 // //@desc       Make trade
 // //@route      POST /api/v1/trade
@@ -147,6 +148,48 @@ exports.getAllTrades = asyncHandler(async (req, res, next) => {
 	res.status(200).json({
 		success: true,
 		trades: formattedTrades,
+	});
+});
+
+// //@desc       Get candles
+// //@route      GET /api/v1/trade/candles
+// //@access     Private
+exports.getCandles = asyncHandler(async (req, res, next) => {
+	const { userID, interval, symbol, timeFrame } = req.query;
+
+	// const symbol = 'BTCUSDT';
+	// const interval = '1d';
+	// const timeFrame = '1y';
+
+	if (!userID || !interval || !symbol || !timeFrame) {
+		return next(new ErrorResponse('Missing fields (userID/interval/symbol/timeFrame)', 400));
+	}
+
+	const dataArr = await getHistoricalData(symbol, interval, timeFrame);
+
+	if (!dataArr) {
+		return next(new ErrorResponse(`Error getting candles data`));
+	}
+
+	// const formattedTrades = trades.map((trade) => ({
+	// 	...trade,
+	// 	createdAt: moment(trade.createdAt).format('HH:mm:ss YYYY-MM-DD'),
+	// 	nominal: trade.nominal.toFixed(2),
+	// }));
+
+	const processedArray = dataArr.map((data) => {
+		return {
+			open: JSON.parse(data[1]),
+			high: JSON.parse(data[2]),
+			low: JSON.parse(data[3]),
+			close: JSON.parse(data[4]),
+			time: JSON.parse(data[0]),
+		};
+	});
+
+	res.status(200).json({
+		success: true,
+		candles: processedArray,
 	});
 });
 

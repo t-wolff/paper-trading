@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import './Input.css';
 
-const Input = ({ name, label, value, type, handleChange, error }) => {
+const Input = ({ name, label, value, type, handleChange, error, width}) => {
 	const [showPassword, setShowPassword] = useState(false);
 
 	const handleShowPassword = (e) => {
@@ -19,6 +19,7 @@ const Input = ({ name, label, value, type, handleChange, error }) => {
 					name={name}
 					value={value}
 					onChange={handleChange}
+					className={width}
 				/>
 				{type === 'password' && (
 					<button onClick={(e) => handleShowPassword(e)} className="show-password-btn">
@@ -33,6 +34,7 @@ const Input = ({ name, label, value, type, handleChange, error }) => {
 
 Input.propTypes = {
 	name: PropTypes.string,
+	width: PropTypes.string,
 	label: PropTypes.string,
 	value: PropTypes.any,
 	type: PropTypes.string,

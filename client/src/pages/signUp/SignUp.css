@@ -1,6 +1,7 @@
-.signup-container {
+div .signup-container {
   width: 100%;
   height: 100%;
+  justify-content: center;
 }
 .signup-form-container {
 	padding: 8rem;
