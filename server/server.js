@@ -1,5 +1,3 @@
-const {getHistoricalData} = require('./utils/binanceHistorical');
-
 const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
@@ -31,12 +29,12 @@ app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
 
+const CORS_ALLOW = (process.env.NODE_ENV === 'production'
+	? process.env.PROD_CORS_ORIGIN
+	: process.env.DEV_CORS_ORIGIN);
+
 const corsOptions = {
-	origin: [
-		'http://localhost:5173',
-		'https://meek-marshmallow-b84019.netlify.app',
-		'http://localhost:5000',
-	],
+	origin: [CORS_ALLOW],
 	methods: ['POST', 'GET', 'PUT'],
 	credentials: true,
 };
@@ -50,7 +48,7 @@ app.use((req, res, next) => {
 });
 
 // Dev logging middleware
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'dev') {
 	app.use(morgan('dev'));
 };
 
