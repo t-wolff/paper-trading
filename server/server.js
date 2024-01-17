@@ -36,7 +36,7 @@ const CORS_ALLOW = (process.env.NODE_ENV === 'production'
 const corsOptions = {
 	origin: [CORS_ALLOW],
 	methods: ['POST', 'GET', 'PUT'],
-	credentials: true,
+	credentials: false,
 };
 
 app.use(cors(corsOptions));
