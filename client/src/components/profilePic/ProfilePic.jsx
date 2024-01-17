@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import FileUpload from '../fileUpload/Fileupload';
 import * as actionAuth from '../../redux/Auth/authSlice';
+import FileUpload from '../fileUpload/FileUpload';
 import './ProfilePic.css';
 
 const ProfilePic = () => {
