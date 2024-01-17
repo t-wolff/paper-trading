@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import * as actionSnackBar from '../SnackBar/snackBarSlice';
 import { setAuthToken, saveToSessionStorage } from '../../utils/constants';
 
-const VITE_BASE_URL="http://http://16.171.195.174/api/v1";
+const VITE_BASE_URL="http://16.171.195.174/api/v1";
 
 export const authSlice = createSlice({
 	name: 'auth',

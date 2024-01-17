@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as actionSnackBar from '../SnackBar/snackBarSlice';
 import { createSlice } from '@reduxjs/toolkit';
 
-const VITE_BASE_URL = 'http://http://16.171.195.174/api/v1';
+const VITE_BASE_URL = 'http://16.171.195.174/api/v1';
 
 export const tradeSlice = createSlice({
 	name: 'trade',
