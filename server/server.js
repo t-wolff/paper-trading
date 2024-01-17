@@ -33,13 +33,15 @@ const CORS_ALLOW = (process.env.NODE_ENV === 'production'
 	? process.env.PROD_CORS_ORIGIN
 	: process.env.DEV_CORS_ORIGIN);
 
-const corsOptions = {
-	origin: [CORS_ALLOW],
-	methods: ['POST', 'GET', 'PUT'],
-	credentials: false,
-};
+// const corsOptions = {
+// 	origin: [CORS_ALLOW],
+// 	methods: ['POST', 'GET', 'PUT'],
+// 	credentials: false,
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+
+app.use(cors());
 
 // Add the Cross-Origin-Resource-Policy header to the response
 app.use((req, res, next) => {
