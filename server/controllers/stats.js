@@ -61,7 +61,8 @@ exports.calcStats = asyncHandler(async (req, res, next) => {
 // //@access     Private
 exports.userStats = asyncHandler(async (req, res, next) => {
 	try {
-		await calcAllPnl();
+		try{await calcAllPnl();} catch{return next(new ErrorResponse('Calc pnl failed', 500));}
+	
 		const pnlQuery = `SELECT firstName, lastName, profilePic, pnl, RANK() OVER (ORDER BY pnl DESC) AS position FROM users ORDER BY pnl DESC LIMIT 10`;
 		const [rawUsers] = await pool.promise().query(pnlQuery);
 
