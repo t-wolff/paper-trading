@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actionStats from '../../redux/Stats/statsSlice';
+import avatar from '../../assets/user-avatar.png';
+
 import './Leaderboard.css';
 
 const Leaderboard = () => {
@@ -16,33 +18,28 @@ const Leaderboard = () => {
 
 	return (
 		<div className="leaderboard-container">
-			<table className="trades-table">
-				{/* <thead>
-					<tr className="trades-table-header">
-						<th>Side</th>
-						<th>Product</th>
-						<th>QTY</th>
-						<th>Price</th>
-						<th>Nominal</th>
-						<th>Creation Date</th>
-					</tr>
-				</thead> */}
-				<tbody>
-					{usersArr.map((user) => {
-						return (
-							<tr key={user.firstName+user.lastName} className="users-table-row">
-								<td>{user.position}</td>
-								<td>{user.firstName}</td>
-								<td>{user.lastName}</td>
-								<td>{user.pnl}$</td>
-							</tr>
-						);
-					})}
-				</tbody>
-			</table>
-			<div className="leaderboard-data-container">
-				
-			</div>
+			<ul>
+				{usersArr.map((user) => {
+					const imageUrl =
+						user?.profilePic.length > 10
+							? encodeURI(`http://localhost:5000/${user?.profilePic}`)
+							: null;
+					return (
+						<li key={user.firstName + user.lastName} className="leaderboard-row">
+							<div className='leaderboard-titles'>
+								<h2 className="position-num">{user.position}</h2>
+								<img src={imageUrl || avatar} alt="profile-pic" className="profile-pic" />
+								<h2 className="user-name">
+									{user.firstName} {user.lastName}
+								</h2>
+							</div>
+							<h2 className="user-pnl">{user.pnl}$</h2>
+						</li>
+					);
+				})}
+			</ul>
+
+			<div className="leaderboard-data-container"></div>
 		</div>
 	);
 };
