@@ -26,7 +26,7 @@ const ProfilePic = () => {
 	const imageUrl = userContent?.profilePic
 		? encodeURI(`http://localhost:5000/${
 				userContent?.profilePic}`)
-		: null;
+		: '../../assets/user-avatar.png';
 
 	return (
 		<div className="profile-pic-container">
