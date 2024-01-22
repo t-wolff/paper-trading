@@ -5,7 +5,7 @@ import { setAuthToken, saveToSessionStorage } from '../../utils/constants';
 
 const BASE_URL =
 	import.meta.env.NODE_RUN_ENV === 'production'
-		? import.meta.env.VITE_BASE_URL_PROD
+		? 'https://paper-trading-api-x5uz.onrender.com/api/v1'
 		: import.meta.env.VITE_BASE_URL;
 
 export const authSlice = createSlice({
