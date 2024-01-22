@@ -134,9 +134,9 @@ exports.getAllTrades = asyncHandler(async (req, res, next) => {
 	});
 
 	if (!trades) {
-		return next(new ErrorResponse(`User with ID ${userID} not found`));
+		return next(new ErrorResponse(`User with ID ${userID} not found`, 404));
 	} else if (!trades[0]) {
-		return next(new ErrorResponse(`User with ID ${userID} has no trades`));
+		return next(new ErrorResponse(`User with ID ${userID} has no trades`, 404));
 	}
 
 	const formattedTrades = trades.map((trade) => ({

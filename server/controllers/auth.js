@@ -47,10 +47,10 @@ exports.register = asyncHandler(async (req, res, next) => {
 		});
 
 		const registerQuery =
-			'INSERT INTO users (userID, firstName, lastName, email, password, profilePic, pnl) VALUES (?,?,?,?,?,?,?)';
+			'INSERT INTO users (userID, firstName, lastName, email, password, pnl) VALUES (?,?,?,?,?,?)';
 		const salt = await bcrypt.genSalt(10);
 		const encryptPassword = await bcrypt.hash(password.toString(), salt);
-		const values = [userId, firstName, lastName, email, encryptPassword, 0, 0];
+		const values = [userId, firstName, lastName, email, encryptPassword, 0];
 
 		pool.execute(registerQuery, values, (queryError, results) => {
 			if (queryError) {

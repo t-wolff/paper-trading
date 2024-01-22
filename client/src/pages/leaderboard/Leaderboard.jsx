@@ -21,7 +21,7 @@ const Leaderboard = () => {
 			<ul>
 				{usersArr.map((user) => {
 					const imageUrl =
-						user?.profilePic.length > 10
+						user?.profilePic
 							? encodeURI(`http://localhost:5000/${user?.profilePic}`)
 							: null;
 					return (
