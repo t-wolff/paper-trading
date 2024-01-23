@@ -1,8 +1,12 @@
 let ws = null;
-const WS_URL = import.meta.env.VITE_WS_URL 
+
+const BASE_URL =
+	import.meta.env.VITE_MODE === 'prod'
+		? import.meta.env.VITE_WS_URL_PROD
+		: import.meta.env.VITE_WS_URL;
 
 async function openWebSocket(TOKEN, product) {
-	const tokenizedUrl = `${WS_URL}/?token=${TOKEN}`;
+	const tokenizedUrl = `${BASE_URL}/?token=${TOKEN}`;
 	return new Promise((resolve, reject) => {
 		if (!ws) {
 			ws = new WebSocket(tokenizedUrl);

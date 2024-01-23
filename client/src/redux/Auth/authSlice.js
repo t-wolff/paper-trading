@@ -4,7 +4,7 @@ import * as actionSnackBar from '../SnackBar/snackBarSlice';
 import { setAuthToken, saveToSessionStorage } from '../../utils/constants';
 
 const BASE_URL =
-	import.meta.env.VITE_MODE === 'production'
+	import.meta.env.VITE_MODE === 'prod'
 		? import.meta.env.VITE_BASE_URL_PROD
 		: import.meta.env.VITE_BASE_URL;
 
@@ -53,6 +53,7 @@ export const authSlice = createSlice({
 export const login =
 	(email, password) =>
 		async (dispatch) => {
+			console.log('base url :' + BASE_URL);
 			try {
 				const headers = { 'Content-Type': 'application/json' };
 				const res = await axios({

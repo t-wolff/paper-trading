@@ -29,7 +29,7 @@ app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
 
-const CORS_ALLOW = (process.env.NODE_ENV === 'production'
+const CORS_ALLOW = (process.env.NODE_ENV === 'prod'
 	? process.env.PROD_CORS_ORIGIN
 	: process.env.DEV_CORS_ORIGIN);
 
