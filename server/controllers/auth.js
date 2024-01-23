@@ -130,7 +130,7 @@ const sendTokenResponse = async (user, statusCode, res) => {
 		httpOnly: true,
 	};
 
-	if (process.env.NODE_ENV === 'production') {
+	if (process.env.NODE_ENV === 'prod') {
 		options.secure = true;
 	}
 

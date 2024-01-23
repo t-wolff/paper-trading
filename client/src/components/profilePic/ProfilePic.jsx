@@ -5,7 +5,7 @@ import FileUpload from '../fileUpload/FileUpload';
 import './ProfilePic.css';
 
 const BASE_URL =
-	import.meta.env.VITE_MODE === 'production'
+	import.meta.env.VITE_MODE === 'prod'
 		? import.meta.env.VITE_BASE_URL_PROD_PIC
 		: import.meta.env.VITE_BASE_URL_PIC;
 
