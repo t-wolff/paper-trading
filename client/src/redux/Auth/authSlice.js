@@ -4,7 +4,7 @@ import * as actionSnackBar from '../SnackBar/snackBarSlice';
 import { setAuthToken, saveToSessionStorage } from '../../utils/constants';
 
 const BASE_URL =
-	import.meta.env.NODE_RUN_ENV === 'production'
+	import.meta.env.VITE_MODE === 'production'
 		? import.meta.env.VITE_BASE_URL_PROD
 		: import.meta.env.VITE_BASE_URL;
 
