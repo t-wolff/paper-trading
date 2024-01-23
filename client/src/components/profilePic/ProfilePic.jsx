@@ -4,6 +4,12 @@ import * as actionAuth from '../../redux/Auth/authSlice';
 import FileUpload from '../fileUpload/FileUpload';
 import './ProfilePic.css';
 
+const BASE_URL =
+	import.meta.env.VITE_MODE === 'production'
+		? import.meta.env.VITE_BASE_URL_PROD_PIC
+		: import.meta.env.VITE_BASE_URL_PIC;
+
+
 const ProfilePic = () => {
 	const dispatch = useDispatch();
 	const userContent = useSelector((state) => state.auth.userContent);
@@ -24,7 +30,7 @@ const ProfilePic = () => {
 	};
 
 	const imageUrl = userContent?.profilePic
-		? encodeURI(`http://localhost:5000/${
+		? encodeURI(`${BASE_URL}${
 				userContent?.profilePic}`)
 		: null;
 
