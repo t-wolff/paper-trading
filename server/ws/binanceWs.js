@@ -71,12 +71,19 @@ async function sendBinanceWebSocketMessage(message, maxRetries = 5, retryInterva
 }
 
 function newBinanceConnection(wss) {
-	openBinanceWebSocket('btcusdt');
+
+	try {
+		openBinanceWebSocket('btcusdt');
+	} catch {
+		return console.error('error connecting to binance ws');
+	}
+
 	sendBinanceWebSocketMessage({
 		method: 'SUBSCRIBE',
 		params: ['btcusdt@kline_1m'],
 		id: 1,
 	});
+
 	setBinanceMessageHandler((data) => {
 		wss.clients.forEach((client) => {
 			if (client.readyState === Websocket.OPEN) {
