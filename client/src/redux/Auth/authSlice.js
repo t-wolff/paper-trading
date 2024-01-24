@@ -107,8 +107,10 @@ export const register = (firstName, lastName, email, password) => async (dispatc
 };
 
 const setInitialSettings = (data) => (dispatch) => {
-	const userContent = {...data.user};
-	saveToSessionStorage('TOKEN', data.token);
+	const userContent = { ...data.user };
+
+	saveToLocalStorage('TOKEN', data.token);
+
 	setAuthToken(data.token);
 
 	dispatch(
