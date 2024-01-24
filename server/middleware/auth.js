@@ -24,8 +24,6 @@ exports.protect = asyncHandler(async (req, res, next) => {
 	try {
 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
 		if (userID && userID !== decoded.id) {
-			console.log(userID)
-			console.log(decoded.id);
 			return next(new ErrorResponse('User ID does not match the token', 401));
 		}
 

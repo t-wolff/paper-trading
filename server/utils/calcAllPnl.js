@@ -1,6 +1,6 @@
-const { resolve } = require('path');
 const { pool } = require('../config/db');
 const { getCurrentPrice } = require('./getPrice');
+const logger = require('../middleware/winston');
 
 async function calcAllPnl () {
 	const btcPrice = await getCurrentPrice('btc');
@@ -14,9 +14,9 @@ async function calcAllPnl () {
 		);`;
 
 		const [sqlRes] = await pool.promise().query(pnlQuery);
-        // if (sqlRes) {console.log('Calculated PNL for all users')}
+        // if (sqlRes) {logger.info('Calculated PNL for all users')}
 	} catch (error) {
-		console.error('Error executing update all pnl query:', error.message);
+		logger.error('Error executing update all pnl query:', error.message);
         throw error;
 	}
 }

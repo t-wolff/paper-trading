@@ -5,6 +5,7 @@ const uuid = require('uuid');
 const { pool } = require('../config/db');
 const { getCurrentPrice } = require('../utils/getPrice');
 const { getHistoricalData } = require('../utils/binanceHistorical');
+const logger = require('../middleware/winston');
 
 // //@desc       Make trade
 // //@route      POST /api/v1/trade
@@ -21,14 +22,14 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 	} else if (quantity < 0) {
 		return next(new ErrorResponse('Invalid quantity', 403));
 	} else if (!price) {
-		console.log(`Error while getting price, price : ${price}`);
+		logger.warn(`Error while getting price, price : ${price}`);
 		return next(new ErrorResponse('Server Error', 500));
 	}
 
 	const userQuery = `SELECT balanceAmount, balanceType FROM balances WHERE userID= ?`;
 	const [balances] = await pool.promise().execute(userQuery, [userID], (queryError) => {
 		if (queryError) {
-			console.error('Error executing check user balance query:', queryError.message);
+			logger.error('Error executing check user balance query:', queryError.message);
 			return next(new ErrorResponse('Server Error', 500));
 		}
 	});
@@ -49,7 +50,7 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 			.promise()
 			.execute(productQuery, [`${product}usdt`], (queryError) => {
 				if (queryError) {
-					console.error('Error executing get product id query:', queryError.message);
+					logger.error('Error executing get product id query:', queryError.message);
 					return next(new ErrorResponse('Server Error', 500));
 				}
 			});
@@ -62,7 +63,7 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 
 		pool.execute(newTradeQuery, tradeValues, (queryError) => {
 			if (queryError) {
-				console.error('Error executing create new trade query:', queryError.message);
+				logger.error('Error executing create new trade query:', queryError.message);
 				return next(new ErrorResponse('Server Error', 500));
 			}
 		});
@@ -78,13 +79,13 @@ exports.createTrade = asyncHandler(async (req, res, next) => {
 
 		pool.execute(updateBalanceQuery, usdtBalanceValues, (queryError1) => {
 			if (queryError1) {
-				console.error('Error updating usdt balance:', queryError1.message);
+				logger.error('Error updating usdt balance:', queryError1.message);
 				return next(new ErrorResponse('Server Error', 500));
 			}
 
 			pool.execute(updateBalanceQuery, productBalanceValues, (queryError2) => {
 				if (queryError2) {
-					console.error('Error updating product balance:', queryError2.message);
+					logger.error('Error updating product balance:', queryError2.message);
 					return next(new ErrorResponse('Server Error', 500));
 				}
 				res.status(200).json({
@@ -128,7 +129,7 @@ exports.getAllTrades = asyncHandler(async (req, res, next) => {
 				LIMIT ? OFFSET ?`;
 	const [trades] = await pool.promise().query(tradesQuery, [userID, limit, offset], (queryError) => {
 		if (queryError) {
-			console.error('Error executing get trades:', queryError.message);
+			logger.error('Error executing get trades:', queryError.message);
 			return next(new ErrorResponse('Server Error', 500));
 		}
 	});
