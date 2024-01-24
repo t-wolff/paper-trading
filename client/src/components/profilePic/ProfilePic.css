@@ -1,11 +1,11 @@
-/* .overlay{
+.overlay{
     position: absolute;
     top: 0rem;
     left: 0rem;
     width: 100vw;
     height: 49vw;
     z-index: 1;
-} */
+}
 .profile-avatar {
     position: relative;
     z-index: 4;

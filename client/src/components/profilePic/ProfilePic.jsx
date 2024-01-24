@@ -9,7 +9,6 @@ const BASE_URL =
 		? import.meta.env.VITE_BASE_URL_PROD_PIC
 		: import.meta.env.VITE_BASE_URL_PIC;
 
-
 const ProfilePic = () => {
 	const dispatch = useDispatch();
 	const userContent = useSelector((state) => state.auth.userContent);
@@ -20,9 +19,11 @@ const ProfilePic = () => {
 		setOpenProfileModal(!openProfileModal);
 	};
 
-	// const handleProfileClose = () => {
-    //     if (openProfileModal) {setOpenProfileModal(false)}
-	// };
+	const handleProfileClose = () => {
+		if (openProfileModal) {
+			setOpenProfileModal(false);
+		}
+	};
 
 	const handleLogout = () => {
 		dispatch(actionAuth.logout());
@@ -30,14 +31,13 @@ const ProfilePic = () => {
 	};
 
 	const imageUrl = userContent?.profilePic
-		? encodeURI(`${BASE_URL}${
-				userContent?.profilePic}`)
+		? encodeURI(`${BASE_URL}${userContent?.profilePic}`)
 		: '../../assets/user-avatar.png';
 
 	return (
 		<div className="profile-pic-container">
 			<div className="profile-avatar" onClick={handleProfileClick}>
-				<img src={imageUrl} alt="avatar" className='profile-pic' />
+				<img src={imageUrl} alt="avatar" className="profile-pic" />
 			</div>
 			<div className={`profile-pic-modal ${openProfileModal === true ? '' : 'hide'}`}>
 				<h4 onClick={handleLogout} className="profile-logout">
@@ -45,7 +45,9 @@ const ProfilePic = () => {
 				</h4>
 				<FileUpload />
 			</div>
-			{/* <div className="overlay" onClick={handleProfileClose}></div> */}
+			<div
+				className={`overlay ${openProfileModal === true ? '' : 'hide'}`}
+				onClick={handleProfileClose}></div>
 		</div>
 	);
 };
