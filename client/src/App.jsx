@@ -1,26 +1,25 @@
 // import { useEffect, useRef } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import SnackBar from './components/SnackBar/SnackBar';
-// import { useGlobalArticleContext } from "./hooks";
+import { useDispatch } from 'react-redux';
+import { getFromLocalStorage } from './utils/constants';
+import * as actionAuth from './redux/Auth/authSlice';
+	import { useSelector } from 'react-redux';
 
 import {
-  LandingPage,
-  SignUp,
-  Login,
-  Dashboard,
-  Trade,
-  Leaderboard,
-  NotFound,
-//   Posts,
-//   NewPost
-} from "./pages";
+	LandingPage,
+	SignUp,
+	Login,
+	Dashboard,
+	Trade,
+	Leaderboard,
+	NotFound,
+	//   Posts,
+	//   NewPost
+} from './pages';
 
-import {
-  ProtectedRoute,
-  SharedLayout,
-//   SingleTrade,
-  // NewArticle,
-} from "./components";
+import { ProtectedRoute, SharedLayout } from './components';
+import { useEffect, useState } from 'react';
 
 const routes = [
 	{
@@ -93,18 +92,23 @@ const routes = [
 ];
 
 function App() {
-  const router = createBrowserRouter(routes);
-  // const { error, clearError } = useGlobalArticleContext();
+	const router = createBrowserRouter(routes);
+	const dispatch = useDispatch();
+	const [isToken, setIsToken] = useState(true)
+	const userContent = useSelector((state) => state.auth.userContent);
 
-  // useEffect(() => {
-  //   if (error) {
-  //   }
-  // }, [error, clearError]);
+	useEffect(() => {
+		const token = getFromLocalStorage('TOKEN');
+		if (token) {
+			dispatch(actionAuth.getUserContent(token));
+			setIsToken(true);
+		} else {setIsToken(false);}
+	}, [dispatch]);
 
-  return (
+	return (
 		<>
 			<SnackBar />
-			<RouterProvider router={router} />
+			{ ((isToken && userContent) || !isToken) && <RouterProvider router={router} />}
 		</>
 	);
 }

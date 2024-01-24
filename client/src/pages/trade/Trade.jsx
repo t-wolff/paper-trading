@@ -10,7 +10,7 @@ import StyledButton from '../../components/styledButton/StyledButton';
 import Input from '../../components/input/Input';
 import Graph from '../../components/graph/Graph';
 import './Trade.css';
-import { getFromLocalStorage } from '../../utils/constants'
+import { getFromLocalStorage } from '../../utils/constants';
 
 const Trade = () => {
 	const dispatch = useDispatch();
@@ -24,12 +24,41 @@ const Trade = () => {
 	const userContent = useSelector((state) => state.auth.userContent);
 	const userId = userContent.userID;
 
+	const connectToWebSocket = async () => {
+		try {
+			const token = getFromLocalStorage('TOKEN');
+			openWebSocket(token);
+		} catch (error) {
+			console.error('Error connecting to WebSocket:', error);
+		}
+	};
+
+	const showClosePrice = (msg) => {
+		const integerValue = parseFloat(msg.close, 10);
+		setPrice(integerValue);
+	};
+
+	// const allCookiesString = document.cookie;
+	// const cookiesArray = allCookiesString.split(';');
+	// const cookies = {};
+	// cookiesArray.forEach((cookie) => {
+	// 	const [name, value] = cookie.trim().split('=');
+	// 	cookies[name] = value;
+	// });
+	// const token = cookies.TOKEN;
+	// console.log('Token from cookies:', token);
+
 	useEffect(() => {
+		connectToWebSocket();
+		setMessageHandler(showClosePrice);
+	}, []);
+
+	useEffect(()=>{
 		// hardcoded for now need to change to dynamic product
 		setProduct('btc');
 		setTimeFrame('1m');
-		setInterval('1d')
-		//
+		setInterval('1h');
+
 		const candleParams = {
 			interval,
 			timeFrame,
@@ -37,46 +66,8 @@ const Trade = () => {
 			symbol: `${product.toUpperCase()}USDT`,
 		};
 
-		console.log(candles);
-
 		dispatch(actionTrade.getCandles(candleParams));
-
-		// Get all cookies as a string
-		const allCookiesString = document.cookie;
-
-		// Parse the string to get individual cookies
-		const cookiesArray = allCookiesString.split(';');
-
-		// Create an object to store key-value pairs of cookies
-		const cookies = {};
-
-		// Iterate through the array and populate the cookies object
-		cookiesArray.forEach((cookie) => {
-			const [name, value] = cookie.trim().split('=');
-			cookies[name] = value;
-		});
-
-		// Now, you can access individual cookies using the cookies object
-		const token = cookies.token;
-		console.log('Token from cookies:', token);
-
-		const connectToWebSocket = async () => {
-			try {
-				const token = getFromLocalStorage('TOKEN')
-				openWebSocket(token);
-			} catch (error) {
-				console.error('Error connecting to WebSocket:', error);
-			}
-		};
-
-		const showClosePrice = (msg) => {
-			const integerValue = parseFloat(msg.k.c, 10);
-			setPrice(integerValue);
-		};
-
-		connectToWebSocket();
-		setMessageHandler(showClosePrice);
-	}, []);
+	}, [dispatch])
 
 	const handleBuy = async () => {
 		dispatch(actionTrade.createTrade(product, 'BUY', quantity, userId));

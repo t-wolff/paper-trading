@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, updateUser } = require('../controllers/auth');
+const { register, login, updateUser, getUser } = require('../controllers/auth');
 const { protect } = require('../middleware/auth');
 
 const multer = require('multer');
@@ -16,6 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single('profilePic');
 
+router.get('/', getUser)
 router.post('/register', register);
 router.post('/login', login);
 router.put('/updateUser', upload, protect, updateUser);
