@@ -1,26 +1,21 @@
 // import { useEffect, useRef } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import SnackBar from './components/SnackBar/SnackBar';
-// import { useGlobalArticleContext } from "./hooks";
+// import { getFromLocalStorage } from './utils/constants';
 
 import {
-  LandingPage,
-  SignUp,
-  Login,
-  Dashboard,
-  Trade,
-  Leaderboard,
-  NotFound,
-//   Posts,
-//   NewPost
-} from "./pages";
+	LandingPage,
+	SignUp,
+	Login,
+	Dashboard,
+	Trade,
+	Leaderboard,
+	NotFound,
+	//   Posts,
+	//   NewPost
+} from './pages';
 
-import {
-  ProtectedRoute,
-  SharedLayout,
-//   SingleTrade,
-  // NewArticle,
-} from "./components";
+import { ProtectedRoute, SharedLayout } from './components';
 
 const routes = [
 	{
@@ -93,15 +88,14 @@ const routes = [
 ];
 
 function App() {
-  const router = createBrowserRouter(routes);
-  // const { error, clearError } = useGlobalArticleContext();
+	const router = createBrowserRouter(routes);
+	// const token = getFromLocalStorage('TOKEN');
 
-  // useEffect(() => {
-  //   if (error) {
-  //   }
-  // }, [error, clearError]);
+	// if (token) {
+	// 	get user
+	// }
 
-  return (
+	return (
 		<>
 			<SnackBar />
 			<RouterProvider router={router} />
