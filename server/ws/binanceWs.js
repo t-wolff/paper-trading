@@ -1,10 +1,15 @@
 const Websocket = require('ws');
 let ws = null;
 
+const BASE_URL =
+	process.env.NODE_ENV === 'prod'
+		? process.env.BINANCE_URL_PROD
+		: process.env.BINANCE_URL_TEST;
+
 async function openBinanceWebSocket(product) {
 	return new Promise((resolve, reject) => {
 		if (!ws) {
-			ws = new Websocket(`${process.env.BINANCE_URL_TEST}${product}`);
+			ws = new Websocket(`${BASE_URL}${product}@kline_5`);
 			ws.addEventListener('open', (event) => {
 				console.log('WebSocket connection opened:', event.type);
 
@@ -71,12 +76,19 @@ async function sendBinanceWebSocketMessage(message, maxRetries = 5, retryInterva
 }
 
 function newBinanceConnection(wss) {
-	openBinanceWebSocket('btcusdt');
+
+	try {
+		openBinanceWebSocket('btcusdt');
+	} catch {
+		return console.error('error connecting to binance ws');
+	}
+
 	sendBinanceWebSocketMessage({
 		method: 'SUBSCRIBE',
 		params: ['btcusdt@kline_1m'],
 		id: 1,
 	});
+
 	setBinanceMessageHandler((data) => {
 		wss.clients.forEach((client) => {
 			if (client.readyState === Websocket.OPEN) {

@@ -29,19 +29,19 @@ app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
 
-const CORS_ALLOW = (process.env.NODE_ENV === 'production'
+const CORS_ALLOW = (process.env.NODE_ENV === 'prod'
 	? process.env.PROD_CORS_ORIGIN
 	: process.env.DEV_CORS_ORIGIN);
 
-// const corsOptions = {
-// 	origin: [CORS_ALLOW],
-// 	methods: ['POST', 'GET', 'PUT'],
-// 	credentials: false,
-// };
+const corsOptions = {
+	origin: [CORS_ALLOW],
+	methods: ['POST', 'GET', 'PUT'],
+	credentials: false,
+};
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
-app.use(cors());
+// app.use(cors());
 
 // Add the Cross-Origin-Resource-Policy header to the response
 app.use((req, res, next) => {
@@ -63,7 +63,7 @@ app.use('/api/v1/trade', trade);
 app.use('/api/v1/stats', stats);
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.NODE_ENV ? process.env.PORT : 5000;
 
 const server = app.listen(PORT, () =>
 	console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)

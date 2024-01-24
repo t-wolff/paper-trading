@@ -3,7 +3,7 @@ import * as actionSnackBar from '../SnackBar/snackBarSlice';
 import { createSlice } from '@reduxjs/toolkit';
 
 const BASE_URL =
-	import.meta.env.VITE_MODE === 'production'
+	import.meta.env.VITE_MODE === 'prod'
 		? import.meta.env.VITE_BASE_URL_PROD
 		: import.meta.env.VITE_BASE_URL;
 
