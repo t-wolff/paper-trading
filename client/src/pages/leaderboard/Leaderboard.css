@@ -1,46 +1,40 @@
 
 .leaderboard-container {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
+  height: auto;
+  display: flex;
+  flex-direction: column;
 }
-ul{
+.leaderboard-container ul{
+    padding-top: 10rem;
     color: white;
 }
-.trades-table {
-    width: 50%;
-    max-height: 20rem;
+.leaderboard-container .leaderboard-row {
+    width: 100rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
     background-color: var(--opaque-purple);
-    color: var(--primary-white);
+    margin-bottom: 2rem;
+}
+.leaderboard-row .profile-pic {
     border: 0.2rem solid var(--primary-purple);
-    border-spacing: 0 0.2rem;
-    overflow: hidden;
+    padding: none;
+    margin-right: 2rem;
 }
-.trades-table .trades-table-row ,
-.trades-table .trades-table-header{
-    font-size: 1.6rem;
-    background-color: var(--opaque-white-1);
-    border-radius: 0;
-    text-align: left;
-}
-.trades-table td, .trades-table th {
-    padding: 0.4rem;
+.position-num {
+    font-size: 4rem;
     padding-left: 1rem;
-    padding-right: 1rem;
-    border-radius: 0;
 }
-.green-side {
-    color: var(--primary-green);
+.leaderboard-row .user-name {
+    padding-top: 1.6rem;
 }
-.red-side {
-    color: var(--primary-red);
+.leaderboard-row .user-pnl {
+    padding-top: 1.2rem;
+    font-size: 2.6rem;
+    padding-right: 2rem;
 }
-.leaderboard-data-container {
-    height: 100%;
-    margin-top: 5rem;
-}
-.leaderboard-data {
-    padding: 5rem;
-    padding-right: 10rem;
-    border: 0.2rem solid var(--primary-purple) ;
-    background: var(--opaque-purple);
+.leaderboard-titles {
+    display: flex;
 }

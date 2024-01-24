@@ -134,9 +134,9 @@ exports.getAllTrades = asyncHandler(async (req, res, next) => {
 	});
 
 	if (!trades) {
-		return next(new ErrorResponse(`User with ID ${userID} not found`));
+		return next(new ErrorResponse(`User with ID ${userID} not found`, 404));
 	} else if (!trades[0]) {
-		return next(new ErrorResponse(`User with ID ${userID} has no trades`));
+		return next(new ErrorResponse(`User with ID ${userID} has no trades`, 404));
 	}
 
 	const formattedTrades = trades.map((trade) => ({
@@ -178,12 +178,15 @@ exports.getCandles = asyncHandler(async (req, res, next) => {
 	// }));
 
 	const processedArray = dataArr.map((data) => {
+		const time = new Date(JSON.parse(data[0]));
+		const formattedDate = time.toISOString().split('T')[0];
+
 		return {
 			open: JSON.parse(data[1]),
 			high: JSON.parse(data[2]),
 			low: JSON.parse(data[3]),
 			close: JSON.parse(data[4]),
-			time: JSON.parse(data[0]),
+			time: formattedDate,
 		};
 	});
 
