@@ -120,7 +120,6 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 });
 
 
-//Get token from model,create cookie and send response
 const sendTokenResponse = async (user, statusCode, res) => {
 	const token = jwt.sign({ id: user.userID }, process.env.JWT_SECRET, {
 		expiresIn: process.env.JWT_EXPIRE,

@@ -18,7 +18,7 @@ const newWebsocketServer = (server) => {
 				wss.on('error', (error) => {
 					logger.error(`WebSocket server error: ${error.message}`);
 				});
-				
+
 				wss.on('message', (message) => {
 					logger.info(`Received WebSocket message: ${message}`);
 				});
@@ -38,8 +38,17 @@ const newWebsocketServer = (server) => {
 };
 
 function isValidToken(token) {
-	const decoded = jwt.verify(token, process.env.JWT_SECRET);
-	return decoded;
+	try {
+		const decoded = jwt.verify(token, process.env.JWT_SECRET);
+		console.log(decoded);
+		return decoded;
+	} catch (error) {
+		console.error(token);
+		throw error;
+	}
 }
+
+
+
 
 module.exports = { newWebsocketServer };

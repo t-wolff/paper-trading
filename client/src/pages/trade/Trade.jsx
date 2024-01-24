@@ -10,6 +10,7 @@ import StyledButton from '../../components/styledButton/StyledButton';
 import Input from '../../components/input/Input';
 import Graph from '../../components/graph/Graph';
 import './Trade.css';
+import { getFromLocalStorage } from '../../utils/constants'
 
 const Trade = () => {
 	const dispatch = useDispatch();
@@ -61,9 +62,8 @@ const Trade = () => {
 
 		const connectToWebSocket = async () => {
 			try {
-				openWebSocket(
-					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI2YWNiYThmLTkxYjMtNDZlNC04MDZlLWRiOGU1OWRmZGM5MSIsImlhdCI6MTcwNDQwNzMyOCwiZXhwIjoxNzA2OTk5MzI4fQ.60AqIKyEXTSfckpOT8pToWyAC9MJRN0LfBW7fvwniMM'
-				);
+				const token = getFromLocalStorage('TOKEN')
+				openWebSocket(token);
 			} catch (error) {
 				console.error('Error connecting to WebSocket:', error);
 			}
