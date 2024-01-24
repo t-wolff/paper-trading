@@ -35,7 +35,7 @@ export default function configureAppStore(preloadedState) {
 		enhancers: (getDefaultEnhancers) => getDefaultEnhancers(),
 	});
 
-	// if (process.env.NODE_ENV !== 'production' && module.hot) {
+	// if (process.env.NODE_ENV !== 'prod' && module.hot) {
 	// 	module.hot.accept('./reducers', () => store.replaceReducer(rootReducer));
 	// }
 
