@@ -42,6 +42,16 @@ const Dashboard = () => {
 							</tr>
 						);
 					})}
+					{Array.from({ length: Math.max(18 - tradeArr.length, 0) }).map((_, index) => (
+						<tr key={`empty-${index}`} className="trades-table-row-empty">
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					))}
 				</tbody>
 			</table>
 			<div className="dashboard-data-container">

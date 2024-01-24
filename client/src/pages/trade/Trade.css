@@ -7,10 +7,11 @@
 .trade-container .trade-input-container input{
 	display: flex;
 	width: 20rem;
+
 }
 .trade-input-container h2 {
 	padding-top: 1rem;
-	padding-right: 9.2rem;
+	padding-right: 8.1rem;
 }
 .click-trade-container {
 	background-color: var(--opaque-purple);
