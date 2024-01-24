@@ -15,6 +15,10 @@ const newWebsocketServer = (server) => {
 			if (token && isValidToken(token)) {
 				logger.info('Valid token received. WebSocket connection established');
 
+				wss.on('error', (error) => {
+					logger.error(`WebSocket server error: ${error.message}`);
+				});
+				
 				wss.on('message', (message) => {
 					logger.info(`Received WebSocket message: ${message}`);
 				});
