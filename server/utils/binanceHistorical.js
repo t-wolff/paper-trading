@@ -1,4 +1,5 @@
 const axios = require('axios');
+const logger = require('../middleware/winston');
 
 async function getHistoricalData(symbol, interval, time) {
 	const startTime = calculateStartTime(time);
@@ -21,7 +22,7 @@ async function getHistoricalData(symbol, interval, time) {
 		return klines;
 		// getTrades()
 	} else {
-		console.log('error getting klines');
+		logger.error('error getting klines');
 		throw error;
 	}
 }

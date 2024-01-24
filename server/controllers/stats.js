@@ -1,8 +1,8 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const { pool } = require('../config/db');
-const { getCurrentPrice } = require('../utils/getPrice');
 const { calcAllPnl } = require('../utils/calcAllPnl');
+const logger = require('../middleware/winston');
 
 // //@desc       calculate pnl
 // //@route      GET /api/v1/stats/:userID
@@ -19,7 +19,7 @@ exports.calcStats = asyncHandler(async (req, res, next) => {
 		const userQuery = `SELECT balanceAmount, balanceType FROM balances WHERE userID= ?`;
 		const [balances] = await pool.promise().execute(userQuery, [userID], (queryError) => {
 			if (queryError) {
-				console.error('Error executing check user balance query:', queryError.message);
+				logger.error('Error executing check user balance query:', queryError.message);
 				return next(new ErrorResponse('Server Error', 500));
 			}
 		});
@@ -35,7 +35,7 @@ exports.calcStats = asyncHandler(async (req, res, next) => {
 		const userPnlQuery = `SELECT userID, pnl, RANK() OVER (ORDER BY pnl DESC) AS position FROM users`;
 		const [allUsers] = await pool.promise().query(userPnlQuery, [userID], (queryError) => {
 			if (queryError) {
-				console.error('Error executing check user position and pnl query:', queryError.message);
+				logger.error('Error executing check user position and pnl query:', queryError.message);
 				return next(new ErrorResponse('Server Error', 500));
 			}
 		});
@@ -51,7 +51,7 @@ exports.calcStats = asyncHandler(async (req, res, next) => {
 			productBalance,
 		});
 	} catch {
-		console.log('Error calculating user pnl');
+		logger.warn('Error calculating user pnl');
 		return next(new ErrorResponse('Server Error', 500));
 	}
 });
@@ -73,7 +73,7 @@ exports.userStats = asyncHandler(async (req, res, next) => {
 			users,
 		});
 	} catch (error) {
-		console.error('Error executing check user balance query:', error.message);
+		logger.error('Error executing check user balance query:', error.message);
 		return next(new ErrorResponse('Server Error', 500));
 	}
 });
