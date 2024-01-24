@@ -1,31 +1,28 @@
 const Websocket = require('ws');
+const logger = require('../middleware/winston');
 let ws = null;
-
-const BASE_URL =
-	process.env.NODE_ENV === 'prod'
-		? process.env.BINANCE_URL_PROD
-		: process.env.BINANCE_URL_TEST;
 
 async function openBinanceWebSocket(product) {
 	return new Promise((resolve, reject) => {
 		if (!ws) {
-			ws = new Websocket(`${BASE_URL}${product}@kline_5`);
+			logger.error('opening websocket connection with binance');
+			ws = new Websocket(`${process.env.BINANCE_URL}${product}@kline_5`);
 			ws.addEventListener('open', (event) => {
-				console.log('WebSocket connection opened:', event.type);
+				logger.info('WebSocket connection opened:', event.type);
 
 				if (ws.readyState === Websocket.OPEN) {
-					console.log('WebSocket connection established.');
+					logger.info('WebSocket connection established.');
 					resolve(ws);
 				}
 			});
 
 			ws.addEventListener('close', (event) => {
-				console.log('WebSocket connection closed:', event.reason, 'wasClean:', event.wasClean);
+				logger.info('WebSocket connection closed:', event.reason, 'wasClean:', event.wasClean);
 				ws = null;
 			});
 
 			ws.addEventListener('error', (error) => {
-				console.error('WebSocket error:', error.message);
+				logger.error('WebSocket error:', error.message);
 				reject(error);
 			});
 		}
@@ -59,16 +56,16 @@ async function sendBinanceWebSocketMessage(message, maxRetries = 5, retryInterva
 	const send = async (attempt) => {
 		if (ws && ws.readyState === Websocket.OPEN) {
 			ws.send(JSON.stringify(message));
-			console.log('Message sent:', message);
+			logger.info('Message sent:', message);
 		} else if (attempt < maxRetries) {
-			console.log(
+			logger.info(
 				`WebSocket not open, retrying in ${retryInterval / 1000} seconds (attempt ${
 					attempt + 1
 				}/${maxRetries}).`
 			);
 			setTimeout(() => send(attempt + 1), retryInterval);
 		} else {
-			console.error('Max retries reached, unable to send message.');
+			logger.error('Max retries reached, unable to send message.');
 		}
 	};
 
@@ -80,7 +77,7 @@ function newBinanceConnection(wss) {
 	try {
 		openBinanceWebSocket('btcusdt');
 	} catch {
-		return console.error('error connecting to binance ws');
+		return logger.error('error connecting to binance ws');
 	}
 
 	sendBinanceWebSocketMessage({

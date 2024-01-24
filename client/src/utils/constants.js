@@ -13,9 +13,9 @@ export const saveToLocalStorage = (name, data) => {
   localStorage.setItem(name, JSON.stringify(data));
 };
 
-export const saveToSessionStorage = (name, data) => {
-  sessionStorage.setItem(name, JSON.stringify(data));
-};
+// export const saveToSessionStorage = (name, data) => {
+//   sessionStorage.setItem(name, JSON.stringify(data));
+// };
 
 export const getFromLocalStorage = (name) => {
   const data = localStorage.getItem(name);

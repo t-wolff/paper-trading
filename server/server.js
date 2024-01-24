@@ -10,6 +10,8 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 
+const logger = require('./middleware/winston');
+
 dotenv.config({ path: './config/config.env' });
 
 // Route files
@@ -66,11 +68,11 @@ app.use('/api/v1/stats', stats);
 const PORT = process.env.NODE_ENV ? process.env.PORT : 5000;
 
 const server = app.listen(PORT, () =>
-	console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+	logger.info(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
 );
 
 process.on('unhandledRejection', (err, promise) => {
-	console.log(`Error : ${err.message}`);
+	logger.error(`Error : ${err.message}`);
 	server.close(() => process.exit(1));
 });
 
@@ -84,6 +86,6 @@ const limiter = rateLimit({
 		const wss = await newWebsocketServer(server);
 		newBinanceConnection(wss);
 	} catch (error) {
-		console.error('Error creating WebSocket server:', error.message);
+		logger.error('Error creating WebSocket server:', error.message);
 	}
 })();

@@ -5,6 +5,7 @@ const uuid = require('uuid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const logger = require('../middleware/winston');
 
 //@desc       Register user
 //@route      POST /api/v1/auth/register
@@ -22,7 +23,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 	const emailQuery = 'SELECT * FROM users WHERE email= ?';
 	const [rows] = await pool.promise().query(emailQuery, [email], (queryError) => {
 		if (queryError) {
-			return console.error('Error executing check email query:', queryError.message);
+			return logger.error('Error executing check email query:', queryError.message);
 		}
 	});
 
@@ -42,7 +43,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 
 		pool.query(balanceQuery, balanceValues, (queryError) => {
 			if (queryError) {
-				return console.error('Error executing fill new balances query:', queryError.message);
+				return logger.error('Error executing fill new balances query:', queryError.message);
 			}
 		});
 
@@ -54,7 +55,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 
 		pool.execute(registerQuery, values, (queryError, results) => {
 			if (queryError) {
-				return console.error('Error executing register user query:', queryError.message);
+				return logger.error('Error executing register user query:', queryError.message);
 			}
 			res.status(200).json({
 				success: true,
@@ -77,7 +78,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 	const emailQuery = 'SELECT * FROM users WHERE email= ?';
 	const [users] = await pool.promise().query(emailQuery, [email], (queryError) => {
 		if (queryError) {
-			return console.error('Error executing check email query:', queryError.message);
+			return logger.error('Error executing check email query:', queryError.message);
 		}
 	});
 
@@ -119,7 +120,6 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 });
 
 
-//Get token from model,create cookie and send response
 const sendTokenResponse = async (user, statusCode, res) => {
 	const token = jwt.sign({ id: user.userID }, process.env.JWT_SECRET, {
 		expiresIn: process.env.JWT_EXPIRE,

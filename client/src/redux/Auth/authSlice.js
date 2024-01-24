@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createSlice } from '@reduxjs/toolkit';
 import * as actionSnackBar from '../SnackBar/snackBarSlice';
-import { setAuthToken, saveToSessionStorage } from '../../utils/constants';
+import { setAuthToken, saveToLocalStorage } from '../../utils/constants';
 
 const BASE_URL =
 	import.meta.env.VITE_MODE === 'prod'
@@ -34,8 +34,7 @@ export const authSlice = createSlice({
 			state.token = action.payload;
 		},
 		setLogout: (state) => {
-			state.token = '',
-			state.isAuthenticated = false;
+			(state.token = ''), (state.isAuthenticated = false);
 			state.isRegistered = false;
 			state.userContent = {};
 			state.isWsConnection = false;
@@ -50,38 +49,33 @@ export const authSlice = createSlice({
 	},
 });
 
-export const login =
-	(email, password) =>
-		async (dispatch) => {
-			console.log('base url :' + BASE_URL);
-			try {
-				const headers = { 'Content-Type': 'application/json' };
-				const res = await axios({
-					method: 'POST',
-					credentials: 'include',
-					url: `${BASE_URL}/auth/login`,
-					data: { email, password },
-					headers: headers,
-				});
+export const login = (email, password) => async (dispatch) => {
+	console.log('base url :' + BASE_URL);
+	try {
+		const headers = { 'Content-Type': 'application/json' };
+		const res = await axios({
+			method: 'POST',
+			credentials: 'include',
+			url: `${BASE_URL}/auth/login`,
+			data: { email, password },
+			headers: headers,
+		});
 
-				if (res.data.token) {
-					dispatch(setInitialSettings(res.data));
-					dispatch(
-						actionSnackBar.setSnackBar('success', 'Login Successful', 2000)
-					);
-				} 
-			} catch (error) {
-				if (error?.response?.status === 401) {
-					dispatch(setWrongCredentialsError('Wrong Username/Password'));
-					dispatch(actionSnackBar.setSnackBar('error', 'Login failed', 2000));
-				} else if (error.response && error.response.data !== undefined) {
-					dispatch(actionSnackBar.setSnackBar('error', 'Login failed', 2000));
-				} else {
-					dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
-				}
-			}
-		};
-
+		if (res.data.token) {
+			dispatch(setInitialSettings(res.data));
+			dispatch(actionSnackBar.setSnackBar('success', 'Login Successful', 2000));
+		}
+	} catch (error) {
+		if (error?.response?.status === 401) {
+			dispatch(setWrongCredentialsError('Wrong Username/Password'));
+			dispatch(actionSnackBar.setSnackBar('error', 'Login failed', 2000));
+		} else if (error.response && error.response.data !== undefined) {
+			dispatch(actionSnackBar.setSnackBar('error', 'Login failed', 2000));
+		} else {
+			dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
+		}
+	}
+};
 
 export const register = (firstName, lastName, email, password) => async (dispatch) => {
 	try {
@@ -98,7 +92,7 @@ export const register = (firstName, lastName, email, password) => async (dispatc
 			dispatch(actionSnackBar.setSnackBar('success', 'Register Successful', 2000));
 		}
 	} catch (error) {
-			if (error.response && error.response.data !== undefined) {
+		if (error.response && error.response.data !== undefined) {
 			dispatch(actionSnackBar.setSnackBar('error', 'Register failed', 2000));
 		} else {
 			dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
@@ -107,6 +101,8 @@ export const register = (firstName, lastName, email, password) => async (dispatc
 };
 
 const setInitialSettings = (data) => (dispatch) => {
+	const userContent = { ...data.user };
+	saveToLocalStorage('TOKEN', data.token);
 	const userContent = { ...data.user };
 
 	saveToLocalStorage('TOKEN', data.token);
@@ -146,13 +142,12 @@ export const uploadPic = (formData) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-	sessionStorage.clear();
+	localStorage.clear();
 	dispatch(setLogout());
 	dispatch(actionSnackBar.setSnackBar('success', 'Successfully disconnected', 2000));
-	
+
 	axios.delete(`${BASE_URL}/auth/login`);
 };
-
 
 export const {
 	setLogin,

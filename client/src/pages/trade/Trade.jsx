@@ -10,7 +10,7 @@ import StyledButton from '../../components/styledButton/StyledButton';
 import Input from '../../components/input/Input';
 import Graph from '../../components/graph/Graph';
 import './Trade.css';
-import { getFromLocalStorage } from '../../utils/constants';
+import { getFromLocalStorage } from '../../utils/constants'
 
 const Trade = () => {
 	const dispatch = useDispatch();
