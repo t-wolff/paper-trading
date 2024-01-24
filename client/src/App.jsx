@@ -106,7 +106,6 @@ function App() {
 	}, [dispatch]);
 
 	return (
-	return (
 		<>
 			<SnackBar />
 			{ ((isToken && userContent) || !isToken) && <RouterProvider router={router} />}
