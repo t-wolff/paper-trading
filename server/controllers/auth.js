@@ -110,7 +110,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 	const profilePicPath = profilePic.path || null;
 	const filenameWithoutDirectory = path.basename(profilePicPath);
 	const pathWithoutPublic = `profile_pictures/${filenameWithoutDirectory}`;
-	
+
 	const userQuery = 'UPDATE users SET profilePic = ? WHERE userID = ?';
 	await pool.promise().query(userQuery, [pathWithoutPublic, userID]);
 
@@ -119,6 +119,34 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 	});
 });
 
+//@desc       get User details
+//@route      GET /api/vi/auth/updateUser
+//@access     Private
+
+exports.getUser = asyncHandler(async (req, res, next) => {
+	const token = req.headers.authorization.split(' ')[1];
+	const decodedID = jwt.verify(token, process.env.JWT_SECRET).id;
+
+	console.log(token);
+	if (!token) {
+		return next(new ErrorResponse('Invalid credentials', 401));
+	}
+	
+	const userQuery =
+		'SELECT userID, firstName, lastName, email, profilePic FROM users WHERE userID = ?';
+	const [users] = await pool.promise().query(userQuery, [decodedID]);
+
+	res.status(200).json({
+		success: true,
+		user: {
+			userID: users[0].userID,
+			firstName: users[0].firstName,
+			lastName: users[0].lastName,
+			email: users[0].email,
+			profilePic: users[0].profilePic,
+		},
+	});
+});
 
 const sendTokenResponse = async (user, statusCode, res) => {
 	const token = jwt.sign({ id: user.userID }, process.env.JWT_SECRET, {

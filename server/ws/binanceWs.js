@@ -52,7 +52,7 @@ function closeBinanceWebSocket() {
 	}
 }
 
-async function sendBinanceWebSocketMessage(message, maxRetries = 5, retryInterval = 2000) {
+async function sendBinanceWebSocketMessage(message, maxRetries = 10, retryInterval = 1500) {
 	const send = async (attempt) => {
 		if (ws && ws.readyState === Websocket.OPEN) {
 			ws.send(JSON.stringify(message));
@@ -87,12 +87,25 @@ function newBinanceConnection(wss) {
 	});
 
 	setBinanceMessageHandler((data) => {
-		wss.clients.forEach((client) => {
-			if (client.readyState === Websocket.OPEN) {
-				client.send(JSON.stringify(data));
-			}
-		});
-		return true;
+		if (data.k) {
+			const time = new Date(JSON.parse(data.k.t));
+			const formattedDate = time.toISOString().split('T')[0];
+
+			const parsedData = {
+				open: JSON.parse(data.k.o),
+				high: JSON.parse(data.k.h),
+				low: JSON.parse(data.k.l),
+				close: JSON.parse(data.k.c),
+				time: formattedDate,
+			};
+
+			wss.clients.forEach((client) => {
+				if (client.readyState === Websocket.OPEN) {
+					client.send(JSON.stringify(parsedData));
+				}
+			});
+			return true;
+		}
 	});
 }
 
