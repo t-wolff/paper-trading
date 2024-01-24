@@ -40,7 +40,6 @@ const newWebsocketServer = (server) => {
 function isValidToken(token) {
 	try {
 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
-		console.log(decoded);
 		return decoded;
 	} catch (error) {
 		console.error(token);
