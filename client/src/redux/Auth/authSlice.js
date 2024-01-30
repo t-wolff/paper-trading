@@ -99,36 +99,23 @@ export const register = (firstName, lastName, email, password) => async (dispatc
 	}
 };
 
-const setInitialSettings = (data) => (dispatch) => {
+const setInitialSettings = (data, TOKEN) => (dispatch) => {
 	const userContent = { ...data.user };
-	
-	saveToLocalStorage('TOKEN', data.token);
-	setAuthToken(data.token);
+	const token = data.token || TOKEN;
 
+	saveToLocalStorage('TOKEN', token);
+	setAuthToken(token);
+	
 	dispatch(
 		setLogin({
-			token: data.token,
+			token,
 			userContent,
 		})
 	);
-	dispatch(actionSnackBar.setSnackBar('success', 'Successfully connected', 2000));
+	if (!TOKEN) {
+		dispatch(actionSnackBar.setSnackBar('success', 'Successfully connected', 2000));
+	}
 };
-
-// const setInitialSettings = (data, TOKEN) => (dispatch) => {
-// 	const userContent = { ...data.user };
-// 	const token = data.token || TOKEN;
-
-// 	saveToLocalStorage('TOKEN', token);
-// 	setAuthToken(token);
-
-// 	dispatch(
-// 		setLogin({
-// 			token,
-// 			userContent,
-// 		})
-// 	);
-// 	dispatch(actionSnackBar.setSnackBar('success', 'Successfully connected', 2000));
-// };
 
 export const uploadPic = (formData) => async (dispatch) => {
 	try {
@@ -153,22 +140,23 @@ export const uploadPic = (formData) => async (dispatch) => {
 };
 
 
-// export const getUserContent = (token) => async (dispatch) => {
-// 	try {
-// 		const headers = { 'Content-Type': 'application/json' , 'Authorization' : `Bearer ${token}` };
-// 		const res = await axios({
-// 			method: 'GET',
-// 			url: `${BASE_URL}/auth/`,
-// 			headers: headers,
-// 		});
+export const getUserContent = (token) => async (dispatch) => {
+	try {
+		const headers = { 'Content-Type': 'application/json' , 'Authorization' : `Bearer ${token}` };
+		const res = await axios({
+			method: 'GET',
+			url: `${BASE_URL}/auth/user`,
+			headers: headers,
+		});
 
-// 		if (res.status === 200) {
-// 			setInitialSettings(res, token);
-// 		}
-// 	} catch (error) {
-// 		dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
-// 	}
-// };
+		if (res.status === 200) {
+			const user = res.data;
+			dispatch(setInitialSettings(user, token));
+		}
+	} catch (error) {
+		dispatch(actionSnackBar.setSnackBar('error', 'Server error', 2000));
+	}
+};
 
 
 export const logout = () => (dispatch) => {
