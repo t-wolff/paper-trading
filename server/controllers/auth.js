@@ -119,34 +119,35 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 	});
 });
 
-//@desc       get User details
-//@route      GET /api/vi/auth/updateUser
-//@access     Private
+// @desc       get User details
+// @route      GET /api/vi/auth/user
+// @access     Private
 
-// exports.getUser = asyncHandler(async (req, res, next) => {
-// 	const token = req.headers.authorization.split(' ')[1];
-// 	const decodedID = jwt.verify(token, process.env.JWT_SECRET).id;
+exports.getUser = asyncHandler(async (req, res, next) => {
+	const token = req.headers.authorization;
+	if (token.length < 30) {
+		return next(new ErrorResponse('Invalid credentials', 401));
+	}
 
-// 	console.log(token);
-// 	if (!token) {
-// 		return next(new ErrorResponse('Invalid credentials', 401));
-// 	}
+	const formatToken = token.split(' ')[1];
+	console.log(formatToken);
+	const decodedID = jwt.verify(formatToken, process.env.JWT_SECRET).id;
 	
-// 	const userQuery =
-// 		'SELECT userID, firstName, lastName, email, profilePic FROM users WHERE userID = ?';
-// 	const [users] = await pool.promise().query(userQuery, [decodedID]);
+	const userQuery =
+		'SELECT userID, firstName, lastName, email, profilePic FROM users WHERE userID = ?';
+	const [users] = await pool.promise().query(userQuery, [decodedID]);
 
-// 	res.status(200).json({
-// 		success: true,
-// 		user: {
-// 			userID: users[0].userID,
-// 			firstName: users[0].firstName,
-// 			lastName: users[0].lastName,
-// 			email: users[0].email,
-// 			profilePic: users[0].profilePic,
-// 		},
-// 	});
-// });
+	res.status(200).json({
+		success: true,
+		user: {
+			userID: users[0].userID,
+			firstName: users[0].firstName,
+			lastName: users[0].lastName,
+			email: users[0].email,
+			profilePic: users[0].profilePic,
+		},
+	});
+});
 
 const sendTokenResponse = async (user, statusCode, res) => {
 	const token = jwt.sign({ id: user.userID }, process.env.JWT_SECRET, {

@@ -67,7 +67,7 @@ const Trade = () => {
 		};
 
 		dispatch(actionTrade.getCandles(candleParams));
-	}, [dispatch])
+	}, [dispatch, userId])
 
 	const handleBuy = async () => {
 		dispatch(actionTrade.createTrade(product, 'BUY', quantity, userId));

@@ -1,21 +1,31 @@
-import { useEffect } from 'react';
+import { useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getFromLocalStorage } from '../utils/constants';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actionAuth from '../redux/Auth/authSlice';
 
 const ProtectedRoute = ({ children }) => {
 	const navigate = useNavigate();
-	const userContent = useSelector((state) => state.auth.userContent);
-
-	const token = getFromLocalStorage('TOKEN');
+	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (!token) {
+		const localToken = getFromLocalStorage('TOKEN');
+		try {
+			if (localToken && !isAuthenticated) {
+				dispatch(actionAuth.getUserContent(localToken));
+			}
+		} catch (error) {
+			console.error('Error during authentication:', error);
+		}
+
+		if (!localToken && !isAuthenticated) {
 			navigate('/');
 		}
-	}, [navigate, token, userContent]);
+	}, [dispatch, navigate, isAuthenticated]);
 
-	return children;
+	return isAuthenticated && children;
 };
 
 export default ProtectedRoute;
+

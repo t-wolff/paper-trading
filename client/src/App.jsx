@@ -1,10 +1,5 @@
-// import { useEffect, useRef } from "react";
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import SnackBar from './components/SnackBar/SnackBar';
-// import { useDispatch } from 'react-redux';
-// import { getFromLocalStorage } from './utils/constants';
-// import * as actionAuth from './redux/Auth/authSlice';
-// import { useSelector } from 'react-redux';
 
 import {
 	LandingPage,
@@ -19,7 +14,6 @@ import {
 } from './pages';
 
 import { ProtectedRoute, SharedLayout } from './components';
-// import { useEffect, useState } from 'react';
 
 const routes = [
 	{
@@ -93,18 +87,6 @@ const routes = [
 
 function App() {
 	const router = createBrowserRouter(routes);
-	// const dispatch = useDispatch();
-	// const [isToken, setIsToken] = useState(true)
-	// const userContent = useSelector((state) => state.auth.userContent);
-
-	// useEffect(() => {
-	// 	const token = getFromLocalStorage('TOKEN');
-	// 	if (token) {
-	// 		dispatch(actionAuth.getUserContent(token));
-	// 		setIsToken(true);
-	// 	} else {setIsToken(false);}
-	// }, [dispatch]);
-
 	return (
 		<>
 			<SnackBar />
