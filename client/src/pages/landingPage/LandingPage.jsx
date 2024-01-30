@@ -25,14 +25,14 @@ const LandingPage = () => {
           {points.map((point) => (
             <h4 key={point}>{point}</h4>
           ))}
-          {/* <StyledButton
+          <StyledButton
             color={"dark"}
             onclick={() => {
               navigate("/signUp");
             }}
           >
             Sign Up
-          </StyledButton> */}
+          </StyledButton>
           <StyledButton
             color={"light"}
             onclick={() => {
